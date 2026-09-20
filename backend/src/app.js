@@ -24,14 +24,6 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Basic health check endpoint
-app.get(['/health', '/api/health'], (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: 'School Admission Management API is running',
-    timestamp: new Date().toISOString()
-  });
-});
 
 // API Routes (support both /api and direct root mounts for flexible frontend base URLs)
 app.use('/api/auth', authRoutes);
