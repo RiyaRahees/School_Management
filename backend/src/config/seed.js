@@ -14,18 +14,52 @@ const seedDatabase = async () => {
     await mongoose.connect(mongoURI);
     console.log('Connected to MongoDB for seeding...');
 
-    // 1. Seed Admission Team admin account if not exists
-    const adminExists = await User.findOne({ role: 'ADMISSION_TEAM' });
-    if (!adminExists) {
-      await User.create({
+    // 1. Seed Admission Team admin accounts
+    const adminEmail = 'admin@school.com';
+    let adminUser = await User.findOne({ email: adminEmail });
+    if (!adminUser) {
+      adminUser = await User.create({
         name: 'Admission Office Head',
-        email: 'admin@school.com',
+        email: adminEmail,
         password: 'admin123',
         role: 'ADMISSION_TEAM'
       });
-      console.log('Default ADMISSION_TEAM user created: admin@school.com / admin123');
+      console.log(`Created ADMISSION_TEAM account: ${adminEmail} (password: admin123)`);
     } else {
-      console.log('Admission Team user already exists: ' + adminExists.email);
+      console.log(`ADMISSION_TEAM account verified: ${adminEmail}`);
+    }
+
+    const admissionAltEmail = 'admission@school.com';
+    let altAdminUser = await User.findOne({ email: admissionAltEmail });
+    if (!altAdminUser) {
+      await User.create({
+        name: 'Admission Officer',
+        email: admissionAltEmail,
+        password: 'admin123',
+        role: 'ADMISSION_TEAM'
+      });
+      console.log(`Created secondary ADMISSION_TEAM account: ${admissionAltEmail} (password: admin123)`);
+    }
+
+    // Seed Demo Parent accounts
+    const parentAccounts = [
+      { name: 'Riya Rahees', email: 'riyarahees136@gmail.com', password: '123123' },
+      { name: 'Demo Parent', email: 'parent@example.com', password: 'password123' }
+    ];
+
+    for (const acc of parentAccounts) {
+      let pUser = await User.findOne({ email: acc.email });
+      if (!pUser) {
+        await User.create({
+          name: acc.name,
+          email: acc.email,
+          password: acc.password,
+          role: 'PARENT'
+        });
+        console.log(`Created PARENT account: ${acc.email} (password: ${acc.password})`);
+      } else {
+        console.log(`PARENT account verified: ${acc.email}`);
+      }
     }
 
     // 2. Seed / Update upcoming Exam Slots
