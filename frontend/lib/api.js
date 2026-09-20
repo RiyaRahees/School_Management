@@ -279,8 +279,12 @@ export const initiateRazorpayPayment = async ({
 
     const orderData = await createRazorpayOrder(studentId);
 
+    if (!orderData?.keyId) {
+      throw new Error('Razorpay Key ID was not provided by the server.');
+    }
+
     const options = {
-      key: orderData.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_T53pGTgjHp3vfC',
+      key: orderData.keyId,
       amount: orderData.amount, // 50000 paise (₹500)
       currency: orderData.currency || 'INR',
       name: 'EDUFLOW Admission Platform',

@@ -159,7 +159,6 @@ RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 ### Frontend (`frontend/.env.local`)
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
-NEXT_PUBLIC_RAZORPAY_KEY_ID=your_razorpay_key_id
 ```
 
 ---
