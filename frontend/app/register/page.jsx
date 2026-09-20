@@ -14,26 +14,41 @@ export default function RegisterPage() {
     confirmPassword: ''
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState('');
 
   const validate = () => {
     const errs = {};
-    if (!formData.name.trim()) errs.name = 'Full name is required.';
-    if (!formData.email.trim()) {
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!trimmedName) {
+      errs.name = 'Full name is required.';
+    } else if (trimmedName.length < 2) {
+      errs.name = 'Full name must be at least 2 characters.';
+    }
+
+    if (!trimmedEmail) {
       errs.email = 'Email address is required.';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!emailRegex.test(trimmedEmail)) {
       errs.email = 'Please enter a valid email address.';
     }
+
     if (!formData.password) {
       errs.password = 'Password is required.';
     } else if (formData.password.length < 6) {
       errs.password = 'Password must be at least 6 characters.';
     }
-    if (formData.password !== formData.confirmPassword) {
+
+    if (!formData.confirmPassword) {
+      errs.confirmPassword = 'Please confirm your password.';
+    } else if (formData.password !== formData.confirmPassword) {
       errs.confirmPassword = 'Passwords do not match.';
     }
+
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -43,6 +58,11 @@ export default function RegisterPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
+    }
+    if (name === 'password' && errors.confirmPassword && formData.confirmPassword) {
+      if (value === formData.confirmPassword) {
+        setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      }
     }
   };
 
@@ -54,13 +74,13 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register({
-        name: formData.name,
-        email: formData.email,
+        name: formData.name.trim(),
+        email: formData.email.trim().toLowerCase(),
         password: formData.password,
         role: 'parent'
       });
     } catch (err) {
-      setServerError(err.message || 'Unable to complete registration.');
+      setServerError(err.message || 'Unable to complete registration. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -571,18 +591,39 @@ export default function RegisterPage() {
               <label className="form-label" htmlFor="confirmPassword">
                 Confirm Password
               </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                className={`form-input ${errors.confirmPassword ? 'has-error' : ''}`}
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                disabled={loading}
-                autoComplete="new-password"
-                required
-              />
+              <div className="input-wrapper">
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  className={`form-input ${errors.confirmPassword ? 'has-error' : ''}`}
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  disabled={loading}
+                  autoComplete="new-password"
+                  style={{ paddingRight: '44px' }}
+                  required
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                >
+                  {showConfirmPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
               {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
             </div>
 
