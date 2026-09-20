@@ -1,0 +1,636 @@
+/* ==========================================================================
+   EDUFLOW — SCHOOL ADMISSION PLATFORM DESIGN SYSTEM
+   Modern, academic-focused, trustworthy, high-end SaaS theme.
+   ========================================================================== */
+
+:root {
+  /* Brand Palette (Exact prompt tokens) */
+  --primary: #0F9D8A;
+  --primary-dark: #087F71;
+  --primary-light: #E8F8F5;
+
+  /* Surfaces & Canvas */
+  --bg-app: #F7F9FA;
+  --surface: #FFFFFF;
+  --surface-subtle: #F1F5F9;
+
+  /* Typography Colors */
+  --text-primary: #172033;
+  --text-secondary: #667085;
+  --text-muted: #94A3B8;
+
+  /* Borders & Dividers */
+  --border: #E5E7EB;
+  --border-light: #F1F5F9;
+  --border-focus: #0F9D8A;
+
+  /* Semantic Feedback */
+  --success: #12B76A;
+  --success-light: #ECFDF3;
+  --success-border: #A6F4C5;
+
+  --warning: #F79009;
+  --warning-light: #FFFAEB;
+  --warning-border: #FEDF89;
+
+  --error: #F04438;
+  --error-light: #FEF3F2;
+  --error-border: #FECDCA;
+
+  --info: #0BA5EC;
+  --info-light: #F0F9FF;
+  --info-border: #B9E6FE;
+
+  /* Shadows (Subtle, crisp, no muddy blur) */
+  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 4px 8px -2px rgba(16, 24, 40, 0.06), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
+  --shadow-lg: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+
+  /* Geometry */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   RESET & BASE
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--font-family);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+/* ==========================================================================
+   LAYOUT STRUCTURE
+   ========================================================================== */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.content-container {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .content-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .content-container {
+    padding: 1.25rem 1rem;
+  }
+}
+
+/* ==========================================================================
+   TYPOGRAPHY SPECIFICATION (Section 3)
+   ========================================================================== */
+.page-title {
+  font-size: 2rem; /* 32px */
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.section-title {
+  font-size: 1.35rem; /* 20-22px */
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.015em;
+}
+
+.card-title {
+  font-size: 1.05rem; /* 16-17px */
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.page-subtitle {
+  font-size: 0.9375rem; /* 15px */
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+  line-height: 1.45;
+}
+
+.text-body {
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  font-size: 0.8125rem; /* 13px */
+  color: var(--text-secondary);
+}
+
+.label-small {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   CARDS & CONTAINERS
+   ========================================================================== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-xs);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-sm);
+  border-color: #D1D5DB;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* ==========================================================================
+   BUTTONS (Section 6 & 19)
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem; /* 14px */
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border: 1px solid var(--primary-dark);
+  box-shadow: 0 1px 2px rgba(15, 157, 138, 0.15);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  box-shadow: 0 2px 5px rgba(15, 157, 138, 0.25);
+  transform: translateY(-0.5px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--surface-subtle);
+  border-color: #CBD5E1;
+  color: var(--text-primary);
+}
+
+.btn-outline {
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  background: transparent;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--primary-light);
+}
+
+.btn-sm {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-xs);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   FILTER TOOLBAR (Section 7)
+   ========================================================================== */
+.filter-toolbar {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  box-shadow: var(--shadow-xs);
+  margin-bottom: 1.5rem;
+}
+
+.filter-search-box {
+  flex: 1.8;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  height: 38px;
+  transition: all 0.15s ease;
+}
+
+.filter-search-box:focus-within {
+  background: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 157, 138, 0.12);
+}
+
+.filter-search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: var(--text-primary);
+  font-size: 0.84rem;
+}
+
+.filter-select {
+  flex: 1;
+  min-width: 140px;
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-app);
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-select:focus {
+  background: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(15, 157, 138, 0.12);
+}
+
+/* ==========================================================================
+   DATA TABLE SYSTEM (Section 8)
+   ========================================================================== */
+.table-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  box-shadow: var(--shadow-xs);
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  background: #F9FAFB;
+  padding: 0.875rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.data-table tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+/* ==========================================================================
+   MODALS
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1rem;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease-out;
+  overflow-y: auto;
+}
+
+.modal-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  margin: auto;
+}
+
+/* ==========================================================================
+   ANIMATIONS & MICRO-INTERACTIONS (Section 19)
+   ========================================================================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ==========================================================================
+   PRO-TIER FORM SYSTEM
+   ========================================================================== */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s ease;
+}
+
+.form-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.form-section-badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-xs);
+}
+
+.form-section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.35rem;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.45rem;
+}
+
+.form-label .required {
+  color: var(--error);
+  font-weight: 700;
+  margin-left: 0.2rem;
+}
+
+.form-control,
+.form-select {
+  width: 100%;
+  height: 42px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background-color: #FFFFFF;
+  border: 1px solid #D1D5DB;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: #9CA3AF;
+  font-size: 0.84rem;
+}
+
+.form-control:hover:not(:disabled),
+.form-select:hover:not(:disabled) {
+  border-color: #9CA3AF;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(15, 157, 138, 0.14);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  background-color: #F8FAFC;
+  color: #94A3B8;
+  cursor: not-allowed;
+  border-color: #E2E8F0;
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--error);
+  background-color: #FFFBFB;
+}
+
+.form-control.is-invalid:focus,
+.form-select.is-invalid:focus {
+  box-shadow: 0 0 0 3px rgba(240, 68, 56, 0.14);
+  border-color: var(--error);
+}
+
+/* Custom calendar date styling */
+input[type="date"].form-control {
+  cursor: pointer;
+  position: relative;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+input[type="date"].form-control::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  filter: invert(45%) sepia(50%) saturate(1200%) hue-rotate(130deg) brightness(90%) contrast(90%);
+  opacity: 0.85;
+  padding: 4px;
+  border-radius: 4px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+input[type="date"].form-control::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 680px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.775rem;
+  color: var(--error);
+  font-weight: 500;
+  margin-top: 0.4rem;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.form-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.85rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
