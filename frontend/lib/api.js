@@ -1,5 +1,13 @@
 // Centralized API Client Layer for EduFlow School Admission Management
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+function getBaseUrl() {
+  let raw = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  raw = raw.trim().replace(/\/+$/, '');
+  if (!raw.endsWith('/api') && !raw.includes('/api/')) {
+    raw = `${raw}/api`;
+  }
+  return raw;
+}
+const API_BASE_URL = getBaseUrl();
 
 // Helper to wipe legacy mock data from browser localStorage
 if (typeof window !== 'undefined') {

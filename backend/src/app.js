@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Basic health check endpoint
-app.get('/api/health', (req, res) => {
+app.get(['/health', '/api/health'], (req, res) => {
   res.status(200).json({
     success: true,
     message: 'School Admission Management API is running',
@@ -33,11 +33,18 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// API Routes
+// API Routes (support both /api and direct root mounts for flexible frontend base URLs)
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/students', studentRoutes);
+app.use('/students', studentRoutes);
+
 app.use('/api/exam-slots', examSlotRoutes);
+app.use('/exam-slots', examSlotRoutes);
+
 app.use('/api/admissions', admissionRoutes);
+app.use('/admissions', admissionRoutes);
 
 // Error handling middleware
 app.use(notFound);
