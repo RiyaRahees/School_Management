@@ -71,79 +71,10 @@ export default function AdmissionCompletedPage() {
   }
 
   return (
-    <div style={{ maxWidth: '1080px', margin: '0 auto', paddingBottom: '3rem' }}>
+    <div style={{ maxWidth: '860px', margin: '0 auto', paddingBottom: '3rem' }}>
       <style>{`
-        .admitted-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 0.85rem;
+        .admitted-page-header {
           margin-bottom: 1.25rem;
-        }
-
-        .admitted-title-group {
-          display: flex;
-          align-items: center;
-          gap: 0.6rem;
-        }
-
-        .admitted-title {
-          font-size: 1.6rem;
-          font-weight: 800;
-          color: #0F172A;
-          letter-spacing: -0.02em;
-          margin: 0;
-        }
-
-        .admitted-subtitle {
-          font-size: 0.825rem;
-          color: #64748B;
-          margin: 0.15rem 0 0 0;
-        }
-
-        .admitted-header-actions {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .admitted-metrics {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 0.85rem;
-          margin-bottom: 1.25rem;
-        }
-
-        .metric-tile {
-          background: #FFFFFF;
-          border: 1px solid #E2E8F0;
-          border-radius: 10px;
-          padding: 0.85rem 1rem;
-          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-          display: flex;
-          flex-direction: column;
-          justifyContent: center;
-        }
-
-        .metric-label {
-          font-size: 0.7rem;
-          color: #64748B;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
-        }
-
-        .metric-value {
-          font-size: 1.45rem;
-          font-weight: 800;
-          margin-top: 0.15rem;
-          line-height: 1.2;
-        }
-
-        .metric-subtext {
-          font-size: 0.72rem;
-          margin-top: 0.15rem;
         }
 
         .admitted-grid {
@@ -155,7 +86,7 @@ export default function AdmissionCompletedPage() {
         .admitted-card {
           background: #FFFFFF;
           border: 1.5px solid #E2E8F0;
-          border-radius: 12px;
+          border-radius: 14px;
           padding: 1.25rem;
           transition: all 0.2s ease;
           display: flex;
@@ -169,55 +100,13 @@ export default function AdmissionCompletedPage() {
           box-shadow: 0 6px 18px rgba(15, 157, 138, 0.09);
         }
 
-        /* Responsive Mobile Optimizations (< 640px) */
         @media (max-width: 640px) {
-          .admitted-header {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-          }
-          .admitted-title {
-            font-size: 1.35rem;
-          }
-          .admitted-header-actions {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.5rem;
-          }
-          .admitted-header-actions .btn {
-            width: 100%;
-            justify-content: center;
-            padding: 0.5rem 0.65rem !important;
-            font-size: 0.8rem !important;
-          }
-          .admitted-metrics {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.45rem;
-            margin-bottom: 1rem;
-          }
-          .metric-tile {
-            padding: 0.6rem 0.35rem;
-            text-align: center;
-            border-radius: 8px;
-          }
-          .metric-label {
-            font-size: 0.62rem;
-          }
-          .metric-value {
-            font-size: 1.15rem;
-            margin-top: 0.1rem;
-          }
-          .metric-subtext {
-            display: none;
-          }
           .admitted-grid {
             grid-template-columns: 1fr;
             gap: 0.85rem;
           }
           .admitted-card {
-            padding: 1rem;
+            padding: 1.1rem;
           }
         }
 
@@ -244,100 +133,59 @@ export default function AdmissionCompletedPage() {
         }
       `}</style>
 
-      {/* Header */}
-      <div className="admitted-header">
-        <div>
-          <div className="admitted-title-group">
-            <div style={{
-              width: '30px',
-              height: '30px',
-              borderRadius: '7px',
-              backgroundColor: '#ECFDF5',
-              color: '#059669',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexShrink: 0
-            }}>
-              <AcademicCapIcon size={18} />
-            </div>
-            <h1 className="admitted-title">
-              Admission Completed
-            </h1>
-          </div>
-          <p className="admitted-subtitle">
-            Official list of enrolled students with confirmed admissions and course assignments.
-          </p>
+      {/* Clean, Simple Header */}
+      <div className="admitted-page-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.25rem' }}>
+          <h1 style={{
+            fontSize: '1.65rem',
+            fontWeight: 800,
+            color: '#0F172A',
+            letterSpacing: '-0.02em',
+            margin: 0
+          }}>
+            Admission Completed
+          </h1>
+          <span style={{
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            backgroundColor: '#ECFDF5',
+            color: '#059669',
+            border: '1px solid #A7F3D0',
+            padding: '0.15rem 0.6rem',
+            borderRadius: '12px'
+          }}>
+            {admittedStudents.length} {admittedStudents.length === 1 ? 'Student' : 'Students'}
+          </span>
         </div>
-
-        <div className="admitted-header-actions">
-          <Link href="/parent/students" className="btn btn-secondary btn-sm" style={{ textDecoration: 'none' }}>
-            All Applications
-          </Link>
-          <Link href="/parent/students/create" className="btn btn-primary btn-sm" style={{ textDecoration: 'none' }}>
-            <span>+ New Application</span>
-          </Link>
-        </div>
+        <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0 }}>
+          Official list of enrolled candidates with confirmed admission letters.
+        </p>
       </div>
 
-      {/* Compact Metrics Row */}
-      <div className="admitted-metrics">
-        <div className="metric-tile">
-          <div className="metric-label">Admitted</div>
-          <div className="metric-value" style={{ color: '#059669' }}>
-            {admittedStudents.length}
-          </div>
-          <div className="metric-subtext" style={{ color: '#10B981', fontWeight: 600 }}>
-            ✓ Enrolled Confirmed
-          </div>
-        </div>
-
-        <div className="metric-tile">
-          <div className="metric-label">Academic Session</div>
-          <div className="metric-value" style={{ color: '#0F172A', fontSize: '1.2rem' }}>
-            2026–27
-          </div>
-          <div className="metric-subtext" style={{ color: '#64748B' }}>
-            Regular Term
-          </div>
-        </div>
-
-        <div className="metric-tile">
-          <div className="metric-label">Fee Clearance</div>
-          <div className="metric-value" style={{ color: '#0F766E', fontSize: '1.2rem' }}>
-            100% Cleared
-          </div>
-          <div className="metric-subtext" style={{ color: '#64748B' }}>
-            No Dues Pending
-          </div>
-        </div>
-      </div>
-
-      {/* Search Bar */}
+      {/* Clean Search Input */}
       {admittedStudents.length > 0 && (
         <div style={{
-          marginBottom: '1.15rem',
+          marginBottom: '1.25rem',
           display: 'flex',
           alignItems: 'center',
           gap: '0.65rem',
           background: '#FFFFFF',
           border: '1.5px solid #E2E8F0',
-          borderRadius: '8px',
-          padding: '0.55rem 0.85rem',
-          maxWidth: '420px',
+          borderRadius: '10px',
+          padding: '0.6rem 0.95rem',
           boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
         }}>
-          <SearchIcon size={15} color="#94A3B8" />
+          <SearchIcon size={16} color="#94A3B8" />
           <input
             type="text"
-            placeholder="Search student, grade, or course..."
+            placeholder="Search admitted students by name or grade..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{
               border: 'none',
               outline: 'none',
               width: '100%',
-              fontSize: '0.84rem',
+              fontSize: '0.875rem',
               color: '#0F172A',
               backgroundColor: 'transparent'
             }}
@@ -345,7 +193,7 @@ export default function AdmissionCompletedPage() {
           {search && (
             <button
               onClick={() => setSearch('')}
-              style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: '0.8rem', padding: '2px 4px' }}
+              style={{ background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer', fontSize: '0.85rem', padding: '2px 6px' }}
             >
               ✕
             </button>
@@ -353,9 +201,9 @@ export default function AdmissionCompletedPage() {
         </div>
       )}
 
-      {/* Empty State vs Student Cards */}
+      {/* Admitted Student Cards / Empty State */}
       {admittedStudents.length === 0 ? (
-        <div className="card" style={{ padding: '2.5rem 1.5rem', textAlign: 'center', backgroundColor: '#FFFFFF', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
+        <div className="card" style={{ padding: '3rem 1.5rem', textAlign: 'center', backgroundColor: '#FFFFFF', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
           <div style={{
             width: '54px',
             height: '54px',
@@ -373,22 +221,19 @@ export default function AdmissionCompletedPage() {
           <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.4rem 0' }}>
             No Completed Admissions Yet
           </h3>
-          <p style={{ fontSize: '0.84rem', color: '#64748B', maxWidth: '440px', margin: '0 auto 1.5rem auto', lineHeight: 1.5 }}>
-            When candidate entrance assessments are evaluated and course assignments are finalized, confirmed students will appear here with printable admission letters.
+          <p style={{ fontSize: '0.85rem', color: '#64748B', maxWidth: '440px', margin: '0 auto 1.5rem auto', lineHeight: 1.5 }}>
+            When candidate entrance assessments are evaluated and course assignments are finalized, confirmed students will appear here with official admission letters.
           </p>
 
           <div style={{ display: 'flex', gap: '0.65rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/parent/students" className="btn btn-primary btn-sm" style={{ textDecoration: 'none' }}>
-              <span>Track Active Applications</span>
-            </Link>
-            <Link href="/parent/exam-slots" className="btn btn-secondary btn-sm" style={{ textDecoration: 'none' }}>
-              <span>Check Exam Slots</span>
+              <span>Track Applications</span>
             </Link>
           </div>
         </div>
       ) : filteredAdmitted.length === 0 ? (
         <div style={{ padding: '2.5rem 1.5rem', textAlign: 'center', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E2E8F0' }}>
-          <p style={{ color: '#64748B', fontSize: '0.875rem', margin: '0 0 0.75rem 0' }}>No admitted students matched your search "{search}".</p>
+          <p style={{ color: '#64748B', fontSize: '0.875rem', margin: '0 0 0.75rem 0' }}>No admitted students matched "{search}".</p>
           <button onClick={() => setSearch('')} className="btn btn-secondary btn-sm">Clear Search</button>
         </div>
       ) : (
@@ -403,7 +248,7 @@ export default function AdmissionCompletedPage() {
                 {/* Verified Top Badge */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem' }}>
                   <span style={{
-                    fontSize: '0.68rem',
+                    fontSize: '0.7rem',
                     fontWeight: 700,
                     padding: '0.15rem 0.55rem',
                     borderRadius: '10px',
@@ -418,7 +263,7 @@ export default function AdmissionCompletedPage() {
                     <span>Admission Completed</span>
                   </span>
 
-                  <span style={{ fontSize: '0.72rem', color: '#94A3B8', fontWeight: 600, fontFamily: 'monospace' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 600, fontFamily: 'monospace' }}>
                     {appNumber}
                   </span>
                 </div>
@@ -496,13 +341,13 @@ export default function AdmissionCompletedPage() {
                     style={{
                       width: '100%',
                       justifyContent: 'center',
-                      padding: '0.55rem 0.85rem',
-                      fontSize: '0.825rem',
+                      padding: '0.6rem 0.85rem',
+                      fontSize: '0.85rem',
                       fontWeight: 700,
-                      borderRadius: '7px'
+                      borderRadius: '8px'
                     }}
                   >
-                    <PrinterIcon size={14} />
+                    <PrinterIcon size={15} />
                     <span>View Admission Letter</span>
                   </button>
 
