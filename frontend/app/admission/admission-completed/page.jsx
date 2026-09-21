@@ -139,35 +139,36 @@ export default function AdmissionCompletedAdminPage() {
       `}</style>
 
       {/* Header */}
-      <div style={{ marginBottom: '1.75rem', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+      <div style={{ marginBottom: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.85rem' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <div style={{
-              width: '34px',
-              height: '34px',
-              borderRadius: '8px',
+              width: '30px',
+              height: '30px',
+              borderRadius: '7px',
               backgroundColor: '#ECFDF5',
               color: '#059669',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              flexShrink: 0
             }}>
-              <AcademicCapIcon size={20} />
+              <AcademicCapIcon size={18} />
             </div>
-            <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: 0 }}>
-              Admission Completed Students
+            <h1 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: 0 }}>
+              Admission Completed
             </h1>
           </div>
-          <p style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
-            Master list of all students whose assessment evaluation and course assignment have been finalized.
+          <p style={{ fontSize: '0.825rem', color: '#64748B', margin: '0.15rem 0 0 0' }}>
+            Master directory of all candidates with finalized evaluations and assigned courses.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <Link href="/admission/assign-course" className="btn btn-secondary" style={{ textDecoration: 'none', fontSize: '0.85rem' }}>
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <Link href="/admission/assign-course" className="btn btn-secondary btn-sm" style={{ textDecoration: 'none' }}>
             Assign Courses
           </Link>
-          <Link href="/admission/applications" className="btn btn-primary" style={{ textDecoration: 'none', fontSize: '0.85rem' }}>
+          <Link href="/admission/applications" className="btn btn-primary btn-sm" style={{ textDecoration: 'none' }}>
             All Applications
           </Link>
         </div>
@@ -176,30 +177,30 @@ export default function AdmissionCompletedAdminPage() {
       {/* Metrics Row */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.75rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '0.85rem',
+        marginBottom: '1.25rem'
       }}>
-        <div className="card" style={{ padding: '1.25rem', backgroundColor: '#FFFFFF' }}>
-          <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
+        <div className="card" style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFFFF', borderRadius: '10px' }}>
+          <div style={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
             Total Admitted Students
           </div>
-          <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#059669', marginTop: '0.25rem' }}>
+          <div style={{ fontSize: '1.45rem', fontWeight: 800, color: '#059669', marginTop: '0.15rem' }}>
             {completedList.length}
           </div>
-          <div style={{ fontSize: '0.78rem', color: '#10B981', marginTop: '0.2rem', fontWeight: 600 }}>
+          <div style={{ fontSize: '0.72rem', color: '#10B981', marginTop: '0.15rem', fontWeight: 600 }}>
             Active Confirmed Admissions
           </div>
         </div>
 
-        <div className="card" style={{ padding: '1.25rem', backgroundColor: '#FFFFFF' }}>
-          <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
+        <div className="card" style={{ padding: '0.85rem 1rem', backgroundColor: '#FFFFFF', borderRadius: '10px' }}>
+          <div style={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase' }}>
             Academic Session
           </div>
-          <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', marginTop: '0.4rem' }}>
+          <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', marginTop: '0.2rem' }}>
             2026 – 2027
           </div>
-          <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: '0.2rem' }}>
+          <div style={{ fontSize: '0.72rem', color: '#64748B', marginTop: '0.15rem' }}>
             Current Intake
           </div>
         </div>
@@ -211,11 +212,11 @@ export default function AdmissionCompletedAdminPage() {
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'wrap',
-        gap: '1rem',
-        marginBottom: '1.25rem',
+        gap: '0.75rem',
+        marginBottom: '1.15rem',
         backgroundColor: '#FFFFFF',
-        padding: '1rem 1.25rem',
-        borderRadius: '12px',
+        padding: '0.75rem 1rem',
+        borderRadius: '10px',
         border: '1px solid #E2E8F0'
       }}>
         <div style={{
