@@ -13,7 +13,8 @@ import {
   ClockIcon,
   CreditCardIcon,
   LogoutIcon,
-  CheckIcon
+  CheckIcon,
+  AcademicCapIcon
 } from './Icons';
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -26,7 +27,8 @@ export default function Sidebar({ isOpen, onClose }) {
     { label: 'Dashboard', href: '/parent/dashboard', icon: <DashboardIcon size={18} /> },
     { label: 'Student Applications', href: '/parent/students', icon: <StudentsIcon size={18} /> },
     { label: 'Payments', href: '/parent/payments', icon: <CreditCardIcon size={18} /> },
-    { label: 'Exam Slots', href: '/parent/exam-slots', icon: <CalendarIcon size={18} /> }
+    { label: 'Exam Slots', href: '/parent/exam-slots', icon: <CalendarIcon size={18} /> },
+    { label: 'Admission Completed', href: '/parent/admission-completed', icon: <AcademicCapIcon size={18} /> }
   ];
 
   const admissionLinks = [
@@ -34,7 +36,8 @@ export default function Sidebar({ isOpen, onClose }) {
     { label: 'Student Applications', href: '/admission/applications', icon: <ApplicationsIcon size={18} /> },
     { label: 'Exam Slots', href: '/admission/exam-slots', icon: <CalendarIcon size={18} /> },
     { label: 'Update Score', href: '/admission/update-score', icon: <ClockIcon size={18} /> },
-    { label: 'Assign Course', href: '/admission/assign-course', icon: <CheckIcon size={18} /> }
+    { label: 'Assign Course', href: '/admission/assign-course', icon: <CheckIcon size={18} /> },
+    { label: 'Admission Completed', href: '/admission/admission-completed', icon: <AcademicCapIcon size={18} /> }
   ];
 
   const links = isAdmission ? admissionLinks : parentLinks;
