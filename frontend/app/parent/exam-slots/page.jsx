@@ -299,9 +299,9 @@ export default function ExamSlotsPage() {
 
         .exam-slot-card {
           border: 1.5px solid #E5E7EB;
-          border-radius: 10px;
+          border-radius: 12px;
           background: #FFFFFF;
-          padding: 1.35rem;
+          padding: 1.25rem;
           cursor: pointer;
           transition: all 0.15s ease;
           position: relative;
@@ -339,18 +339,117 @@ export default function ExamSlotsPage() {
           align-items: center;
           justify-content: center;
         }
+
+        .candidate-selector-card {
+          padding: 1.15rem 1.35rem;
+          border-radius: 14px;
+          border: 1px solid #E2E8F0;
+          background: #FFFFFF;
+          margin-bottom: 1.5rem;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
+
+        .student-trigger-btn {
+          width: 100%;
+          padding: 0.85rem 1rem;
+          background-color: #FAFCFF;
+          border: 1.5px solid #E2E8F0;
+          border-radius: 12px;
+          cursor: pointer;
+          text-align: left;
+          transition: all 0.15s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+        }
+
+        .student-trigger-btn:hover {
+          background-color: #F0FDF9;
+          border-color: #0F9D8A;
+        }
+
+        .student-trigger-btn.active {
+          border-color: #0F9D8A;
+          background-color: #F0FDF9;
+          box-shadow: 0 0 0 3px rgba(15, 157, 138, 0.12);
+        }
+
+        .student-dropdown-menu {
+          position: absolute;
+          top: calc(100% + 6px);
+          left: 0;
+          right: 0;
+          background-color: #FFFFFF;
+          border-radius: 14px;
+          border: 1px solid #E2E8F0;
+          box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.14), 0 6px 12px -4px rgba(0, 0, 0, 0.08);
+          z-index: 60;
+          padding: 0.5rem;
+          max-height: 320px;
+          overflow-y: auto;
+        }
+
+        .student-dropdown-item {
+          padding: 0.75rem 0.85rem;
+          border-radius: 10px;
+          cursor: pointer;
+          margin-bottom: 3px;
+          transition: all 0.15s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+        }
+
         .student-dropdown-item:hover {
           background-color: #F8FAFC !important;
         }
 
         .student-dropdown-item.selected {
           background-color: #F0FDF9 !important;
+          border: 1px solid #CCFBF1;
+        }
+
+        .sticky-slot-bar {
+          position: sticky;
+          bottom: 1rem;
+          z-index: 40;
+          padding: 1.15rem 1.5rem;
+          border-radius: 12px;
+          border: 1.5px solid #0D9488;
+          background-color: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(12px);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 1.25rem;
+          box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 640px) {
+          .candidate-selector-card {
+            padding: 0.95rem;
+          }
+          .slot-card-grid {
+            grid-template-columns: 1fr;
+            gap: 0.85rem;
+          }
+          .sticky-slot-bar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0.9rem 1rem;
+            gap: 0.75rem;
+          }
+          .sticky-slot-bar .btn {
+            width: 100%;
+            justify-content: center;
+          }
         }
       `}</style>
 
       {/* Header */}
-      <div style={{ marginBottom: '1.75rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#172033', letterSpacing: '-0.02em', margin: '0 0 0.35rem 0' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
+        <h1 style={{ fontSize: '1.85rem', fontWeight: 700, color: '#172033', letterSpacing: '-0.02em', margin: '0 0 0.35rem 0' }}>
           Entrance Exam Scheduling
         </h1>
         <p style={{ fontSize: '0.875rem', color: '#667085', margin: 0 }}>
@@ -358,239 +457,240 @@ export default function ExamSlotsPage() {
         </p>
       </div>
 
-      {/* Student Selector Card */}
-      <div style={{
-        padding: '1.25rem 1.5rem',
-        borderRadius: '12px',
-        border: '1px solid #E2E8F0',
-        backgroundColor: '#FFFFFF',
-        marginBottom: '1.75rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1.25rem',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
-      }}>
-        <div style={{ flex: '1 1 360px' }}>
-          <label style={{
-            display: 'block',
+      {/* Candidate Student Selection Card */}
+      <div className="candidate-selector-card">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '0.65rem'
+        }}>
+          <div style={{
             fontSize: '0.75rem',
-            fontWeight: 700,
+            fontWeight: 800,
             color: '#475569',
             textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            marginBottom: '0.45rem'
+            letterSpacing: '0.06em',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.45rem'
           }}>
-            Select Candidate Student:
-          </label>
-
-          {/* Custom Interactive Dropdown */}
-          <div className="student-dropdown-container" style={{ position: 'relative', width: '100%', maxWidth: '520px' }}>
-            <button
-              type="button"
-              onClick={() => setDropdownOpen(prev => !prev)}
-              style={{
-                width: '100%',
-                padding: '0.65rem 0.95rem',
-                backgroundColor: '#FFFFFF',
-                border: dropdownOpen ? '1.5px solid #0F9D8A' : '1.5px solid #E2E8F0',
-                boxShadow: dropdownOpen ? '0 0 0 3px rgba(15, 157, 138, 0.12)' : '0 1px 2px rgba(0,0,0,0.04)',
+            <span>Select Candidate Student</span>
+            {eligibleStudents.length > 1 && (
+              <span style={{
+                fontSize: '0.68rem',
+                backgroundColor: '#E0F2FE',
+                color: '#0369A1',
+                padding: '0.1rem 0.5rem',
                 borderRadius: '10px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              {currentStudent ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', overflow: 'hidden' }}>
-                  <div style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '50%',
-                    backgroundColor: '#E8F8F5',
-                    color: '#0F9D8A',
-                    fontWeight: 800,
-                    fontSize: '0.85rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0
-                  }}>
-                    {getInitials(currentStudent.name)}
-                  </div>
-                  <div style={{ overflow: 'hidden' }}>
-                    <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                fontWeight: 700
+              }}>
+                {eligibleStudents.length} Students
+              </span>
+            )}
+          </div>
+          {eligibleStudents.length > 1 && (
+            <span style={{ fontSize: '0.75rem', color: '#0F9D8A', fontWeight: 600 }}>
+              {dropdownOpen ? 'Close Menu ▴' : 'Switch Candidate ▾'}
+            </span>
+          )}
+        </div>
+
+        {/* Custom Interactive Dropdown */}
+        <div className="student-dropdown-container" style={{ position: 'relative', width: '100%' }}>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen(prev => !prev)}
+            className={`student-trigger-btn ${dropdownOpen ? 'active' : ''}`}
+          >
+            {currentStudent ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%' }}>
+                {/* Avatar */}
+                <div style={{
+                  width: '42px',
+                  height: '42px',
+                  borderRadius: '50%',
+                  backgroundColor: '#CCFBF1',
+                  color: '#0F766E',
+                  fontWeight: 800,
+                  fontSize: '0.9rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  {getInitials(currentStudent.name)}
+                </div>
+
+                {/* Info block with clean 2-line layout */}
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  {/* Top Line: Full Name & Dropdown Chevron */}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                    <div style={{
+                      fontWeight: 700,
+                      color: '#0F172A',
+                      fontSize: '1rem',
+                      lineHeight: 1.3,
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
+                    }}>
                       {currentStudent.name}
                     </div>
-                    <div style={{ fontSize: '0.775rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '1px' }}>
-                      <span style={{ fontWeight: 600, color: '#334155' }}>{currentStudent.applyingGrade}</span>
-                      <span>•</span>
-                      <span>App #{currentStudent.applicationNumber || (currentStudent._id ? currentStudent._id.slice(-6).toUpperCase() : '')}</span>
+
+                    <div style={{
+                      width: '26px',
+                      height: '26px',
+                      borderRadius: '6px',
+                      backgroundColor: dropdownOpen ? '#E0F2FE' : '#F1F5F9',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                      transition: 'all 0.15s ease'
+                    }}>
+                      <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={dropdownOpen ? '#0284C7' : '#64748B'}
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                          transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+                          transition: 'transform 0.2s ease'
+                        }}
+                      >
+                        <polyline points="6 9 12 15 18 9" />
+                      </svg>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <span style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Select a candidate student</span>
-              )}
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexShrink: 0 }}>
-                {currentStudent && (
-                  <span style={{
-                    fontSize: '0.725rem',
-                    fontWeight: 700,
-                    padding: '0.2rem 0.65rem',
-                    borderRadius: '12px',
-                    backgroundColor: getStatusConfig(currentStudent.status).bg,
-                    color: getStatusConfig(currentStudent.status).color,
-                    border: `1px solid ${getStatusConfig(currentStudent.status).border}`
+                  {/* Bottom Line: Grade • App # and Status Badge */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '0.5rem',
+                    marginTop: '0.3rem',
+                    flexWrap: 'wrap'
                   }}>
-                    {getStatusConfig(currentStudent.status).label}
-                  </span>
-                )}
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#64748B"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  style={{
-                    transform: dropdownOpen ? 'rotate(180deg)' : 'none',
-                    transition: 'transform 0.2s ease'
-                  }}
-                >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </div>
-            </button>
+                    <div style={{
+                      fontSize: '0.78rem',
+                      color: '#64748B',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      <span style={{ fontWeight: 600, color: '#334155' }}>Grade {currentStudent.applyingGrade}</span>
+                      <span style={{ color: '#CBD5E1' }}>•</span>
+                      <span>App #{currentStudent.applicationNumber || (currentStudent._id ? currentStudent._id.slice(-6).toUpperCase() : '')}</span>
+                    </div>
 
-            {/* Floating Options Menu */}
-            {dropdownOpen && (
-              <div style={{
-                position: 'absolute',
-                top: 'calc(100% + 6px)',
-                left: 0,
-                right: 0,
-                backgroundColor: '#FFFFFF',
-                borderRadius: '12px',
-                border: '1px solid #E2E8F0',
-                boxShadow: '0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 6px 12px -4px rgba(0, 0, 0, 0.08)',
-                zIndex: 60,
-                padding: '0.45rem',
-                maxHeight: '300px',
-                overflowY: 'auto'
-              }}>
-                <div style={{
-                  padding: '0.4rem 0.65rem 0.5rem 0.65rem',
-                  fontSize: '0.7rem',
-                  fontWeight: 700,
-                  color: '#94A3B8',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em'
-                }}>
-                  Eligible Candidate Students ({eligibleStudents.length})
+                    <span style={{
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      padding: '0.15rem 0.55rem',
+                      borderRadius: '10px',
+                      backgroundColor: getStatusConfig(currentStudent.status).bg,
+                      color: getStatusConfig(currentStudent.status).color,
+                      border: `1px solid ${getStatusConfig(currentStudent.status).border}`,
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {getStatusConfig(currentStudent.status).label}
+                    </span>
+                  </div>
                 </div>
+              </div>
+            ) : (
+              <span style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Select a candidate student</span>
+            )}
+          </button>
 
-                {eligibleStudents.map((s) => {
-                  const isSelected = s._id === selectedStudentId;
-                  const cfg = getStatusConfig(s.status);
-                  return (
-                    <div
-                      key={s._id}
-                      onClick={() => {
-                        setSelectedStudentId(s._id);
-                        setDropdownOpen(false);
-                      }}
-                      className={`student-dropdown-item ${isSelected ? 'selected' : ''}`}
-                      style={{
-                        padding: '0.7rem 0.75rem',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        cursor: 'pointer',
-                        marginBottom: '2px',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', overflow: 'hidden' }}>
-                        <div style={{
-                          width: '34px',
-                          height: '34px',
-                          borderRadius: '50%',
-                          backgroundColor: isSelected ? '#CCFBF1' : '#F1F5F9',
-                          color: isSelected ? '#0F9D8A' : '#475569',
-                          fontWeight: 700,
-                          fontSize: '0.8rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0
-                        }}>
-                          {getInitials(s.name)}
+          {/* Floating Options Menu */}
+          {dropdownOpen && (
+            <div className="student-dropdown-menu">
+              <div style={{
+                padding: '0.4rem 0.65rem 0.5rem 0.65rem',
+                fontSize: '0.7rem',
+                fontWeight: 700,
+                color: '#94A3B8',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em'
+              }}>
+                Eligible Candidate Students ({eligibleStudents.length})
+              </div>
+
+              {eligibleStudents.map((s) => {
+                const isSelected = s._id === selectedStudentId;
+                const cfg = getStatusConfig(s.status);
+                return (
+                  <div
+                    key={s._id}
+                    onClick={() => {
+                      setSelectedStudentId(s._id);
+                      setDropdownOpen(false);
+                    }}
+                    className={`student-dropdown-item ${isSelected ? 'selected' : ''}`}
+                  >
+                    <div style={{
+                      width: '38px',
+                      height: '38px',
+                      borderRadius: '50%',
+                      backgroundColor: isSelected ? '#CCFBF1' : '#F1F5F9',
+                      color: isSelected ? '#0F766E' : '#475569',
+                      fontWeight: 700,
+                      fontSize: '0.85rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      {getInitials(s.name)}
+                    </div>
+
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+                        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {s.name}
                         </div>
-                        <div style={{ overflow: 'hidden' }}>
-                          <div style={{ fontWeight: 600, color: '#172033', fontSize: '0.9rem' }}>
-                            {s.name}
+                        {isSelected && (
+                          <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#0F9D8A', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <CheckIcon size={12} strokeWidth={2.5} />
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                            <span>{s.applyingGrade}</span>
-                            <span>•</span>
-                            <span>App #{s.applicationNumber || (s._id ? s._id.slice(-6).toUpperCase() : '')}</span>
-                          </div>
-                        </div>
+                        )}
                       </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginTop: '0.25rem', flexWrap: 'wrap' }}>
+                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap' }}>
+                          <span style={{ fontWeight: 600, color: '#334155' }}>Grade {s.applyingGrade}</span>
+                          <span style={{ color: '#CBD5E1' }}>•</span>
+                          <span>App #{s.applicationNumber || (s._id ? s._id.slice(-6).toUpperCase() : '')}</span>
+                        </div>
+
                         <span style={{
-                          fontSize: '0.7rem',
+                          fontSize: '0.68rem',
                           fontWeight: 700,
-                          padding: '0.15rem 0.55rem',
-                          borderRadius: '12px',
+                          padding: '0.12rem 0.5rem',
+                          borderRadius: '10px',
                           backgroundColor: cfg.bg,
                           color: cfg.color,
-                          border: `1px solid ${cfg.border}`
+                          border: `1px solid ${cfg.border}`,
+                          whiteSpace: 'nowrap'
                         }}>
                           {cfg.label}
                         </span>
-                        {isSelected ? (
-                          <div style={{ width: '18px', height: '18px', borderRadius: '50%', backgroundColor: '#0F9D8A', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <CheckIcon size={11} />
-                          </div>
-                        ) : (
-                          <div style={{ width: '18px' }} />
-                        )}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {currentStudent && (
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            backgroundColor: '#F8FAFC',
-            padding: '0.75rem 1rem',
-            borderRadius: '8px',
-            border: '1px solid #E2E8F0'
-          }}>
-            <div style={{ fontSize: '0.7rem', color: '#64748B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '0.25rem' }}>
-              Current Admission Stage
+                  </div>
+                );
+              })}
             </div>
-            <StatusBadge status={currentStudent.status} />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* 1. Status: Fee Unpaid */}
@@ -818,23 +918,8 @@ export default function ExamSlotsPage() {
       </div>
 
       {/* Sticky Bottom Floating Confirmation Bar */}
-      <div style={{
-        position: 'sticky',
-        bottom: '1rem',
-        zIndex: 40,
-        padding: '1.15rem 1.5rem',
-        borderRadius: '12px',
-        border: '1.5px solid #0D9488',
-        backgroundColor: 'rgba(255, 255, 255, 0.98)',
-        backdropFilter: 'blur(12px)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1.25rem',
-        boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08)'
-      }}>
-        <div style={{ minWidth: '240px' }}>
+      <div className="sticky-slot-bar">
+        <div style={{ minWidth: '220px', flex: 1 }}>
           <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#0D9488', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {currentSlot ? 'Selected Examination Slot' : 'No Slot Selected'}
           </div>
