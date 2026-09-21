@@ -210,14 +210,14 @@ npm run dev
 
 ---
 
-## 🔑 Demo Credentials
+## 🔑 Demo & Test Credentials
 
-After running `npm run seed`, you can authenticate using:
+You can authenticate using the following accounts:
 
-| Role | Email | Password | Access Level |
+| Portal | Email | Password | Access Level |
 | :--- | :--- | :--- | :--- |
-| **Parent / Guardian** | `riya.rahees@example.com` | `password123` | Parent Dashboard & Applications |
-| **Admission Officer** | `admin@school.com` | `admin123` | Full Administrative Controls |
+| **Parent Portal** | `riyarahees136@gmail.com` | `12341234` | Parent Dashboard, Student Registration & Fee Payment |
+| **Admission Team** | `admin@school.com` | `admin123` | Full Administrative Controls, Exam Grading & Allocations |
 
 ---
 

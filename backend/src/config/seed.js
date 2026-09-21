@@ -43,7 +43,7 @@ const seedDatabase = async () => {
 
     // Seed Demo Parent accounts
     const parentAccounts = [
-      { name: 'Riya Rahees', email: 'riyarahees136@gmail.com', password: '123123' },
+      { name: 'Riya Rahees', email: 'riyarahees136@gmail.com', password: '12341234' },
       { name: 'Demo Parent', email: 'parent@example.com', password: 'password123' }
     ];
 
