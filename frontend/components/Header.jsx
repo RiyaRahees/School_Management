@@ -84,27 +84,35 @@ export default function Header({ onToggleSidebar }) {
         @media (max-width: 768px) {
           .header-mobile-toggle {
             display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0 !important;
+            flex-shrink: 0;
           }
           .header-mobile-brand {
             display: inline-flex !important;
             align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
           }
           .header-search {
             display: none !important;
           }
           header {
             padding: 0 0.85rem !important;
-            height: 56px !important;
+            height: 58px !important;
           }
           .header-user-btn {
-            padding: 0.15rem 0.25rem !important;
+            padding: 0.2rem 0.35rem !important;
             gap: 0.45rem !important;
           }
           .header-user-text {
-            max-width: 100px !important;
+            max-width: 105px !important;
           }
           .header-user-text span:first-child {
-            font-size: 0.775rem !important;
+            font-size: 0.8rem !important;
           }
           .header-user-text span:last-child {
             font-size: 0.65rem !important;
@@ -113,12 +121,12 @@ export default function Header({ onToggleSidebar }) {
       `}</style>
 
       {/* Left Area: Mobile Toggle + Mobile Brand / Desktop Global Application Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, maxWidth: '480px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, maxWidth: '480px' }}>
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle navigation menu"
           className="header-mobile-toggle btn btn-secondary btn-sm"
-          style={{ padding: '0.35rem 0.55rem', borderRadius: '8px', border: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}
+          style={{ borderRadius: '8px', border: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="12" x2="21" y2="12" />
@@ -127,9 +135,18 @@ export default function Header({ onToggleSidebar }) {
           </svg>
         </button>
 
-        {/* Brand identity visible on mobile header */}
+        {/* Clean, single-line brand identity on mobile navbar */}
         <div className="header-mobile-brand">
-          <EduFlowLogo size={28} showText={true} />
+          <EduFlowLogo size={30} showText={false} />
+          <span style={{
+            fontSize: '1.05rem',
+            fontWeight: 800,
+            color: '#0F172A',
+            letterSpacing: '-0.025em',
+            lineHeight: 1
+          }}>
+            EduFlow
+          </span>
         </div>
 
         <div className="header-search">
