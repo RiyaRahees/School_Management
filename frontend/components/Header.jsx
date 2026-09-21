@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SearchIcon, EduFlowLogo } from './Icons';
+import { SearchIcon } from './Icons';
 
 export default function Header({ onToggleSidebar }) {
   const { user } = useAuth();
@@ -24,7 +24,7 @@ export default function Header({ onToggleSidebar }) {
         .header-mobile-toggle {
           display: none;
         }
-        .header-mobile-brand {
+        .header-mobile-brand-left {
           display: none;
         }
         .header-search {
@@ -75,10 +75,10 @@ export default function Header({ onToggleSidebar }) {
           .header-mobile-toggle {
             display: inline-flex !important;
           }
-          .header-mobile-brand {
-            display: flex !important;
+          .header-mobile-brand-left {
+            display: inline-flex !important;
             align-items: center;
-            justify-content: center;
+            margin-left: 0.25rem;
           }
           .header-search {
             display: none !important;
@@ -93,14 +93,11 @@ export default function Header({ onToggleSidebar }) {
           .header-chevron {
             display: none !important;
           }
-          .header-left-col {
-            flex: none !important;
-          }
         }
       `}</style>
 
-      {/* Left Area: Mobile Toggle & Global Search */}
-      <div className="header-left-col" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, maxWidth: '480px' }}>
+      {/* Left Area: Mobile Toggle & Left-Aligned EduFlow Logo on Mobile, Global Search on Desktop */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, maxWidth: '480px' }}>
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle navigation menu"
@@ -114,6 +111,13 @@ export default function Header({ onToggleSidebar }) {
           </svg>
         </button>
 
+        {/* EduFlow Brand Name Moved to the Left Side Next to Hamburger */}
+        <div className="header-mobile-brand-left">
+          <span style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.025em' }}>
+            Edu<span style={{ color: '#0F9D8A' }}>Flow</span>
+          </span>
+        </div>
+
         <div className="header-search">
           <SearchIcon size={16} color="#64748B" strokeWidth={2} />
           <input
@@ -122,13 +126,6 @@ export default function Header({ onToggleSidebar }) {
             aria-label="Search applications, students, or anything..."
           />
         </div>
-      </div>
-
-      {/* Center Area (Mobile Only): Brand Title */}
-      <div className="header-mobile-brand">
-        <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
-          Edu<span style={{ color: '#0F9D8A' }}>Flow</span>
-        </span>
       </div>
 
       {/* Right Area: User Profile Icon */}

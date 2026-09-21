@@ -50,9 +50,11 @@ export default function Sidebar({ isOpen, onClose }) {
           flex-direction: column;
           flex-shrink: 0;
           height: 100vh;
-          max-height: 100vh;
+          height: 100dvh;
+          max-height: 100dvh;
           position: sticky;
           top: 0;
+          bottom: 0;
           z-index: 40;
           border-right: 1px solid #E5E7EB;
           overflow: hidden;
@@ -83,10 +85,11 @@ export default function Sidebar({ isOpen, onClose }) {
 
         .nav-group {
           padding: 1.15rem 0.75rem;
-          flex: 1;
+          flex: 1 1 auto;
           display: flex;
           flex-direction: column;
           overflow-y: auto;
+          min-height: 0;
         }
 
         .nav-label {
@@ -150,14 +153,14 @@ export default function Sidebar({ isOpen, onClose }) {
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          gap: 0.5rem;
         }
 
         .user-panel {
           display: flex;
           align-items: center;
           gap: 0.65rem;
-          padding: 0.55rem 0.65rem;
+          padding: 0.5rem 0.65rem;
           border-radius: 9px;
           background: #F8FAFC;
           border: 1px solid #E2E8F0;
@@ -184,12 +187,12 @@ export default function Sidebar({ isOpen, onClose }) {
           justify-content: center;
           gap: 0.45rem;
           width: 100%;
-          height: 38px;
+          height: 40px;
           border-radius: 8px;
           background-color: #FEF2F2;
           border: 1px solid #FECACA;
           color: #DC2626;
-          font-size: 0.8125rem;
+          font-size: 0.825rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.15s ease;
@@ -202,35 +205,61 @@ export default function Sidebar({ isOpen, onClose }) {
 
         @media (max-width: 768px) {
           .sidebar {
-            width: min(290px, 85vw);
+            width: min(285px, 85vw);
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
+            height: 100% !important;
+            height: 100dvh !important;
+            max-height: 100dvh !important;
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important;
             transform: translateX(-100%);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 50;
+            overflow: hidden !important;
           }
           .sidebar.open {
             transform: translateX(0);
           }
           .sidebar-brand {
-            padding-top: max(0.85rem, env(safe-area-inset-top));
+            padding-top: max(0.65rem, env(safe-area-inset-top));
             height: auto;
-            min-height: 64px;
-            padding-left: 1.15rem;
-            padding-right: 1.15rem;
+            min-height: 58px;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            flex-shrink: 0;
           }
           .sidebar-close-btn {
             display: inline-flex !important;
           }
+          .nav-group {
+            flex: 1 1 auto !important;
+            overflow-y: auto !important;
+            padding: 0.75rem 0.65rem !important;
+            min-height: 0;
+          }
           .sidebar-footer {
-            padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+            flex-shrink: 0 !important;
+            position: sticky !important;
+            bottom: 0 !important;
+            background: #FFFFFF !important;
+            padding: 0.75rem 0.85rem !important;
+            padding-bottom: max(0.85rem, env(safe-area-inset-bottom)) !important;
+            border-top: 1px solid #F1F5F9 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 0.45rem !important;
+          }
+          .user-panel {
+            padding: 0.45rem 0.6rem !important;
           }
           .signout-btn {
-            height: 42px;
-            font-size: 0.85rem;
+            height: 40px !important;
+            font-size: 0.84rem !important;
           }
           .sidebar-backdrop {
             display: none;
@@ -253,10 +282,10 @@ export default function Sidebar({ isOpen, onClose }) {
       />
 
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
-        {/* Brand Header with optional Mobile Close Button */}
+        {/* Brand Header with Close Button */}
         <div className="sidebar-brand">
           <Link href={isAdmission ? '/admission/dashboard' : '/parent/dashboard'} style={{ textDecoration: 'none' }}>
-            <EduFlowLogo size={32} />
+            <EduFlowLogo size={30} />
           </Link>
           <button
             type="button"
@@ -295,7 +324,7 @@ export default function Sidebar({ isOpen, onClose }) {
           </nav>
         </div>
 
-        {/* Footer: User profile & Styled Sign Out Button */}
+        {/* Footer: User profile & Sign Out pinned to bottom without scrolling */}
         <div className="sidebar-footer">
           <div className="user-panel">
             <div className="user-avatar">
