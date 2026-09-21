@@ -548,23 +548,23 @@ export default function StudentDetailPage() {
               stepDetailText = 'Application registered & verified';
             } else if (st.step === 2) {
               stepDetailText = isCompleted
-                ? '✓ Fee of ₹500 confirmed via Online Payment'
+                ? 'Fee of ₹500 confirmed via Online Payment'
                 : 'Registration fee (₹500) required';
             } else if (st.step === 3) {
               stepDetailText = student.examSlot
-                ? `📅 ${student.examSlot.date} at ${student.examSlot.time}`
+                ? `${student.examSlot.date} at ${student.examSlot.time}`
                 : isCompleted
                 ? 'Entrance exam scheduled'
                 : 'On-campus assessment date selection';
             } else if (st.step === 4) {
               stepDetailText = student.examScore != null
-                ? `🎯 Score: ${student.examScore}/100 confirmed`
+                ? `Score: ${student.examScore}/100 confirmed`
                 : isCompleted
                 ? 'Exam evaluated'
                 : 'Faculty test review & grading';
             } else if (st.step === 5) {
               stepDetailText = student.status === 'ADMISSION_COMPLETED'
-                ? `🎉 Formally Admitted into ${student.assignedCourse || student.applyingGrade}`
+                ? `Formally admitted into ${student.assignedCourse || student.applyingGrade}`
                 : 'Final enrollment and course confirmation';
             }
 
