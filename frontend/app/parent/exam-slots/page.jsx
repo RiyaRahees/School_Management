@@ -1050,11 +1050,28 @@ export default function ExamSlotsPage() {
               textAlign: 'left',
               marginBottom: '1.5rem',
               display: 'flex',
-              gap: '0.5rem',
+              gap: '0.65rem',
               alignItems: 'flex-start'
             }}>
-              <span style={{ fontSize: '1rem', lineHeight: 1 }}>📌</span>
-              <span>Please report 15 minutes before the session with valid student ID proof and writing stationery.</span>
+              <div style={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                backgroundColor: '#DBEAFE',
+                color: '#1D4ED8',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                marginTop: '1px'
+              }}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+              </div>
+              <span style={{ lineHeight: 1.45 }}>Please report 15 minutes before the session with valid student ID proof and writing stationery.</span>
             </div>
 
             {/* Action Buttons */}
