@@ -757,20 +757,33 @@ export default function ExamSlotsPage() {
                   </span>
                 </div>
 
-                {/* Inline Card Status Action */}
+                {/* Inline Card Status Action & Direct Confirm Button */}
                 <div style={{ marginTop: '0.65rem' }}>
                   {isSelected ? (
-                    <div style={{
-                      backgroundColor: '#0D9488',
-                      color: '#FFFFFF',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      textAlign: 'center',
-                      padding: '0.35rem 0.5rem',
-                      borderRadius: '6px'
-                    }}>
-                      ✓ Slot Selected
-                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleConfirmSlot();
+                      }}
+                      disabled={
+                        bookingLoading ||
+                        !currentStudent ||
+                        currentStudent.status !== 'REGISTRATION_FEE_PAID'
+                      }
+                      className="btn btn-primary"
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.85rem',
+                        fontSize: '0.875rem',
+                        fontWeight: 700,
+                        justifyContent: 'center',
+                        borderRadius: '6px',
+                        boxShadow: '0 2px 6px rgba(13, 148, 136, 0.3)'
+                      }}
+                    >
+                      {bookingLoading ? 'Confirming...' : 'Confirm This Slot →'}
+                    </button>
                   ) : isFull ? (
                     <div style={{
                       backgroundColor: '#F1F5F9',
