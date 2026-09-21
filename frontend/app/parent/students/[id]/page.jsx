@@ -850,9 +850,11 @@ export default function StudentDetailPage() {
         className="info-cards-grid"
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '1.5rem',
-          marginBottom: '2rem'
+          marginBottom: '2rem',
+          maxWidth: '100%',
+          boxSizing: 'border-box'
         }}
       >
         {/* CARD 1: PERSONAL INFORMATION */}
@@ -861,7 +863,10 @@ export default function StudentDetailPage() {
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '10px',
-            padding: '1.5rem'
+            padding: '1.5rem',
+            boxSizing: 'border-box',
+            maxWidth: '100%',
+            overflow: 'hidden'
           }}
         >
           <div
@@ -953,7 +958,10 @@ export default function StudentDetailPage() {
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '10px',
-            padding: '1.5rem'
+            padding: '1.5rem',
+            boxSizing: 'border-box',
+            maxWidth: '100%',
+            overflow: 'hidden'
           }}
         >
           <div

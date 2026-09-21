@@ -211,13 +211,15 @@ export default function StudentForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
-      <div className="form-card">
-        {/* Section Header */}
-        <div className="form-section-header">
-          <span className="form-section-badge">CANDIDATE INFORMATION</span>
-          <span className="form-section-title">Student Profile & Academic Details</span>
-        </div>
+    <form onSubmit={handleSubmit} noValidate style={{ width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
+      <div className={`form-card ${isEdit ? 'form-card-edit-mode' : ''}`}>
+        {/* Section Header (Shown only when creating a new application) */}
+        {!isEdit && (
+          <div className="form-section-header">
+            <span className="form-section-badge">CANDIDATE INFORMATION</span>
+            <span className="form-section-title">Student Profile & Academic Details</span>
+          </div>
+        )}
 
         {/* Full Name */}
         <div className="form-group">
@@ -321,7 +323,9 @@ export default function StudentForm({
                 backgroundColor: '#ECFDF5',
                 border: '1px solid #A7F3D0',
                 padding: '0.25rem 0.65rem',
-                borderRadius: '6px'
+                borderRadius: '6px',
+                maxWidth: '100%',
+                flexWrap: 'wrap'
               }}>
                 <CheckIcon size={13} color="#059669" />
                 <span>Verified: {formattedDob}</span>
@@ -440,7 +444,6 @@ export default function StudentForm({
             type="submit"
             className="btn btn-primary"
             disabled={isLoading}
-            style={{ minWidth: '170px' }}
           >
             {isLoading ? (
               <span>Saving Application...</span>
