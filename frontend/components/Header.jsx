@@ -68,6 +68,15 @@ export default function Header({ onToggleSidebar }) {
         .header-user-btn:hover {
           background: #F9FAFB;
         }
+        .header-user-text {
+          max-width: 160px;
+        }
+        .header-user-text span {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
         @media (max-width: 768px) {
           .header-mobile-toggle {
             display: inline-flex !important;
@@ -76,14 +85,21 @@ export default function Header({ onToggleSidebar }) {
             display: none;
           }
           header {
-            padding: 0 1rem !important;
+            padding: 0 0.85rem !important;
             height: 56px !important;
           }
-          .header-user-text {
-            display: none !important;
+          .header-user-btn {
+            padding: 0.15rem 0.25rem !important;
+            gap: 0.45rem !important;
           }
-          .header-chevron {
-            display: none !important;
+          .header-user-text {
+            max-width: 105px !important;
+          }
+          .header-user-text span:first-child {
+            font-size: 0.775rem !important;
+          }
+          .header-user-text span:last-child {
+            font-size: 0.65rem !important;
           }
         }
       `}</style>

@@ -356,6 +356,107 @@ export default function StudentDetailPage() {
             line-height: 1.4;
           }
         }
+
+        /* Responsive Student Information Cards & Grid */
+        .student-details-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+        }
+
+        .detail-info-card {
+          background: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          border-radius: 12px;
+          padding: 1.5rem;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+          box-sizing: border-box;
+          width: 100%;
+        }
+
+        .detail-card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+          padding-bottom: 0.75rem;
+          border-bottom: 1px solid #F1F5F9;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        .detail-card-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.7rem 0;
+          border-bottom: 1px solid #F8FAFC;
+          font-size: 0.875rem;
+          gap: 0.75rem;
+        }
+
+        .detail-card-row:last-child {
+          border-bottom: none;
+        }
+
+        .detail-row-label {
+          color: #64748B;
+          font-size: 0.8125rem;
+          font-weight: 500;
+          flex-shrink: 0;
+        }
+
+        .detail-row-value {
+          color: #0F172A;
+          font-weight: 600;
+          text-align: right;
+          word-break: break-word;
+        }
+
+        .exam-modal-card {
+          max-width: 480px;
+          width: 100%;
+          padding: 2rem 1.75rem;
+          text-align: center;
+          box-sizing: border-box;
+          margin: auto;
+        }
+
+        .exam-ticket-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.75rem;
+        }
+
+        @media (max-width: 860px) {
+          .student-details-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .detail-info-card {
+            padding: 1.15rem 1rem !important;
+          }
+          .detail-card-row {
+            padding: 0.6rem 0 !important;
+            font-size: 0.825rem !important;
+          }
+          .detail-row-label {
+            font-size: 0.78rem !important;
+          }
+          .detail-row-value {
+            font-size: 0.825rem !important;
+          }
+          .exam-modal-card {
+            padding: 1.5rem 1.15rem !important;
+            width: min(440px, calc(100vw - 2rem)) !important;
+            margin: auto !important;
+          }
+          .exam-ticket-grid {
+            grid-template-columns: 1fr !important;
+            gap: 0.5rem !important;
+          }
+        }
       `}</style>
 
       {/* 1. Back Navigation */}
@@ -830,33 +931,10 @@ export default function StudentDetailPage() {
       </div>
 
       {/* 5. Clean Two-Column Information Layout */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-          gap: '1.5rem',
-          marginBottom: '2rem'
-        }}
-      >
+      <div className="student-details-grid">
         {/* CARD 1: PERSONAL INFORMATION */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '10px',
-            padding: '1.5rem'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '1rem',
-              paddingBottom: '0.75rem',
-              borderBottom: '1px solid #F1F5F9'
-            }}
-          >
+        <div className="detail-info-card">
+          <div className="detail-card-header">
             <h2
               style={{
                 fontSize: '0.95rem',
@@ -906,49 +984,33 @@ export default function StudentDetailPage() {
             />
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-                <span style={{ color: '#64748B' }}>Student Name</span>
-                <strong style={{ color: '#0F172A' }}>{student.name}</strong>
+              <div className="detail-card-row">
+                <span className="detail-row-label">Student Name</span>
+                <strong className="detail-row-value">{student.name}</strong>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-                <span style={{ color: '#64748B' }}>Date of Birth</span>
-                <span style={{ color: '#1E293B', fontWeight: 500 }}>{student.dob || student.dateOfBirth || '12 May 2018'}</span>
+              <div className="detail-card-row">
+                <span className="detail-row-label">Date of Birth</span>
+                <span className="detail-row-value" style={{ fontWeight: 500 }}>{student.dob || student.dateOfBirth || '12 May 2018'}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-                <span style={{ color: '#64748B' }}>Gender</span>
-                <span style={{ color: '#1E293B', fontWeight: 500 }}>{student.gender || 'Male'}</span>
+              <div className="detail-card-row">
+                <span className="detail-row-label">Gender</span>
+                <span className="detail-row-value" style={{ fontWeight: 500 }}>{student.gender || 'Female'}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-                <span style={{ color: '#64748B' }}>Parent / Guardian</span>
-                <span style={{ color: '#1E293B', fontWeight: 500 }}>{student.parentName || 'Parent'}</span>
+              <div className="detail-card-row">
+                <span className="detail-row-label">Parent / Guardian</span>
+                <span className="detail-row-value" style={{ fontWeight: 500 }}>{student.parentName || 'Parent'}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-                <span style={{ color: '#64748B' }}>Previous School</span>
-                <span style={{ color: '#1E293B', fontWeight: 500 }}>{student.previousSchool || 'None specified'}</span>
+              <div className="detail-card-row">
+                <span className="detail-row-label">Previous School</span>
+                <span className="detail-row-value" style={{ fontWeight: 500 }}>{student.previousSchool || 'None specified'}</span>
               </div>
             </div>
           )}
         </div>
 
         {/* CARD 2: APPLICATION INFORMATION */}
-        <div
-          style={{
-            background: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '10px',
-            padding: '1.5rem'
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '1rem',
-              paddingBottom: '0.75rem',
-              borderBottom: '1px solid #F1F5F9'
-            }}
-          >
+        <div className="detail-info-card">
+          <div className="detail-card-header">
             <h2
               style={{
                 fontSize: '0.95rem',
@@ -967,39 +1029,39 @@ export default function StudentDetailPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Application ID</span>
-              <strong style={{ color: '#0F172A' }}>#{student.applicationNumber || 'APP-2026-001'}</strong>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Application ID</span>
+              <strong className="detail-row-value">#{student.applicationNumber || 'APP-2026-001'}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Applying Grade</span>
-              <strong style={{ color: '#0F9D8A' }}>{student.applyingGrade}</strong>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Applying Grade</span>
+              <strong className="detail-row-value" style={{ color: '#0F9D8A' }}>{student.applyingGrade}</strong>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Application Status</span>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Application Status</span>
               <StatusBadge status={student.status} />
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Registration Fee</span>
-              <span style={{ fontWeight: 600, color: student.status !== 'APPLICATION_CREATED' ? '#0F9D8A' : '#D97706' }}>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Registration Fee</span>
+              <span className="detail-row-value" style={{ color: student.status !== 'APPLICATION_CREATED' ? '#0F9D8A' : '#D97706' }}>
                 {student.status !== 'APPLICATION_CREATED' ? '₹500 · Paid' : '₹500 · Pending'}
               </span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Exam Slot</span>
-              <span style={{ fontWeight: 500, color: student.examSlot?.date ? '#1E293B' : '#94A3B8' }}>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Exam Slot</span>
+              <span className="detail-row-value" style={{ fontWeight: 500, color: student.examSlot?.date ? '#1E293B' : '#94A3B8' }}>
                 {student.examSlot?.date ? `${student.examSlot.date} · ${student.examSlot.time || '10:00 AM'}` : 'Not Booked'}
               </span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', borderBottom: '1px solid #F8FAFC', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Exam Score</span>
-              <span style={{ fontWeight: 700, color: (student.examScore != null || student.marksObtained != null) ? '#0F172A' : '#94A3B8' }}>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Exam Score</span>
+              <span className="detail-row-value" style={{ color: (student.examScore != null || student.marksObtained != null) ? '#0F172A' : '#94A3B8' }}>
                 {(student.examScore != null || student.marksObtained != null) ? `${student.examScore ?? student.marksObtained} / 100` : 'Pending'}
               </span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.65rem 0', fontSize: '0.875rem' }}>
-              <span style={{ color: '#64748B' }}>Assigned Course</span>
-              <span style={{ fontWeight: 700, color: student.assignedCourse ? '#0F9D8A' : '#94A3B8' }}>
+            <div className="detail-card-row">
+              <span className="detail-row-label">Assigned Course</span>
+              <span className="detail-row-value" style={{ color: student.assignedCourse ? '#0F9D8A' : '#94A3B8' }}>
                 {student.assignedCourse || 'Pending Admission'}
               </span>
             </div>
@@ -1013,7 +1075,7 @@ export default function StudentDetailPage() {
           style={{
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
-            borderRadius: '10px',
+            borderRadius: '12px',
             padding: '1.5rem',
             marginBottom: '2rem'
           }}
@@ -1038,11 +1100,11 @@ export default function StudentDetailPage() {
       {/* 7. Decent Standard Exam Slot Booking Confirmation Modal */}
       {bookingSuccessModal && (
         <div className="modal-overlay" style={{ zIndex: 99999 }}>
-          <div className="modal-card" style={{ maxWidth: '480px', padding: '2rem 1.75rem', textAlign: 'center' }}>
+          <div className="modal-card exam-modal-card">
             {/* Animated Checkmark Circle */}
             <div style={{
-              width: '64px',
-              height: '64px',
+              width: '56px',
+              height: '56px',
               borderRadius: '50%',
               backgroundColor: '#ECFDF5',
               border: '2px solid #A7F3D0',
@@ -1050,18 +1112,18 @@ export default function StudentDetailPage() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 1.25rem auto',
-              boxShadow: '0 0 0 8px rgba(16, 185, 129, 0.12)'
+              margin: '0 auto 1rem auto',
+              boxShadow: '0 0 0 6px rgba(16, 185, 129, 0.12)'
             }}>
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
 
-            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.4rem 0', letterSpacing: '-0.02em' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.35rem 0', letterSpacing: '-0.02em' }}>
               Exam Slot Confirmed!
             </h3>
-            <p style={{ fontSize: '0.875rem', color: '#64748B', margin: '0 0 1.5rem 0', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.85rem', color: '#64748B', margin: '0 0 1.25rem 0', lineHeight: 1.45 }}>
               Your entrance examination session has been officially reserved on record.
             </p>
 
@@ -1070,39 +1132,39 @@ export default function StudentDetailPage() {
               background: '#F8FAFC',
               border: '1.5px dashed #CBD5E1',
               borderRadius: '12px',
-              padding: '1.25rem',
+              padding: '1.15rem',
               textAlign: 'left',
-              marginBottom: '1.25rem'
+              marginBottom: '1.15rem'
             }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.65rem', marginBottom: '0.65rem' }}>
                 <div>
-                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Candidate</div>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0F172A' }}>{student?.name}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Candidate</div>
+                  <div style={{ fontSize: '0.925rem', fontWeight: 700, color: '#0F172A' }}>{student?.name}</div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Grade</div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0D9488' }}>{student?.applyingGrade}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Grade</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0D9488' }}>{student?.applyingGrade}</div>
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <div className="exam-ticket-grid">
                 <div>
-                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Exam Date</div>
-                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Exam Date</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
                     <CalendarIcon size={14} color="#0D9488" />
                     <span>{bookedSlotInfo?.date || student?.examSlot?.date || 'Confirmed'}</span>
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Session Time</div>
-                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Session Time</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
                     <ClockIcon size={14} color="#0D9488" />
                     <span>{bookedSlotInfo?.time || student?.examSlot?.time || '10:00 AM'}</span>
                   </div>
                 </div>
               </div>
 
-              <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.775rem', color: '#475569' }}>
+              <div style={{ marginTop: '0.65rem', paddingTop: '0.65rem', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.775rem', color: '#475569' }}>
                 <MapPinIcon size={14} color="#0D9488" />
                 <span>Venue: <strong>{bookedSlotInfo?.location || student?.examSlot?.location || 'Main Campus, Examination Center'}</strong></span>
               </div>
@@ -1113,16 +1175,16 @@ export default function StudentDetailPage() {
               backgroundColor: '#EFF6FF',
               border: '1px solid #DBEAFE',
               borderRadius: '8px',
-              padding: '0.75rem 0.95rem',
+              padding: '0.65rem 0.85rem',
               fontSize: '0.775rem',
               color: '#1E40AF',
               textAlign: 'left',
-              marginBottom: '1.5rem',
+              marginBottom: '1.25rem',
               display: 'flex',
-              gap: '0.5rem',
+              gap: '0.45rem',
               alignItems: 'flex-start'
             }}>
-              <span style={{ fontSize: '1rem', lineHeight: 1 }}>📌</span>
+              <span style={{ fontSize: '0.9rem', lineHeight: 1 }}>📌</span>
               <span>Please report 15 minutes before the session with valid student ID proof and writing stationery.</span>
             </div>
 
@@ -1132,10 +1194,10 @@ export default function StudentDetailPage() {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => setBookingSuccessModal(false)}
-                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', justifyContent: 'center' }}
+                style={{ padding: '0.65rem 1.25rem', fontSize: '0.875rem', fontWeight: 600, width: '100%', borderRadius: '8px' }}
               >
                 <span>Done & View Journey</span>
-                <ArrowRightIcon size={14} />
+                <ArrowRightIcon size={15} />
               </button>
             </div>
           </div>
