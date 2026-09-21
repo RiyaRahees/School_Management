@@ -266,6 +266,13 @@ export default function ParentDashboardPage() {
           white-space: nowrap;
         }
 
+        .desktop-recent-table {
+          display: block;
+        }
+        .mobile-recent-cards {
+          display: none;
+        }
+
         @media (max-width: 1024px) {
           .summary-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -275,12 +282,66 @@ export default function ParentDashboardPage() {
           }
         }
 
-        @media (max-width: 640px) {
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
           .summary-grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .stat-card-refined {
+            padding: 0.95rem !important;
+          }
+          .stat-card-refined div:nth-child(2) {
+            font-size: 1.45rem !important;
+          }
+          .dashboard-page-title {
+            font-size: 1.45rem !important;
           }
           .stepper-label {
             font-size: 0.65rem;
+          }
+
+          /* Hide desktop table on mobile */
+          .desktop-recent-table {
+            display: none !important;
+          }
+          /* Show mobile touch cards */
+          .mobile-recent-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-recent-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-recent-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-recent-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border: 1px solid #F1F5F9;
+            font-size: 0.775rem;
+          }
+          .mobile-recent-actions .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.5rem;
+            font-size: 0.8rem;
           }
         }
       `}</style>
@@ -663,80 +724,149 @@ export default function ParentDashboardPage() {
         </div>
 
         {students.length > 0 ? (
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Grade</th>
-                  <th>Status</th>
-                  <th>Exam Slot</th>
-                  <th>Last Updated</th>
-                  <th style={{ textAlign: 'right' }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.slice(0, 6).map((std) => (
-                  <tr key={std._id}>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '6px',
-                          backgroundColor: '#E8F8F5',
-                          color: '#0F9D8A',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 700,
-                          fontSize: '0.8125rem',
-                          flexShrink: 0
-                        }}>
-                          {std.name?.charAt(0) || 'S'}
+          <>
+            {/* DESKTOP TABLE VIEW */}
+            <div className="desktop-recent-table table-container">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th>Exam Slot</th>
+                    <th>Last Updated</th>
+                    <th style={{ textAlign: 'right' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.slice(0, 6).map((std) => (
+                    <tr key={std._id}>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '6px',
+                            backgroundColor: '#E8F8F5',
+                            color: '#0F9D8A',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            fontSize: '0.8125rem',
+                            flexShrink: 0
+                          }}>
+                            {std.name?.charAt(0) || 'S'}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#172033', fontSize: '0.875rem' }}>
+                              {std.name}
+                            </div>
+                            <div style={{ fontSize: '0.725rem', color: '#667085' }}>
+                              #{std.applicationNumber}
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <div style={{ fontWeight: 600, color: '#172033', fontSize: '0.875rem' }}>
-                            {std.name}
-                          </div>
-                          <div style={{ fontSize: '0.725rem', color: '#667085' }}>
-                            #{std.applicationNumber}
-                          </div>
+                      </td>
+                      <td>
+                        <span style={{ fontWeight: 500, color: '#172033', fontSize: '0.8125rem' }}>
+                          {std.applyingGrade}
+                        </span>
+                      </td>
+                      <td>
+                        <StatusBadge status={std.status} />
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '0.8125rem', color: std.examSlot?.date ? '#172033' : '#667085', fontWeight: 500 }}>
+                          {std.examSlot?.date ? `${std.examSlot.date} · ${std.examSlot.time || ''}` : 'Not Booked'}
+                        </span>
+                      </td>
+                      <td>
+                        <span style={{ fontSize: '0.8125rem', color: '#667085' }}>
+                          {new Date(std.updatedAt || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </span>
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <Link
+                          href={`/parent/students/${std._id}`}
+                          className="btn btn-secondary btn-sm"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          View Details
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* MOBILE CARDS VIEW */}
+            <div className="mobile-recent-cards">
+              {students.slice(0, 6).map((std) => (
+                <div key={std._id} className="mobile-recent-card">
+                  <div className="mobile-recent-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: '#E8F8F5',
+                        color: '#0F9D8A',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        flexShrink: 0
+                      }}>
+                        {std.name?.charAt(0) || 'S'}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.925rem' }}>
+                          {std.name}
+                        </div>
+                        <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                          #{std.applicationNumber} &bull; <strong style={{ color: '#0D9488' }}>{std.applyingGrade}</strong>
                         </div>
                       </div>
-                    </td>
-                    <td>
-                      <span style={{ fontWeight: 500, color: '#172033', fontSize: '0.8125rem' }}>
-                        {std.applyingGrade}
-                      </span>
-                    </td>
-                    <td>
-                      <StatusBadge status={std.status} />
-                    </td>
-                    <td>
-                      <span style={{ fontSize: '0.8125rem', color: std.examSlot?.date ? '#172033' : '#667085', fontWeight: 500 }}>
-                        {std.examSlot?.date ? `${std.examSlot.date} · ${std.examSlot.time || ''}` : 'Not Booked'}
-                      </span>
-                    </td>
-                    <td>
-                      <span style={{ fontSize: '0.8125rem', color: '#667085' }}>
+                    </div>
+
+                    <StatusBadge status={std.status} />
+                  </div>
+
+                  <div className="mobile-recent-body">
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Exam Slot</div>
+                      <div style={{ fontWeight: 600, color: std.examSlot?.date ? '#172033' : '#94A3B8' }}>
+                        {std.examSlot?.date ? `${std.examSlot.date}` : 'Not Booked'}
+                      </div>
+                      {std.examSlot?.time && (
+                        <div style={{ fontSize: '0.7rem', color: '#64748B' }}>{std.examSlot.time}</div>
+                      )}
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Last Update</div>
+                      <div style={{ fontWeight: 600, color: '#475569' }}>
                         {new Date(std.updatedAt || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                      </span>
-                    </td>
-                    <td style={{ textAlign: 'right' }}>
-                      <Link
-                        href={`/parent/students/${std._id}`}
-                        className="btn btn-secondary btn-sm"
-                        style={{ textDecoration: 'none' }}
-                      >
-                        View Details
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mobile-recent-actions">
+                    <Link
+                      href={`/parent/students/${std._id}`}
+                      className="btn btn-secondary btn-sm"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      View Details →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
         ) : (
           <div className="card" style={{ padding: '2rem 1.5rem', textAlign: 'center', color: '#667085' }}>
             <p style={{ margin: 0, fontSize: '0.875rem' }}>

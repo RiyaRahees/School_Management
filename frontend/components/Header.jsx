@@ -79,6 +79,12 @@ export default function Header({ onToggleSidebar }) {
             padding: 0 1rem !important;
             height: 56px !important;
           }
+          .header-user-text {
+            display: none !important;
+          }
+          .header-chevron {
+            display: none !important;
+          }
         }
       `}</style>
 
@@ -128,7 +134,7 @@ export default function Header({ onToggleSidebar }) {
             {(user?.name || 'User').charAt(0).toUpperCase()}
           </div>
 
-          <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
+          <div className="header-user-text" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column' }}>
             <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: '#172033', lineHeight: 1.25 }}>
               {user?.name || 'User'}
             </span>
@@ -142,7 +148,7 @@ export default function Header({ onToggleSidebar }) {
             </span>
           </div>
 
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.15rem' }}>
+          <svg className="header-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.15rem' }}>
             <polyline points="6 9 12 15 18 9" />
           </svg>
         </div>

@@ -129,6 +129,9 @@ export default function ExamSlotsPage() {
     }
   };
 
+  const [bookingSuccessModal, setBookingSuccessModal] = useState(false);
+  const [bookedSlotData, setBookedSlotData] = useState(null);
+
   const handleConfirmSlot = async () => {
     if (!selectedStudentId) {
       showToast('Please select a student first.', 'error');
@@ -160,6 +163,12 @@ export default function ExamSlotsPage() {
     try {
       const updated = await bookExamSlot(selectedStudentId, selectedSlotId);
       setStudents(prev => prev.map(s => (s._id === selectedStudentId ? updated : s)));
+      const chosenSlot = slots.find(s => (s._id || s.id) === selectedSlotId);
+      setBookedSlotData({
+        student: updated || targetStudent,
+        slot: chosenSlot || updated.examSlot
+      });
+      setBookingSuccessModal(true);
       showToast(`Exam slot booked successfully for ${updated.name || targetStudent.name}!`, 'success');
     } catch (err) {
       showToast(err.message || 'Slot booking failed', 'error');
@@ -858,6 +867,120 @@ export default function ExamSlotsPage() {
           <ArrowRightIcon size={16} />
         </button>
       </div>
+
+      {/* Decent Standard Exam Slot Booking Confirmation Modal */}
+      {bookingSuccessModal && (
+        <div className="modal-overlay" style={{ zIndex: 99999 }}>
+          <div className="modal-card" style={{ maxWidth: '480px', padding: '2rem 1.75rem', textAlign: 'center' }}>
+            {/* Animated Checkmark Circle */}
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              backgroundColor: '#ECFDF5',
+              border: '2px solid #A7F3D0',
+              color: '#059669',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.25rem auto',
+              boxShadow: '0 0 0 8px rgba(16, 185, 129, 0.12)'
+            }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.4rem 0', letterSpacing: '-0.02em' }}>
+              Exam Slot Confirmed!
+            </h3>
+            <p style={{ fontSize: '0.875rem', color: '#64748B', margin: '0 0 1.5rem 0', lineHeight: 1.5 }}>
+              Your entrance examination session has been officially reserved on record.
+            </p>
+
+            {/* Ticket Box */}
+            <div style={{
+              background: '#F8FAFC',
+              border: '1.5px dashed #CBD5E1',
+              borderRadius: '12px',
+              padding: '1.25rem',
+              textAlign: 'left',
+              marginBottom: '1.25rem'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Candidate</div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0F172A' }}>{bookedSlotData?.student?.name || currentStudent?.name}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Grade</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0D9488' }}>{bookedSlotData?.student?.applyingGrade || currentStudent?.applyingGrade}</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Exam Date</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                    <CalendarIcon size={14} color="#0D9488" />
+                    <span>{bookedSlotData?.slot?.date || currentSlot?.date || 'Confirmed'}</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Session Time</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                    <ClockIcon size={14} color="#0D9488" />
+                    <span>{bookedSlotData?.slot?.time || currentSlot?.time || '10:00 AM'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.775rem', color: '#475569' }}>
+                <MapPinIcon size={14} color="#0D9488" />
+                <span>Venue: <strong>{bookedSlotData?.slot?.location || currentSlot?.location || 'Main Campus, Examination Center'}</strong></span>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div style={{
+              backgroundColor: '#EFF6FF',
+              border: '1px solid #DBEAFE',
+              borderRadius: '8px',
+              padding: '0.75rem 0.95rem',
+              fontSize: '0.775rem',
+              color: '#1E40AF',
+              textAlign: 'left',
+              marginBottom: '1.5rem',
+              display: 'flex',
+              gap: '0.5rem',
+              alignItems: 'flex-start'
+            }}>
+              <span style={{ fontSize: '1rem', lineHeight: 1 }}>📌</span>
+              <span>Please report 15 minutes before the session with valid student ID proof and writing stationery.</span>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Link
+                href={`/parent/students/${bookedSlotData?.student?._id || selectedStudentId}`}
+                className="btn btn-primary"
+                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', justifyContent: 'center', textDecoration: 'none' }}
+              >
+                <span>View Student Admission Journey</span>
+                <ArrowRightIcon size={14} />
+              </Link>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setBookingSuccessModal(false)}
+                style={{ width: '100%', padding: '0.65rem', fontSize: '0.85rem', justifyContent: 'center' }}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

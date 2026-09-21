@@ -116,6 +116,100 @@ export default function PaymentsPage() {
 
   return (
     <div style={{ maxWidth: '1120px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        .desktop-payments-table {
+          display: block;
+        }
+        .mobile-payments-cards {
+          display: none;
+        }
+
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .payments-summary-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .payments-summary-grid .payment-stat-card {
+            padding: 0.95rem !important;
+          }
+          .payments-summary-grid .reg-fee-card {
+            grid-column: span 2 !important;
+          }
+          .payments-summary-grid .stat-num {
+            font-size: 1.45rem !important;
+          }
+          .pending-payment-card {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 1rem !important;
+            padding: 1rem !important;
+          }
+          .pending-payment-action {
+            flex-direction: row !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            width: 100% !important;
+            padding-top: 0.75rem !important;
+            border-top: 1px solid #F1F5F9 !important;
+          }
+          .pending-payment-action .btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+
+          /* Hide desktop table on mobile */
+          .desktop-payments-table {
+            display: none !important;
+          }
+          /* Show mobile touch cards */
+          .mobile-payments-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 0.85rem;
+          }
+          .mobile-payment-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-payment-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-payment-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border: 1px solid #F1F5F9;
+            font-size: 0.775rem;
+          }
+          .mobile-payment-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-payment-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 0.45rem;
+            font-size: 0.8rem;
+          }
+        }
+      `}</style>
+
       {/* 1. Clean Page Header */}
       <div
         style={{
@@ -187,6 +281,7 @@ export default function PaymentsPage() {
 
       {/* 2. Payment Summary Blocks */}
       <div
+        className="payments-summary-grid"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
@@ -196,6 +291,7 @@ export default function PaymentsPage() {
       >
         {/* Block 1: Total Paid */}
         <div
+          className="payment-stat-card"
           style={{
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
@@ -207,7 +303,7 @@ export default function PaymentsPage() {
           <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Total Paid
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
+          <div className="stat-num" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
             ₹{totalSettledAmount.toLocaleString('en-IN')}
           </div>
           <div style={{ fontSize: '0.8125rem', color: '#16A34A', fontWeight: 500, marginTop: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -218,6 +314,7 @@ export default function PaymentsPage() {
 
         {/* Block 2: Pending */}
         <div
+          className="payment-stat-card"
           style={{
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
@@ -229,7 +326,7 @@ export default function PaymentsPage() {
           <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Pending
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: pendingStudents.length > 0 ? '#0F172A' : '#64748B', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
+          <div className="stat-num" style={{ fontSize: '1.75rem', fontWeight: 700, color: pendingStudents.length > 0 ? '#0F172A' : '#64748B', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
             {pendingStudents.length} {pendingStudents.length === 1 ? 'payment' : 'payments'}
           </div>
           <div style={{ fontSize: '0.8125rem', color: pendingStudents.length > 0 ? '#B45309' : '#64748B', fontWeight: 500, marginTop: '0.25rem' }}>
@@ -239,6 +336,7 @@ export default function PaymentsPage() {
 
         {/* Block 3: Registration Fee */}
         <div
+          className="payment-stat-card reg-fee-card"
           style={{
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
@@ -250,7 +348,7 @@ export default function PaymentsPage() {
           <div style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Registration Fee
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
+          <div className="stat-num" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginTop: '0.2rem', letterSpacing: '-0.02em' }}>
             ₹500<span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#64748B' }}> / student</span>
           </div>
           <div style={{ fontSize: '0.8125rem', color: '#64748B', marginTop: '0.25rem' }}>
@@ -280,6 +378,7 @@ export default function PaymentsPage() {
               return (
                 <div
                   key={std._id}
+                  className="pending-payment-card"
                   style={{
                     background: '#FFFFFF',
                     border: '1px solid #E2E8F0',
@@ -327,7 +426,7 @@ export default function PaymentsPage() {
                   </div>
 
                   {/* Payment Amount & Action Area */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+                  <div className="pending-payment-action" style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
                     <div style={{ textAlign: 'right' }}>
                       <span style={{ fontSize: '0.7rem', color: '#DC2626', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         Amount Due
@@ -446,139 +545,234 @@ export default function PaymentsPage() {
             </p>
           </div>
         ) : (
-          <div style={{ overflowX: 'hidden' }}>
-            <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
-              <thead>
-                <tr>
-                  <th style={{ padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}>Date</th>
-                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Description</th>
-                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Student Candidate</th>
-                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Amount</th>
-                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Status</th>
-                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Transaction Ref</th>
-                  <th style={{ padding: '0.85rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPaidStudents.map((std, idx) => {
-                  const txnId = std.feePaymentRef || `TXN-${(100000 + idx * 847 + 291).toString()}`;
-                  const payDate = new Date(std.feePaymentDate || std.updatedAt || Date.now()).toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                  });
+          <>
+            {/* DESKTOP TABLE VIEW */}
+            <div className="desktop-payments-table" style={{ overflowX: 'hidden' }}>
+              <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
+                <thead>
+                  <tr>
+                    <th style={{ padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}>Date</th>
+                    <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Description</th>
+                    <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Student Candidate</th>
+                    <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Amount</th>
+                    <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Status</th>
+                    <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Transaction Ref</th>
+                    <th style={{ padding: '0.85rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPaidStudents.map((std, idx) => {
+                    const txnId = std.feePaymentRef || `TXN-${(100000 + idx * 847 + 291).toString()}`;
+                    const payDate = new Date(std.feePaymentDate || std.updatedAt || Date.now()).toLocaleDateString('en-GB', {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric'
+                    });
 
-                  return (
-                    <tr key={std._id}>
-                      {/* Date */}
-                      <td style={{ padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ fontSize: '0.84rem', fontWeight: 500, color: '#1E293B' }}>
-                          {payDate}
-                        </div>
-                      </td>
+                    return (
+                      <tr key={std._id}>
+                        {/* Date */}
+                        <td style={{ padding: '0.85rem 1.25rem', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: '0.84rem', fontWeight: 500, color: '#1E293B' }}>
+                            {payDate}
+                          </div>
+                        </td>
 
-                      {/* Description */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ fontSize: '0.84rem', fontWeight: 600, color: '#0F172A' }}>
-                          Registration Fee
-                        </div>
-                        <div style={{ fontSize: '0.725rem', color: '#64748B' }}>
-                          Entrance assessment
-                        </div>
-                      </td>
+                        {/* Description */}
+                        <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: '0.84rem', fontWeight: 600, color: '#0F172A' }}>
+                            Registration Fee
+                          </div>
+                          <div style={{ fontSize: '0.725rem', color: '#64748B' }}>
+                            Entrance assessment
+                          </div>
+                        </td>
 
-                      {/* Student Info */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ fontWeight: 600, color: '#0F172A', fontSize: '0.84rem' }}>
+                        {/* Student Info */}
+                        <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontWeight: 600, color: '#0F172A', fontSize: '0.84rem' }}>
+                            {std.name}
+                          </div>
+                          <div style={{ fontSize: '0.725rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                            <span>{std.applyingGrade}</span>
+                            <span>•</span>
+                            <span>#{std.applicationNumber || 'APP-2026-001'}</span>
+                          </div>
+                        </td>
+
+                        {/* Amount */}
+                        <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
+                            ₹500
+                          </div>
+                        </td>
+
+                        {/* Status */}
+                        <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                          <span
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              fontSize: '0.75rem',
+                              fontWeight: 600,
+                              color: '#0F766E',
+                              backgroundColor: '#CCFBF1',
+                              padding: '0.2rem 0.55rem',
+                              borderRadius: '4px'
+                            }}
+                          >
+                            <CheckIcon size={11} />
+                            <span>Paid</span>
+                          </span>
+                        </td>
+
+                        {/* Transaction ID Pill */}
+                        <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                          <button
+                            type="button"
+                            onClick={() => copyToClipboard(txnId, std._id)}
+                            title="Click to copy Transaction Ref"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              fontFamily: 'ui-monospace, monospace',
+                              fontSize: '0.75rem',
+                              color: copiedId === std._id ? '#0D9488' : '#475569',
+                              backgroundColor: copiedId === std._id ? '#F0FDFA' : '#F8FAFC',
+                              padding: '0.2rem 0.45rem',
+                              borderRadius: '4px',
+                              border: `1px solid ${copiedId === std._id ? '#99F6E4' : '#E2E8F0'}`,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            <span>{txnId}</span>
+                            {copiedId === std._id ? (
+                              <CheckIcon size={11} color="#0D9488" />
+                            ) : (
+                              <CopyIcon size={11} color="#94A3B8" />
+                            )}
+                          </button>
+                        </td>
+
+                        {/* Actions */}
+                        <td style={{ padding: '0.85rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedReceiptStudent(std)}
+                            className="btn btn-secondary btn-sm"
+                            style={{
+                              gap: '0.35rem',
+                              padding: '0.3rem 0.65rem',
+                              fontSize: '0.775rem',
+                              fontWeight: 500
+                            }}
+                          >
+                            <ReceiptIcon size={13} color="#0D9488" />
+                            <span>View Receipt</span>
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* MOBILE CARDS VIEW */}
+            <div className="mobile-payments-cards">
+              {filteredPaidStudents.map((std, idx) => {
+                const txnId = std.feePaymentRef || `TXN-${(100000 + idx * 847 + 291).toString()}`;
+                const payDate = new Date(std.feePaymentDate || std.updatedAt || Date.now()).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                });
+
+                return (
+                  <div key={std._id} className="mobile-payment-card">
+                    <div className="mobile-payment-header">
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#0F172A', fontSize: '0.925rem' }}>
                           {std.name}
                         </div>
-                        <div style={{ fontSize: '0.725rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                          <span>{std.applyingGrade}</span>
-                          <span>•</span>
-                          <span>#{std.applicationNumber || 'APP-2026-001'}</span>
+                        <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                          #{std.applicationNumber || 'APP-2026-001'} &bull; <strong style={{ color: '#0D9488' }}>{std.applyingGrade}</strong>
                         </div>
-                      </td>
+                      </div>
 
-                      {/* Amount */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F172A' }}>
-                          ₹500
-                        </div>
-                      </td>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          color: '#0F766E',
+                          backgroundColor: '#CCFBF1',
+                          padding: '0.2rem 0.55rem',
+                          borderRadius: '4px'
+                        }}
+                      >
+                        <CheckIcon size={11} />
+                        <span>Paid ₹500</span>
+                      </span>
+                    </div>
 
-                      {/* Status */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                            fontSize: '0.75rem',
-                            fontWeight: 600,
-                            color: '#0F766E',
-                            backgroundColor: '#CCFBF1',
-                            padding: '0.2rem 0.55rem',
-                            borderRadius: '4px'
-                          }}
-                        >
-                          <CheckIcon size={11} />
-                          <span>Paid</span>
-                        </span>
-                      </td>
+                    <div className="mobile-payment-body">
+                      <div>
+                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Payment Date</div>
+                        <div style={{ fontWeight: 600, color: '#1E293B' }}>{payDate}</div>
+                        <div style={{ fontSize: '0.7rem', color: '#64748B' }}>Registration Fee</div>
+                      </div>
 
-                      {/* Transaction ID Pill */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                      <div>
+                        <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Transaction Ref</div>
                         <button
                           type="button"
                           onClick={() => copyToClipboard(txnId, std._id)}
-                          title="Click to copy Transaction Ref"
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '0.3rem',
+                            gap: '0.25rem',
                             fontFamily: 'ui-monospace, monospace',
-                            fontSize: '0.75rem',
+                            fontSize: '0.725rem',
                             color: copiedId === std._id ? '#0D9488' : '#475569',
-                            backgroundColor: copiedId === std._id ? '#F0FDFA' : '#F8FAFC',
-                            padding: '0.2rem 0.45rem',
+                            backgroundColor: copiedId === std._id ? '#F0FDFA' : '#F1F5F9',
+                            padding: '0.2rem 0.4rem',
                             borderRadius: '4px',
-                            border: `1px solid ${copiedId === std._id ? '#99F6E4' : '#E2E8F0'}`,
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease'
+                            border: '1px solid #E2E8F0',
+                            cursor: 'pointer'
                           }}
                         >
-                          <span>{txnId}</span>
+                          <span>{txnId.length > 12 ? `${txnId.slice(0, 10)}...` : txnId}</span>
                           {copiedId === std._id ? (
-                            <CheckIcon size={11} color="#0D9488" />
+                            <CheckIcon size={10} color="#0D9488" />
                           ) : (
-                            <CopyIcon size={11} color="#94A3B8" />
+                            <CopyIcon size={10} color="#94A3B8" />
                           )}
                         </button>
-                      </td>
+                      </div>
+                    </div>
 
-                      {/* Actions */}
-                      <td style={{ padding: '0.85rem 1.25rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedReceiptStudent(std)}
-                          className="btn btn-secondary btn-sm"
-                          style={{
-                            gap: '0.35rem',
-                            padding: '0.3rem 0.65rem',
-                            fontSize: '0.775rem',
-                            fontWeight: 500
-                          }}
-                        >
-                          <ReceiptIcon size={13} color="#0D9488" />
-                          <span>View Receipt</span>
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                    <div className="mobile-payment-actions">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedReceiptStudent(std)}
+                        className="btn btn-secondary btn-sm"
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                      >
+                        <ReceiptIcon size={13} color="#0D9488" />
+                        <span>View Official Receipt</span>
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 

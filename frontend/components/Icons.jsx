@@ -2,45 +2,60 @@
 
 import React from 'react';
 
-// EduFlow Brand Logo with modern professional educational emblem
-export const EduFlowLogo = ({ size = 36, showText = true, className = '' }) => (
-  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }} className={className}>
-    <svg width={size} height={size} viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, display: 'block' }}>
-      <defs>
-        <linearGradient id="efGrad1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0F766E" />
-          <stop offset="1" stopColor="#0D9488" />
-        </linearGradient>
-        <linearGradient id="efGradAccent" x1="8" y1="8" x2="28" y2="28" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#5EEAD4" />
-          <stop offset="1" stopColor="#FFFFFF" />
-        </linearGradient>
-      </defs>
-      {/* Background container with rounded corners */}
-      <rect width="36" height="36" rx="9" fill="url(#efGrad1)" />
-      
-      {/* Graduation Cap / Academic Diamond */}
-      <path d="M18 8.5L29 14.5L18 20.5L7 14.5L18 8.5Z" fill="#FFFFFF" />
-      
-      {/* Modern Flow / Pages Ribbon below Cap */}
-      <path d="M11 17V22.5C11 25.2 14.1 27.5 18 27.5C21.9 27.5 25 25.2 25 22.5V17L18 21L11 17Z" fill="url(#efGradAccent)" fillOpacity="0.92" />
-      
-      {/* Tassel & Achievement Accent */}
-      <circle cx="28" cy="18" r="2" fill="#FBBF24" />
-      <path d="M28 14.5V18" stroke="#FBBF24" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-    {showText && (
-      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <span style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.025em', lineHeight: 1.1, margin: 0 }}>
-          EDUFLOW
-        </span>
-        <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#64748B', letterSpacing: '0.06em', textTransform: 'uppercase', lineHeight: 1.1, marginTop: '0.2rem' }}>
-          School Admission Platform
-        </span>
-      </div>
-    )}
-  </div>
-);
+// EduFlow Brand Logo matching exact educational emblem
+export const EduFlowLogo = ({ size = 36, showText = true, className = '' }) => {
+  const iconSize = typeof size === 'number' ? size : parseInt(size) || 36;
+  return (
+    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.75rem' }} className={className}>
+      <svg
+        width={iconSize}
+        height={iconSize}
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        style={{ minWidth: iconSize, minHeight: iconSize, width: iconSize, height: iconSize, flexShrink: 0, display: 'block' }}
+      >
+        {/* Background rounded teal container */}
+        <rect width="36" height="36" rx="9" fill="#0F9D8A" />
+        
+        {/* White Academic Mortarboard Diamond */}
+        <path d="M18 8.5L29.5 14.5L18 20.5L6.5 14.5L18 8.5Z" fill="#FFFFFF" />
+        
+        {/* Soft Mint Under-Cap Ribbon / Skullcap */}
+        <path d="M11 17.5V22.5C11 25.2 14.1 27.5 18 27.5C21.9 27.5 25 25.2 25 22.5V17.5L18 21.5L11 17.5Z" fill="#99F6E4" />
+        
+        {/* Golden-Yellow Tassel */}
+        <circle cx="28.5" cy="18" r="2.2" fill="#FBBF24" />
+        <path d="M28.5 14.5V18" stroke="#FBBF24" strokeWidth="1.75" strokeLinecap="round" />
+      </svg>
+      {showText && (
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left' }}>
+          <span style={{
+            fontSize: `${Math.max(1, iconSize * 0.028)}rem`,
+            fontWeight: 800,
+            color: '#0F172A',
+            letterSpacing: '-0.025em',
+            lineHeight: 1.15,
+            margin: 0
+          }}>
+            EDUFLOW
+          </span>
+          <span style={{
+            fontSize: '0.625rem',
+            fontWeight: 700,
+            color: '#64748B',
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            lineHeight: 1.15,
+            marginTop: '0.15rem'
+          }}>
+            SCHOOL ADMISSION PLATFORM
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const DashboardIcon = ({ size = 18, color = 'currentColor' }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">

@@ -17,6 +17,7 @@ import StudentForm from '../../../../components/StudentForm';
 import Loading from '../../../../components/Loading';
 import {
   ArrowLeftIcon,
+  ArrowRightIcon,
   LockIcon,
   CalendarIcon,
   ClockIcon,
@@ -106,11 +107,17 @@ export default function StudentDetailPage() {
     }
   };
 
+  const [bookingSuccessModal, setBookingSuccessModal] = useState(false);
+  const [bookedSlotInfo, setBookedSlotInfo] = useState(null);
+
   const handleBookSlot = async (slotId) => {
     setActionLoading(true);
     try {
       const res = await bookExamSlot(id, slotId);
       setStudent(res);
+      const chosenSlot = slots.find(s => (s._id || s.id) === slotId) || res.examSlot;
+      setBookedSlotInfo(chosenSlot);
+      setBookingSuccessModal(true);
       showToast('Entrance exam slot booked successfully!', 'success');
     } catch (err) {
       showToast(err.message || 'Unable to book exam slot.', 'error');
@@ -149,19 +156,19 @@ export default function StudentDetailPage() {
         return {
           label: 'STAGE 1 OF 5',
           description: 'Student application has been created and verified.',
-          nextStep: 'Complete registration fee payment to unlock exam slot booking.'
+          nextStep: 'Complete registration fee payment (₹500) to unlock exam slot booking.'
         };
       case 'REGISTRATION_FEE_PAID':
         return {
           label: 'STAGE 2 OF 5',
           description: 'Registration fee is confirmed. Student details are locked.',
-          nextStep: 'Select and book an available entrance exam session.'
+          nextStep: 'Select and book an available entrance exam session below.'
         };
       case 'SLOT_BOOKED':
         return {
           label: 'STAGE 3 OF 5',
           description: 'Entrance exam date and session time reserved.',
-          nextStep: 'Attend the examination. Score will be recorded after evaluation.'
+          nextStep: 'Attend the examination on campus. Score will be recorded after evaluation.'
         };
       case 'EXAM_COMPLETED':
         return {
@@ -188,6 +195,169 @@ export default function StudentDetailPage() {
 
   return (
     <div style={{ maxWidth: '980px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        /* Desktop Journey Stepper */
+        .journey-desktop-stepper {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          position: relative;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+        }
+        .journey-track-bg {
+          position: absolute;
+          top: 18px;
+          left: 10%;
+          right: 10%;
+          height: 3px;
+          background: #E2E8F0;
+          z-index: 1;
+        }
+        .journey-track-active {
+          position: absolute;
+          top: 18px;
+          left: 10%;
+          height: 3px;
+          background: #0D9488;
+          z-index: 2;
+          transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .journey-node-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          position: relative;
+          z-index: 3;
+        }
+        .journey-node-dot {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.825rem;
+          font-weight: 700;
+          background: #FFFFFF;
+          border: 2px solid #CBD5E1;
+          color: #64748B;
+          margin-bottom: 0.5rem;
+          transition: all 0.2s ease;
+        }
+        .journey-node-dot.completed {
+          background: #0D9488;
+          border-color: #0D9488;
+          color: #FFFFFF;
+          box-shadow: 0 2px 6px rgba(13, 148, 136, 0.25);
+        }
+        .journey-node-dot.current {
+          background: #F0FDFA;
+          border-color: #0D9488;
+          color: #0D9488;
+          box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.15);
+        }
+        .journey-node-title {
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: #64748B;
+          line-height: 1.3;
+        }
+        .journey-node-title.completed {
+          color: #0F172A;
+          font-weight: 600;
+        }
+        .journey-node-title.current {
+          color: #0D9488;
+          font-weight: 700;
+        }
+
+        /* Mobile Journey Vertical Timeline */
+        .journey-mobile-timeline {
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .journey-desktop-stepper {
+            display: none;
+          }
+          .journey-mobile-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            padding-left: 0.5rem;
+          }
+          .mobile-timeline-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            position: relative;
+            padding-bottom: 1.25rem;
+          }
+          .mobile-timeline-step:last-child {
+            padding-bottom: 0;
+          }
+          .mobile-step-track-line {
+            position: absolute;
+            left: 15px;
+            top: 32px;
+            bottom: 0;
+            width: 2px;
+            background: #E2E8F0;
+            z-index: 1;
+          }
+          .mobile-step-track-line.active {
+            background: #0D9488;
+          }
+          .mobile-step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.775rem;
+            font-weight: 700;
+            background: #FFFFFF;
+            border: 2px solid #CBD5E1;
+            color: #64748B;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+          }
+          .mobile-step-icon.completed {
+            background: #0D9488;
+            border-color: #0D9488;
+            color: #FFFFFF;
+          }
+          .mobile-step-icon.current {
+            background: #F0FDFA;
+            border-color: #0D9488;
+            color: #0D9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+          }
+          .mobile-step-content {
+            flex: 1;
+            padding-top: 3px;
+          }
+          .mobile-step-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+          .mobile-step-subtitle {
+            font-size: 0.775rem;
+            color: #64748B;
+            margin-top: 2px;
+            line-height: 1.4;
+          }
+        }
+      `}</style>
+
       {/* 1. Back Navigation */}
       <div style={{ marginBottom: '1.25rem' }}>
         <Link
@@ -272,152 +442,49 @@ export default function StudentDetailPage() {
         style={{
           background: '#FFFFFF',
           border: '1px solid #E2E8F0',
-          borderRadius: '10px',
+          borderRadius: '12px',
           padding: '1.5rem',
-          marginBottom: '1.5rem'
+          marginBottom: '1.5rem',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
         }}
       >
         <div
           style={{
-            fontSize: '0.75rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            fontWeight: 700,
-            color: '#64748B',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             marginBottom: '1.5rem'
           }}
         >
-          ADMISSION JOURNEY
+          <div
+            style={{
+              fontSize: '0.75rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.06em',
+              fontWeight: 700,
+              color: '#475569'
+            }}
+          >
+            ADMISSION JOURNEY
+          </div>
+          <span style={{
+            fontSize: '0.725rem',
+            fontWeight: 700,
+            padding: '0.2rem 0.65rem',
+            borderRadius: '9999px',
+            backgroundColor: '#E8F8F5',
+            color: '#0F9D8A',
+            border: '1px solid #CCFBF1'
+          }}>
+            {stageMeta.label}
+          </span>
         </div>
 
-        {/* Desktop / Responsive Horizontal Stepper */}
-        <div className="journey-stepper-container">
-          <style>{`
-            .journey-stepper-container {
-              display: grid;
-              grid-template-columns: repeat(5, 1fr);
-              position: relative;
-              gap: 0.5rem;
-              margin-bottom: 1.5rem;
-            }
-            .journey-line-bg {
-              position: absolute;
-              top: 16px;
-              left: 10%;
-              right: 10%;
-              height: 2px;
-              background: #E2E8F0;
-              z-index: 1;
-            }
-            .journey-line-active {
-              position: absolute;
-              top: 16px;
-              left: 10%;
-              height: 2px;
-              background: #0F9D8A;
-              z-index: 2;
-              transition: width 0.25s ease;
-            }
-            .journey-node {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              text-align: center;
-              position: relative;
-              z-index: 3;
-            }
-            .journey-badge {
-              width: 32px;
-              height: 32px;
-              border-radius: 50%;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              text-align: center;
-              font-size: 0.8125rem;
-              font-weight: 700;
-              line-height: 1;
-              margin: 0 auto 0.5rem auto;
-              padding: 0;
-              box-sizing: border-box;
-              background: #FFFFFF;
-              border: 1.5px solid #E2E8F0;
-              color: #94A3B8;
-              transition: all 0.15s ease;
-              position: relative;
-              z-index: 3;
-            }
-            .journey-badge span {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              line-height: 1;
-              width: 100%;
-              height: 100%;
-              text-align: center;
-              margin: 0;
-              padding: 0;
-            }
-            .journey-badge.completed {
-              background: #0F9D8A;
-              border-color: #0F9D8A;
-              color: #FFFFFF;
-            }
-            .journey-badge.current {
-              background: #F0FDFA;
-              border-color: #0F9D8A;
-              color: #0F9D8A;
-              box-shadow: 0 0 0 3px rgba(15, 157, 138, 0.15);
-            }
-            .journey-badge.upcoming {
-              background: #F8FAFC;
-              border-color: #E2E8F0;
-              color: #94A3B8;
-            }
-            .journey-text {
-              font-size: 0.8125rem;
-              font-weight: 500;
-              color: #64748B;
-              line-height: 1.25;
-            }
-            .journey-text.completed {
-              color: #1E293B;
-              font-weight: 600;
-            }
-            .journey-text.current {
-              color: #0F9D8A;
-              font-weight: 700;
-            }
-            .journey-text.upcoming {
-              color: #94A3B8;
-            }
-            @media (max-width: 680px) {
-              .journey-stepper-container {
-                display: flex;
-                flex-direction: column;
-                gap: 0.85rem;
-                align-items: flex-start;
-              }
-              .journey-line-bg, .journey-line-active {
-                display: none;
-              }
-              .journey-node {
-                flex-direction: row;
-                text-align: left;
-                gap: 0.75rem;
-              }
-              .journey-badge {
-                margin-bottom: 0;
-                width: 28px;
-                height: 28px;
-                font-size: 0.75rem;
-              }
-            }
-          `}</style>
-
-          <div className="journey-line-bg" />
+        {/* Desktop Horizontal Stepper */}
+        <div className="journey-desktop-stepper">
+          <div className="journey-track-bg" />
           <div
-            className="journey-line-active"
+            className="journey-track-active"
             style={{
               width: `${Math.min(80, Math.max(0, ((currentStageIndex - 1) / (JOURNEY_STAGES.length - 1)) * 80))}%`
             }}
@@ -429,21 +496,21 @@ export default function StudentDetailPage() {
             const isUpcoming = st.step > currentStageIndex;
 
             return (
-              <div key={st.key} className="journey-node">
+              <div key={st.key} className="journey-node-item">
                 <div
-                  className={`journey-badge ${
-                    isCompleted ? 'completed' : isCurrent ? 'current' : 'upcoming'
+                  className={`journey-node-dot ${
+                    isCompleted ? 'completed' : isCurrent ? 'current' : ''
                   }`}
                 >
                   {isCompleted ? (
-                    <CheckIcon size={14} color="#FFFFFF" />
+                    <CheckIcon size={16} color="#FFFFFF" strokeWidth={3} />
                   ) : (
                     <span>{st.step}</span>
                   )}
                 </div>
                 <div
-                  className={`journey-text ${
-                    isCompleted ? 'completed' : isCurrent ? 'current' : 'upcoming'
+                  className={`journey-node-title ${
+                    isCompleted ? 'completed' : isCurrent ? 'current' : ''
                   }`}
                 >
                   {st.title}
@@ -453,38 +520,106 @@ export default function StudentDetailPage() {
           })}
         </div>
 
-        {/* Stage Information Banner */}
+        {/* Mobile Vertical Connected Timeline */}
+        <div className="journey-mobile-timeline">
+          {JOURNEY_STAGES.map((st, idx) => {
+            const isCompleted = st.step < currentStageIndex;
+            const isCurrent = st.step === currentStageIndex;
+            const hasNext = idx < JOURNEY_STAGES.length - 1;
+
+            let stepDetailText = '';
+            if (st.step === 1) {
+              stepDetailText = 'Application registered & verified';
+            } else if (st.step === 2) {
+              stepDetailText = isCompleted
+                ? '✓ Fee of ₹500 confirmed via Online Payment'
+                : 'Registration fee (₹500) required';
+            } else if (st.step === 3) {
+              stepDetailText = student.examSlot
+                ? `📅 ${student.examSlot.date} at ${student.examSlot.time}`
+                : isCompleted
+                ? 'Entrance exam scheduled'
+                : 'On-campus assessment date selection';
+            } else if (st.step === 4) {
+              stepDetailText = student.examScore != null
+                ? `🎯 Score: ${student.examScore}/100 confirmed`
+                : isCompleted
+                ? 'Exam evaluated'
+                : 'Faculty test review & grading';
+            } else if (st.step === 5) {
+              stepDetailText = student.status === 'ADMISSION_COMPLETED'
+                ? `🎉 Formally Admitted into ${student.assignedCourse || student.applyingGrade}`
+                : 'Final enrollment and course confirmation';
+            }
+
+            return (
+              <div key={st.key} className="mobile-timeline-step">
+                {hasNext && (
+                  <div className={`mobile-step-track-line ${isCompleted ? 'active' : ''}`} />
+                )}
+
+                <div className={`mobile-step-icon ${isCompleted ? 'completed' : isCurrent ? 'current' : ''}`}>
+                  {isCompleted ? (
+                    <CheckIcon size={14} color="#FFFFFF" strokeWidth={3} />
+                  ) : (
+                    <span>{st.step}</span>
+                  )}
+                </div>
+
+                <div className="mobile-step-content">
+                  <div className="mobile-step-title">
+                    <span style={{ color: isCurrent ? '#0D9488' : isCompleted ? '#0F172A' : '#64748B' }}>
+                      {st.title}
+                    </span>
+                    {isCurrent && (
+                      <span style={{
+                        fontSize: '0.675rem',
+                        fontWeight: 700,
+                        padding: '1px 6px',
+                        borderRadius: '4px',
+                        backgroundColor: '#E8F8F5',
+                        color: '#0F9D8A'
+                      }}>
+                        Active Stage
+                      </span>
+                    )}
+                  </div>
+                  <div className="mobile-step-subtitle">
+                    {stepDetailText}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Stage Guidance Callout Card */}
         <div
           style={{
             background: '#F8FAFC',
             border: '1px solid #E2E8F0',
-            borderRadius: '8px',
-            padding: '0.85rem 1.15rem',
+            borderRadius: '10px',
+            padding: '1rem 1.25rem',
+            marginTop: '1.25rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '0.3rem'
+            gap: '0.35rem'
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span
-              style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-                color: '#0F9D8A',
-                background: '#E8F8F5',
-                padding: '2px 8px',
-                borderRadius: '4px'
-              }}
-            >
-              {stageMeta.label}
-            </span>
-            <span style={{ fontSize: '0.85rem', color: '#1E293B', fontWeight: 600 }}>
+            <div style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: '#0D9488',
+              boxShadow: '0 0 0 3px rgba(13, 148, 136, 0.2)'
+            }} />
+            <span style={{ fontSize: '0.875rem', color: '#0F172A', fontWeight: 700 }}>
               {stageMeta.description}
             </span>
           </div>
-          <div style={{ fontSize: '0.8125rem', color: '#64748B', lineHeight: 1.4 }}>
-            <strong style={{ color: '#334155' }}>Next Step:</strong> {stageMeta.nextStep}
+          <div style={{ fontSize: '0.8125rem', color: '#475569', lineHeight: 1.45, paddingLeft: '1rem' }}>
+            <strong style={{ color: '#0F766E' }}>Next Step:</strong> {stageMeta.nextStep}
           </div>
         </div>
       </div>
@@ -897,6 +1032,113 @@ export default function StudentDetailPage() {
             onBookSlot={handleBookSlot}
             isLoading={actionLoading}
           />
+        </div>
+      )}
+
+      {/* 7. Decent Standard Exam Slot Booking Confirmation Modal */}
+      {bookingSuccessModal && (
+        <div className="modal-overlay" style={{ zIndex: 99999 }}>
+          <div className="modal-card" style={{ maxWidth: '480px', padding: '2rem 1.75rem', textAlign: 'center' }}>
+            {/* Animated Checkmark Circle */}
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              backgroundColor: '#ECFDF5',
+              border: '2px solid #A7F3D0',
+              color: '#059669',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.25rem auto',
+              boxShadow: '0 0 0 8px rgba(16, 185, 129, 0.12)'
+            }}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', margin: '0 0 0.4rem 0', letterSpacing: '-0.02em' }}>
+              Exam Slot Confirmed!
+            </h3>
+            <p style={{ fontSize: '0.875rem', color: '#64748B', margin: '0 0 1.5rem 0', lineHeight: 1.5 }}>
+              Your entrance examination session has been officially reserved on record.
+            </p>
+
+            {/* Ticket Box */}
+            <div style={{
+              background: '#F8FAFC',
+              border: '1.5px dashed #CBD5E1',
+              borderRadius: '12px',
+              padding: '1.25rem',
+              textAlign: 'left',
+              marginBottom: '1.25rem'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Candidate</div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0F172A' }}>{student?.name}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Grade</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0D9488' }}>{student?.applyingGrade}</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Exam Date</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                    <CalendarIcon size={14} color="#0D9488" />
+                    <span>{bookedSlotInfo?.date || student?.examSlot?.date || 'Confirmed'}</span>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Session Time</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '2px' }}>
+                    <ClockIcon size={14} color="#0D9488" />
+                    <span>{bookedSlotInfo?.time || student?.examSlot?.time || '10:00 AM'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.775rem', color: '#475569' }}>
+                <MapPinIcon size={14} color="#0D9488" />
+                <span>Venue: <strong>{bookedSlotInfo?.location || student?.examSlot?.location || 'Main Campus, Examination Center'}</strong></span>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div style={{
+              backgroundColor: '#EFF6FF',
+              border: '1px solid #DBEAFE',
+              borderRadius: '8px',
+              padding: '0.75rem 0.95rem',
+              fontSize: '0.775rem',
+              color: '#1E40AF',
+              textAlign: 'left',
+              marginBottom: '1.5rem',
+              display: 'flex',
+              gap: '0.5rem',
+              alignItems: 'flex-start'
+            }}>
+              <span style={{ fontSize: '1rem', lineHeight: 1 }}>📌</span>
+              <span>Please report 15 minutes before the session with valid student ID proof and writing stationery.</span>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => setBookingSuccessModal(false)}
+                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', justifyContent: 'center' }}
+              >
+                <span>Done & View Journey</span>
+                <ArrowRightIcon size={14} />
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

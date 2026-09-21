@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CalendarIcon, CheckIcon, ArrowRightIcon } from './Icons';
 
 const GRADES = [
@@ -30,7 +30,6 @@ export default function StudentForm({
   isEdit = false,
   serverErrors = {}
 }) {
-  const datePickerRef = useRef(null);
   const [formData, setFormData] = useState({
     name: initialData.studentName || initialData.name || '',
     dob: initialData.dateOfBirth ? initialData.dateOfBirth.split('T')[0] : (initialData.dob || ''),
@@ -41,21 +40,6 @@ export default function StudentForm({
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-
-  const handleOpenCalendar = (e) => {
-    e.preventDefault();
-    if (datePickerRef.current) {
-      try {
-        if (typeof datePickerRef.current.showPicker === 'function') {
-          datePickerRef.current.showPicker();
-        } else {
-          datePickerRef.current.focus();
-        }
-      } catch (err) {
-        datePickerRef.current.focus();
-      }
-    }
-  };
 
   // Sync server validation errors if passed
   useEffect(() => {
@@ -269,7 +253,7 @@ export default function StudentForm({
 
         {/* 2-Column: Date of Birth (Manual + Picker) & Gender */}
         <div className="form-grid">
-          {/* Date of Birth with Pro Styling */}
+          {/* Date of Birth with Clean Modern Calendar Picker */}
           <div className="form-group">
             <label className="form-label" htmlFor="student-dob-input">
               <span>
@@ -290,77 +274,32 @@ export default function StudentForm({
               )}
             </label>
 
-            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            <div style={{ position: 'relative' }}>
               <input
                 id="student-dob-input"
                 name="dob"
-                type="text"
-                className={`form-control ${errors.dob ? 'is-invalid' : ''}`}
-                placeholder="YYYY-MM-DD (e.g. 2018-05-14)"
-                value={formData.dob}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                disabled={isLoading}
-                style={{
-                  paddingLeft: '14px',
-                  paddingRight: '42px',
-                  fontSize: '0.9rem',
-                  fontWeight: 500,
-                  letterSpacing: '0.01em'
-                }}
-              />
-
-              {/* Native Datepicker Picker Trigger Button */}
-              <button
-                type="button"
-                onClick={handleOpenCalendar}
-                title="Open calendar picker"
-                style={{
-                  position: 'absolute',
-                  right: '8px',
-                  cursor: 'pointer',
-                  padding: '6px 8px',
-                  borderRadius: '6px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#F1F5F9',
-                  color: '#475569',
-                  border: 'none',
-                  transition: 'all 0.15s ease'
-                }}
-              >
-                <CalendarIcon size={15} color="#0D9488" />
-              </button>
-
-              {/* Native date input connected to ref for programmatic showPicker() */}
-              <input
-                ref={datePickerRef}
-                id="hidden-native-dob-picker"
                 type="date"
                 max={todayStr}
                 min={minDateStr}
+                className={`form-control ${errors.dob ? 'is-invalid' : ''}`}
                 value={parseDobToIso(formData.dob) || ''}
                 onChange={(e) => {
-                  if (e.target.value) {
-                    setFormData(prev => ({ ...prev, dob: e.target.value }));
-                    if (touched.dob || errors.dob) {
-                      setErrors(prev => ({ ...prev, dob: '' }));
-                    }
+                  const val = e.target.value;
+                  setFormData(prev => ({ ...prev, dob: val }));
+                  if (touched.dob || errors.dob) {
+                    setErrors(prev => ({ ...prev, dob: validateField('dob', val) }));
                   }
                 }}
-                tabIndex={-1}
-                aria-hidden="true"
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, dob: true }));
+                  setErrors(prev => ({ ...prev, dob: validateField('dob', formData.dob) }));
+                }}
+                disabled={isLoading}
                 style={{
-                  position: 'absolute',
-                  right: '12px',
-                  bottom: '10px',
-                  width: '1px',
-                  height: '1px',
-                  opacity: 0,
-                  border: 'none',
-                  padding: 0,
-                  margin: 0
+                  fontSize: '0.9rem',
+                  fontWeight: 500,
+                  height: '44px',
+                  cursor: 'pointer'
                 }}
               />
             </div>
@@ -394,7 +333,7 @@ export default function StudentForm({
               </div>
             ) : (
               <div className="form-hint" style={{ marginTop: '0.35rem', fontSize: '0.78rem', color: '#64748B' }}>
-                Enter date as <strong>YYYY-MM-DD</strong> or pick using the calendar icon.
+                Select child&apos;s date of birth using the calendar picker.
               </div>
             )}
           </div>

@@ -86,15 +86,170 @@ export default function UnifiedStudentApplicationsPage() {
 
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        .students-page-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 1rem;
+          margin-bottom: 1.75rem;
+        }
+        .students-metrics-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1rem;
+          margin-bottom: 1.75rem;
+        }
+        .metric-card {
+          background: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          border-radius: 10px;
+          padding: 1.15rem 1.25rem;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .students-filter-card {
+          background: #FFFFFF;
+          border: 1px solid #E2E8F0;
+          border-radius: 10px;
+          padding: 1rem 1.25rem;
+          margin-bottom: 1.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+        .students-filter-tabs {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .students-filter-controls {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+        .desktop-student-table {
+          display: block;
+        }
+        .mobile-student-cards {
+          display: none;
+        }
+
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .students-page-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+          }
+          .students-page-header .page-title {
+            font-size: 1.45rem !important;
+          }
+          .students-page-header .page-subtitle {
+            font-size: 0.825rem !important;
+          }
+          .students-page-header .btn-new-app {
+            width: 100%;
+            justify-content: center;
+            padding: 0.7rem 1rem !important;
+            font-size: 0.875rem !important;
+          }
+          .students-metrics-grid {
+            grid-template-columns: 1fr;
+            gap: 0.65rem;
+            margin-bottom: 1.25rem;
+          }
+          .metric-card {
+            padding: 0.9rem 1rem !important;
+          }
+          .students-filter-card {
+            padding: 0.85rem;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+          }
+          .students-filter-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .students-filter-tabs::-webkit-scrollbar {
+            display: none;
+          }
+          .students-filter-tabs button {
+            flex-shrink: 0;
+            white-space: nowrap;
+          }
+          .students-filter-controls {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.65rem;
+          }
+          .students-filter-controls .filter-search-box {
+            width: 100% !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+          }
+          .students-filter-controls .filter-select {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+          .students-filter-controls .btn-reset {
+            width: 100%;
+            justify-content: center;
+          }
+
+          /* Show touch-optimized cards on mobile instead of wide table */
+          .desktop-student-table {
+            display: none !important;
+          }
+          .mobile-student-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.85rem;
+          }
+          .mobile-std-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-std-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-std-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            font-size: 0.775rem;
+            border: 1px solid #F1F5F9;
+          }
+          .mobile-std-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding-top: 0.25rem;
+          }
+        }
+      `}</style>
+
       {/* 1. Page Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        flexWrap: 'wrap',
-        gap: '1rem',
-        marginBottom: '1.75rem'
-      }}>
+      <div className="students-page-header">
         <div>
           <h1 className="page-title" style={{ margin: 0 }}>
             Student Applications
@@ -106,7 +261,7 @@ export default function UnifiedStudentApplicationsPage() {
 
         <Link
           href="/parent/students/create"
-          className="btn btn-primary"
+          className="btn btn-primary btn-new-app"
           style={{ textDecoration: 'none', padding: '0.65rem 1.25rem', borderRadius: '8px' }}
         >
           <PlusIcon size={16} />
@@ -115,19 +270,8 @@ export default function UnifiedStudentApplicationsPage() {
       </div>
 
       {/* 2. Key Metrics Summary Bar */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '1rem',
-        marginBottom: '1.75rem'
-      }}>
-        <div style={{
-          background: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '10px',
-          padding: '1.15rem 1.25rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
-        }}>
+      <div className="students-metrics-grid">
+        <div className="metric-card">
           <span style={{ fontSize: '0.725rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Total Registered
           </span>
@@ -136,13 +280,7 @@ export default function UnifiedStudentApplicationsPage() {
           </div>
         </div>
 
-        <div style={{
-          background: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '10px',
-          padding: '1.15rem 1.25rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
-        }}>
+        <div className="metric-card">
           <span style={{ fontSize: '0.725rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             In Progress
           </span>
@@ -151,13 +289,7 @@ export default function UnifiedStudentApplicationsPage() {
           </div>
         </div>
 
-        <div style={{
-          background: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '10px',
-          padding: '1.15rem 1.25rem',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
-        }}>
+        <div className="metric-card">
           <span style={{ fontSize: '0.725rem', fontWeight: 700, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             Enrolled & Confirmed
           </span>
@@ -168,18 +300,9 @@ export default function UnifiedStudentApplicationsPage() {
       </div>
 
       {/* 3. Filter Toolbar & Tabs */}
-      <div style={{
-        background: '#FFFFFF',
-        border: '1px solid #E2E8F0',
-        borderRadius: '10px',
-        padding: '1rem 1.25rem',
-        marginBottom: '1.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem'
-      }}>
+      <div className="students-filter-card">
         {/* Quick Filter Pill Tabs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div className="students-filter-tabs">
           {[
             { label: 'All Applications', value: 'ALL', count: counts.total },
             { label: 'In Progress', value: 'IN_PROGRESS', count: counts.inProgress },
@@ -225,7 +348,7 @@ export default function UnifiedStudentApplicationsPage() {
         </div>
 
         {/* Search and Grade Filter Line */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+        <div className="students-filter-controls">
           <div className="filter-search-box" style={{ flex: '1 1 300px', margin: 0 }}>
             <SearchIcon size={15} color="#94A3B8" />
             <input
@@ -250,7 +373,7 @@ export default function UnifiedStudentApplicationsPage() {
           {(search || statusTab !== 'ALL' || gradeFilter !== 'ALL') && (
             <button
               type="button"
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary btn-sm btn-reset"
               onClick={() => {
                 setSearch('');
                 setStatusTab('ALL');
@@ -264,7 +387,7 @@ export default function UnifiedStudentApplicationsPage() {
         </div>
       </div>
 
-      {/* 4. Table List */}
+      {/* 4. Applications List (Desktop Table + Mobile Cards) */}
       {loading ? (
         <Loading type="skeleton-table" />
       ) : filteredStudents.length === 0 ? (
@@ -280,219 +403,320 @@ export default function UnifiedStudentApplicationsPage() {
           onAction={students.length > 0 ? () => { setSearch(''); setStatusTab('ALL'); setGradeFilter('ALL'); } : null}
         />
       ) : (
-        <div className="table-container" style={{ overflowX: 'hidden' }}>
-          <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Candidate</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Grade</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Admission Stage</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Exam Session</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Fee Status</th>
-                <th style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredStudents.map((std) => {
-                const stdId = std._id || std.id;
-                const isFeePaid = std.status !== 'APPLICATION_CREATED';
+        <>
+          {/* DESKTOP TABLE VIEW */}
+          <div className="desktop-student-table table-container" style={{ overflowX: 'auto' }}>
+            <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Candidate</th>
+                  <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Grade</th>
+                  <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Admission Stage</th>
+                  <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Exam Session</th>
+                  <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Fee Status</th>
+                  <th style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStudents.map((std) => {
+                  const stdId = std._id || std.id;
+                  const isFeePaid = std.status !== 'APPLICATION_CREATED';
 
-                return (
-                  <tr key={stdId}>
-                    <td style={{ padding: '0.85rem 1rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '8px',
-                          backgroundColor: '#F0FDFA',
-                          border: '1px solid #CCFBF1',
-                          color: '#0D9488',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 700,
-                          fontSize: '0.85rem',
-                          flexShrink: 0
-                        }}>
-                          {getInitials(std.name || std.studentName)}
-                        </div>
-                        <div>
-                          <Link
-                            href={`/parent/students/${stdId}`}
-                            style={{
-                              fontWeight: 700,
-                              color: '#0F172A',
-                              fontSize: '0.875rem',
-                              textDecoration: 'none',
-                              whiteSpace: 'nowrap'
-                            }}
-                            className="hover-text-primary"
-                          >
-                            {std.name || std.studentName}
-                          </Link>
-                          <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem', whiteSpace: 'nowrap' }}>
-                            #{std.applicationNumber || (stdId ? stdId.slice(-6).toUpperCase() : '')}
+                  return (
+                    <tr key={stdId}>
+                      <td style={{ padding: '0.85rem 1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '8px',
+                            backgroundColor: '#F0FDFA',
+                            border: '1px solid #CCFBF1',
+                            color: '#0D9488',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            fontSize: '0.85rem',
+                            flexShrink: 0
+                          }}>
+                            {getInitials(std.name || std.studentName)}
+                          </div>
+                          <div>
+                            <Link
+                              href={`/parent/students/${stdId}`}
+                              style={{
+                                fontWeight: 700,
+                                color: '#0F172A',
+                                fontSize: '0.875rem',
+                                textDecoration: 'none',
+                                whiteSpace: 'nowrap'
+                              }}
+                              className="hover-text-primary"
+                            >
+                              {std.name || std.studentName}
+                            </Link>
+                            <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem', whiteSpace: 'nowrap' }}>
+                              #{std.applicationNumber || (stdId ? stdId.slice(-6).toUpperCase() : '')}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontWeight: 600, color: '#334155', fontSize: '0.8125rem' }}>
-                        {std.applyingGrade}
-                      </span>
-                    </td>
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 600, color: '#334155', fontSize: '0.8125rem' }}>
+                          {std.applyingGrade}
+                        </span>
+                      </td>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <StatusBadge status={std.status} />
-                    </td>
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        <StatusBadge status={std.status} />
+                      </td>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      {std.status === 'ADMISSION_COMPLETED' ? (
-                        <div>
-                          <div style={{
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        {std.status === 'ADMISSION_COMPLETED' ? (
+                          <div>
+                            <div style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.25rem',
+                              color: '#0F766E',
+                              fontWeight: 700,
+                              fontSize: '0.8125rem'
+                            }}>
+                              <CheckIcon size={12} />
+                              <span>Exam Completed</span>
+                            </div>
+                            <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                              {std.examSlot?.date || (std.examScore != null ? `Score: ${std.examScore}/100` : 'Evaluated')}
+                            </div>
+                          </div>
+                        ) : std.status === 'EXAM_COMPLETED' ? (
+                          <div>
+                            <div style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.25rem',
+                              color: '#0D9488',
+                              fontWeight: 700,
+                              fontSize: '0.8125rem'
+                            }}>
+                              <CheckIcon size={12} />
+                              <span>Exam Completed</span>
+                            </div>
+                            <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                              {std.examScore != null ? `Score: ${std.examScore}/100` : (std.examSlot?.date || 'Evaluated')}
+                            </div>
+                          </div>
+                        ) : std.status === 'SLOT_BOOKED' ? (
+                          <div>
+                            <div style={{
+                              fontSize: '0.8125rem',
+                              fontWeight: 600,
+                              color: '#0F172A',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.35rem'
+                            }}>
+                              <CalendarIcon size={12} color="#0D9488" />
+                              <span>{std.examSlot?.date || 'Slot Booked'}</span>
+                            </div>
+                            {std.examSlot?.time && (
+                              <div style={{
+                                fontSize: '0.725rem',
+                                color: '#64748B',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.35rem',
+                                marginTop: '0.1rem'
+                              }}>
+                                <ClockIcon size={11} color="#94A3B8" />
+                                <span>{std.examSlot.time}</span>
+                              </div>
+                            )}
+                          </div>
+                        ) : std.status === 'REGISTRATION_FEE_PAID' ? (
+                          <Link
+                            href="/parent/exam-slots"
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.25rem',
+                              color: '#D97706',
+                              backgroundColor: '#FEF3C7',
+                              padding: '0.2rem 0.55rem',
+                              borderRadius: '4px',
+                              fontSize: '0.75rem',
+                              fontWeight: 700,
+                              textDecoration: 'none'
+                            }}
+                          >
+                            <span>Schedule Slot &rarr;</span>
+                          </Link>
+                        ) : (
+                          <span style={{ color: '#94A3B8', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                            Not Scheduled
+                          </span>
+                        )}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        {isFeePaid ? (
+                          <span style={{
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '0.25rem',
                             color: '#0F766E',
-                            fontWeight: 700,
-                            fontSize: '0.8125rem'
-                          }}>
-                            <CheckIcon size={12} />
-                            <span>Exam Completed</span>
-                          </div>
-                          <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
-                            {std.examSlot?.date || (std.examScore != null ? `Score: ${std.examScore}/100` : 'Evaluated')}
-                          </div>
-                        </div>
-                      ) : std.status === 'EXAM_COMPLETED' ? (
-                        <div>
-                          <div style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                            color: '#0D9488',
-                            fontWeight: 700,
-                            fontSize: '0.8125rem'
-                          }}>
-                            <CheckIcon size={12} />
-                            <span>Exam Completed</span>
-                          </div>
-                          <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
-                            {std.examScore != null ? `Score: ${std.examScore}/100` : (std.examSlot?.date || 'Evaluated')}
-                          </div>
-                        </div>
-                      ) : std.status === 'SLOT_BOOKED' ? (
-                        <div>
-                          <div style={{
-                            fontSize: '0.8125rem',
-                            fontWeight: 600,
-                            color: '#0F172A',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '0.35rem'
-                          }}>
-                            <CalendarIcon size={12} color="#0D9488" />
-                            <span>{std.examSlot?.date || 'Slot Booked'}</span>
-                          </div>
-                          {std.examSlot?.time && (
-                            <div style={{
-                              fontSize: '0.725rem',
-                              color: '#64748B',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '0.35rem',
-                              marginTop: '0.1rem'
-                            }}>
-                              <ClockIcon size={11} color="#94A3B8" />
-                              <span>{std.examSlot.time}</span>
-                            </div>
-                          )}
-                        </div>
-                      ) : std.status === 'REGISTRATION_FEE_PAID' ? (
-                        <Link
-                          href="/parent/exam-slots"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.25rem',
-                            color: '#D97706',
-                            backgroundColor: '#FEF3C7',
+                            backgroundColor: '#CCFBF1',
                             padding: '0.2rem 0.55rem',
                             borderRadius: '4px',
                             fontSize: '0.75rem',
                             fontWeight: 700,
+                            whiteSpace: 'nowrap'
+                          }}>
+                            <CheckIcon size={11} />
+                            <span>Paid</span>
+                          </span>
+                        ) : (
+                          <span style={{
+                            color: '#DC2626',
+                            backgroundColor: '#FEF2F2',
+                            border: '1px solid #FECACA',
+                            padding: '0.2rem 0.55rem',
+                            borderRadius: '6px',
+                            fontSize: '0.75rem',
+                            fontWeight: 700,
+                            whiteSpace: 'nowrap'
+                          }}>
+                            ₹500 Pending
+                          </span>
+                        )}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <Link
+                          href={`/parent/students/${stdId}`}
+                          className="btn btn-secondary btn-sm"
+                          style={{
+                            textDecoration: 'none',
+                            padding: '0.35rem 0.75rem',
+                            fontSize: '0.8rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            whiteSpace: 'nowrap'
+                          }}
+                        >
+                          <span>View Details</span>
+                          <ArrowRightIcon size={12} />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE CARDS VIEW */}
+          <div className="mobile-student-cards">
+            {filteredStudents.map((std) => {
+              const stdId = std._id || std.id;
+              const isFeePaid = std.status !== 'APPLICATION_CREATED';
+
+              return (
+                <div key={stdId} className="mobile-std-card">
+                  <div className="mobile-std-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{
+                        width: '38px',
+                        height: '38px',
+                        borderRadius: '8px',
+                        backgroundColor: '#F0FDFA',
+                        border: '1px solid #CCFBF1',
+                        color: '#0D9488',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        flexShrink: 0
+                      }}>
+                        {getInitials(std.name || std.studentName)}
+                      </div>
+                      <div>
+                        <Link
+                          href={`/parent/students/${stdId}`}
+                          style={{
+                            fontWeight: 700,
+                            color: '#0F172A',
+                            fontSize: '0.925rem',
                             textDecoration: 'none'
                           }}
                         >
-                          <span>Schedule Slot &rarr;</span>
+                          {std.name || std.studentName}
+                        </Link>
+                        <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                          #{std.applicationNumber || (stdId ? stdId.slice(-6).toUpperCase() : '')} &bull; <strong style={{ color: '#334155' }}>{std.applyingGrade}</strong>
+                        </div>
+                      </div>
+                    </div>
+
+                    <StatusBadge status={std.status} />
+                  </div>
+
+                  <div className="mobile-std-body">
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Fee Status</div>
+                      {isFeePaid ? (
+                        <span style={{ color: '#0F766E', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <CheckIcon size={11} /> Paid
+                        </span>
+                      ) : (
+                        <span style={{ color: '#DC2626', fontWeight: 700 }}>₹500 Pending</span>
+                      )}
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Exam Session</div>
+                      {std.status === 'ADMISSION_COMPLETED' || std.status === 'EXAM_COMPLETED' ? (
+                        <span style={{ color: '#0F766E', fontWeight: 600 }}>Completed</span>
+                      ) : std.status === 'SLOT_BOOKED' ? (
+                        <span style={{ color: '#0F172A', fontWeight: 600 }}>{std.examSlot?.date || 'Booked'}</span>
+                      ) : std.status === 'REGISTRATION_FEE_PAID' ? (
+                        <Link href="/parent/exam-slots" style={{ color: '#D97706', fontWeight: 700, textDecoration: 'underline' }}>
+                          Book Slot &rarr;
                         </Link>
                       ) : (
-                        <span style={{ color: '#94A3B8', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
-                          Not Scheduled
-                        </span>
+                        <span style={{ color: '#94A3B8' }}>Not Scheduled</span>
                       )}
-                    </td>
+                    </div>
+                  </div>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      {isFeePaid ? (
-                        <span style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          color: '#0F766E',
-                          backgroundColor: '#CCFBF1',
-                          padding: '0.2rem 0.55rem',
-                          borderRadius: '4px',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          whiteSpace: 'nowrap'
-                        }}>
-                          <CheckIcon size={11} />
-                          <span>Paid</span>
-                        </span>
-                      ) : (
-                        <span style={{
-                          color: '#DC2626',
-                          backgroundColor: '#FEF2F2',
-                          border: '1px solid #FECACA',
-                          padding: '0.2rem 0.55rem',
-                          borderRadius: '6px',
-                          fontSize: '0.75rem',
-                          fontWeight: 700,
-                          whiteSpace: 'nowrap'
-                        }}>
-                          ₹500 Pending
-                        </span>
-                      )}
-                    </td>
-
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <Link
-                        href={`/parent/students/${stdId}`}
-                        className="btn btn-secondary btn-sm"
-                        style={{
-                          textDecoration: 'none',
-                          padding: '0.35rem 0.75rem',
-                          fontSize: '0.8rem',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          whiteSpace: 'nowrap'
-                        }}
-                      >
-                        <span>View Details</span>
-                        <ArrowRightIcon size={12} />
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                  <div className="mobile-std-footer">
+                    <Link
+                      href={`/parent/students/${stdId}`}
+                      className="btn btn-secondary btn-block"
+                      style={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        textDecoration: 'none',
+                        padding: '0.55rem 0.85rem',
+                        fontSize: '0.84rem',
+                        borderRadius: '8px'
+                      }}
+                    >
+                      <span>View Application Details</span>
+                      <ArrowRightIcon size={13} />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );
 }
+

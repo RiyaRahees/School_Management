@@ -120,8 +120,77 @@ export default function AdminExamSlotsPage() {
 
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        .desktop-slots-table {
+          display: block;
+        }
+        .mobile-slots-cards {
+          display: none;
+        }
+
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .slots-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 1rem !important;
+          }
+          .slots-header .btn {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+          .slots-metrics-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .slots-metrics-grid .card {
+            padding: 0.85rem !important;
+          }
+          .slots-metrics-grid .metric-val {
+            font-size: 1.35rem !important;
+          }
+
+          /* Hide desktop table on mobile */
+          .desktop-slots-table {
+            display: none !important;
+          }
+          /* Show mobile touch cards */
+          .mobile-slots-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-slot-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-slot-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-slot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding: 0.65rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border: 1px solid #F1F5F9;
+            text-align: center;
+          }
+        }
+      `}</style>
+
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
+      <div className="slots-header" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '2rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0F9D8A', textTransform: 'uppercase', letterSpacing: '0.06em', backgroundColor: '#E8F8F5', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
@@ -148,7 +217,7 @@ export default function AdminExamSlotsPage() {
       </div>
 
       {/* Metric Summary Cards */}
-      <div style={{
+      <div className="slots-metrics-grid" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
         gap: '1.25rem',
@@ -162,7 +231,7 @@ export default function AdminExamSlotsPage() {
               <CalendarIcon size={15} />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
+          <div className="metric-val" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
             {totalSlots.toString().padStart(2, '0')}
           </div>
           <div style={{ fontSize: '0.75rem', color: '#667085', marginTop: '0.25rem' }}>Active assessment sessions</div>
@@ -176,7 +245,7 @@ export default function AdminExamSlotsPage() {
               <CheckIcon size={15} />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
+          <div className="metric-val" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
             {totalCapacity}
           </div>
           <div style={{ fontSize: '0.75rem', color: '#667085', marginTop: '0.25rem' }}>Across all sessions</div>
@@ -190,7 +259,7 @@ export default function AdminExamSlotsPage() {
               <ClockIcon size={15} color="#F79009" />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
+          <div className="metric-val" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#172033' }}>
             {totalBooked}
           </div>
           <div style={{ fontSize: '0.75rem', color: '#667085', marginTop: '0.25rem' }}>Confirmed exam bookings</div>
@@ -204,14 +273,14 @@ export default function AdminExamSlotsPage() {
               <CheckIcon size={15} />
             </div>
           </div>
-          <div style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F9D8A' }}>
+          <div className="metric-val" style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F9D8A' }}>
             {totalAvailable}
           </div>
           <div style={{ fontSize: '0.75rem', color: '#667085', marginTop: '0.25rem' }}>Seats open for parents</div>
         </div>
       </div>
 
-      {/* Slots List Table */}
+      {/* Slots List Section */}
       {slots.length === 0 ? (
         <EmptyState
           title="No Exam Slots Created Yet"
@@ -220,113 +289,193 @@ export default function AdminExamSlotsPage() {
           onAction={handleOpenModal}
         />
       ) : (
-        <div className="table-container" style={{ overflowX: 'auto', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px' }}>
-          <table className="data-table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Date</th>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Time Session</th>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Seat Capacity</th>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Booked Count</th>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Available Seats</th>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {slots.map((slot) => {
-                const cap = Number(slot.capacity) || 10;
-                const booked = Number(slot.bookedCount) || 0;
-                const available = Math.max(0, cap - booked);
-                const isFull = available <= 0;
+        <>
+          {/* DESKTOP TABLE VIEW */}
+          <div className="desktop-slots-table table-container" style={{ overflowX: 'auto', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px' }}>
+            <table className="data-table" style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0 }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Date</th>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Time Session</th>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Seat Capacity</th>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Booked Count</th>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Available Seats</th>
+                  <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {slots.map((slot) => {
+                  const cap = Number(slot.capacity) || 10;
+                  const booked = Number(slot.bookedCount) || 0;
+                  const available = Math.max(0, cap - booked);
+                  const isFull = available <= 0;
 
-                return (
-                  <tr key={slot._id || slot.id}>
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <div style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '6px',
-                          backgroundColor: '#E8F8F5',
-                          color: '#0F9D8A',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 700,
-                          flexShrink: 0
-                        }}>
-                          <CalendarIcon size={15} />
+                  return (
+                    <tr key={slot._id || slot.id}>
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div style={{
+                            width: '32px',
+                            height: '32px',
+                            borderRadius: '6px',
+                            backgroundColor: '#E8F8F5',
+                            color: '#0F9D8A',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            flexShrink: 0
+                          }}>
+                            <CalendarIcon size={15} />
+                          </div>
+                          <span style={{ fontWeight: 700, color: '#172033', fontSize: '0.875rem', whiteSpace: 'nowrap' }}>
+                            {slot.date}
+                          </span>
                         </div>
-                        <span style={{ fontWeight: 700, color: '#172033', fontSize: '0.875rem', whiteSpace: 'nowrap' }}>
-                          {slot.date}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#475569', fontSize: '0.84rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                          <ClockIcon size={14} color="#667085" />
+                          <span>{slot.time || `${slot.startTime} – ${slot.endTime}`}</span>
+                        </div>
+                      </td>
+
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 600, color: '#172033', fontSize: '0.85rem' }}>
+                          {cap} seats
                         </span>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#475569', fontSize: '0.84rem', fontWeight: 600, whiteSpace: 'nowrap' }}>
-                        <ClockIcon size={14} color="#667085" />
-                        <span>{slot.time || `${slot.startTime} – ${slot.endTime}`}</span>
-                      </div>
-                    </td>
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 600, color: booked > 0 ? '#F79009' : '#667085', fontSize: '0.85rem' }}>
+                          {booked} booked
+                        </span>
+                      </td>
 
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontWeight: 600, color: '#172033', fontSize: '0.85rem' }}>
-                        {cap} seats
-                      </span>
-                    </td>
-
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontWeight: 600, color: booked > 0 ? '#F79009' : '#667085', fontSize: '0.85rem' }}>
-                        {booked} booked
-                      </span>
-                    </td>
-
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <span style={{
-                        fontWeight: 700,
-                        color: isFull ? '#F04438' : '#0F9D8A',
-                        backgroundColor: isFull ? '#FEF3F2' : '#E8F8F5',
-                        padding: '0.2rem 0.55rem',
-                        borderRadius: '4px',
-                        fontSize: '0.8rem',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {available} seats left
-                      </span>
-                    </td>
-
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <span style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.35rem',
-                        fontSize: '0.75rem',
-                        fontWeight: 600,
-                        padding: '0.25rem 0.65rem',
-                        borderRadius: '12px',
-                        backgroundColor: isFull ? '#FEF3F2' : '#ECFDF3',
-                        color: isFull ? '#B42318' : '#027A48',
-                        whiteSpace: 'nowrap'
-                      }}>
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
                         <span style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          backgroundColor: isFull ? '#EF4444' : '#12B76A',
-                          flexShrink: 0
-                        }} />
-                        <span>{isFull ? 'Full' : 'Available'}</span>
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                          fontWeight: 700,
+                          color: isFull ? '#F04438' : '#0F9D8A',
+                          backgroundColor: isFull ? '#FEF3F2' : '#E8F8F5',
+                          padding: '0.2rem 0.55rem',
+                          borderRadius: '4px',
+                          fontSize: '0.8rem',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {available} seats left
+                        </span>
+                      </td>
+
+                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                        <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                          fontSize: '0.75rem',
+                          fontWeight: 600,
+                          padding: '0.25rem 0.65rem',
+                          borderRadius: '12px',
+                          backgroundColor: isFull ? '#FEF3F2' : '#ECFDF3',
+                          color: isFull ? '#B42318' : '#027A48',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          <span style={{
+                            width: '6px',
+                            height: '6px',
+                            borderRadius: '50%',
+                            backgroundColor: isFull ? '#EF4444' : '#12B76A',
+                            flexShrink: 0
+                          }} />
+                          <span>{isFull ? 'Full' : 'Available'}</span>
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE CARDS VIEW */}
+          <div className="mobile-slots-cards">
+            {slots.map((slot) => {
+              const cap = Number(slot.capacity) || 10;
+              const booked = Number(slot.bookedCount) || 0;
+              const available = Math.max(0, cap - booked);
+              const isFull = available <= 0;
+
+              return (
+                <div key={slot._id || slot.id} className="mobile-slot-card">
+                  <div className="mobile-slot-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: '#E8F8F5',
+                        color: '#0F9D8A',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                        flexShrink: 0
+                      }}>
+                        <CalendarIcon size={16} />
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.925rem' }}>
+                          {slot.date}
+                        </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', color: '#64748B', fontSize: '0.75rem', marginTop: '0.1rem' }}>
+                          <ClockIcon size={12} color="#64748B" />
+                          <span>{slot.time || `${slot.startTime} – ${slot.endTime}`}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      padding: '0.25rem 0.6rem',
+                      borderRadius: '12px',
+                      backgroundColor: isFull ? '#FEF3F2' : '#ECFDF3',
+                      color: isFull ? '#B42318' : '#027A48'
+                    }}>
+                      <span style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        backgroundColor: isFull ? '#EF4444' : '#12B76A'
+                      }} />
+                      <span>{isFull ? 'Full' : 'Available'}</span>
+                    </span>
+                  </div>
+
+                  <div className="mobile-slot-grid">
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', color: '#64748B', fontWeight: 600, textTransform: 'uppercase' }}>Capacity</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#172033', marginTop: '0.15rem' }}>{cap}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', color: '#64748B', fontWeight: 600, textTransform: 'uppercase' }}>Booked</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 700, color: booked > 0 ? '#F79009' : '#64748B', marginTop: '0.15rem' }}>{booked}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', color: '#64748B', fontWeight: 600, textTransform: 'uppercase' }}>Available</div>
+                      <div style={{ fontSize: '0.9rem', fontWeight: 700, color: isFull ? '#F04438' : '#0F9D8A', marginTop: '0.15rem' }}>{available}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {/* CREATE SLOT MODAL */}

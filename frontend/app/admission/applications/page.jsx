@@ -63,8 +63,115 @@ export default function ApplicationsListPage() {
 
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        .app-list-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 1rem;
+          margin-bottom: 1.75rem;
+        }
+        .desktop-app-table {
+          display: block;
+        }
+        .mobile-app-cards {
+          display: none;
+        }
+
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .app-list-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+          }
+          .app-list-header h1 {
+            font-size: 1.45rem !important;
+          }
+          .app-list-header p {
+            font-size: 0.825rem !important;
+          }
+          .quick-tab-switcher {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            width: 100%;
+          }
+          .quick-tab-switcher .btn {
+            justify-content: center;
+            font-size: 0.8rem !important;
+            padding: 0.55rem 0.65rem !important;
+          }
+          .filter-toolbar {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.65rem;
+            padding: 0.85rem !important;
+            overflow: hidden !important;
+          }
+          .filter-search-box {
+            width: 100% !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+          }
+          .filter-select {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          /* Show mobile touch cards instead of wide table */
+          .desktop-app-table {
+            display: none !important;
+          }
+          .mobile-app-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-candidate-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-candidate-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-candidate-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            font-size: 0.775rem;
+            border: 1px solid #F1F5F9;
+          }
+          .mobile-candidate-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          .mobile-candidate-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+          }
+        }
+      `}</style>
+
       {/* Top Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.75rem' }}>
+      <div className="app-list-header">
         <div>
           <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.025em', margin: '0 0 0.35rem 0' }}>
             {isCompletedTab ? 'Completed Admissions' : 'Candidate Applications'}
@@ -77,7 +184,7 @@ export default function ApplicationsListPage() {
         </div>
 
         {/* Quick Tab Switcher */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="quick-tab-switcher" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
             type="button"
             className={`btn btn-sm ${!isCompletedTab ? 'btn-primary' : 'btn-secondary'}`}
@@ -156,114 +263,205 @@ export default function ApplicationsListPage() {
           }}
         />
       ) : (
-        <div className="table-container" style={{ overflowX: 'hidden' }}>
-          <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>Student</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Parent</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Grade</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Status</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Exam Score</th>
-                <th style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>Course</th>
-                <th style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((app) => {
-                const appId = app._id || app.id;
-                return (
-                  <tr key={appId}>
-                    <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <div style={{
-                          width: '32px',
-                          height: '32px',
-                          borderRadius: '6px',
-                          backgroundColor: '#E8F8F5',
-                          color: '#0F9D8A',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 700,
-                          fontSize: '0.8rem',
-                          flexShrink: 0
-                        }}>
-                          {app.name.charAt(0)}
-                        </div>
-                        <div>
-                          <div style={{ fontWeight: 600, color: '#172033', fontSize: '0.875rem' }}>
-                            {app.name}
+        <>
+          {/* DESKTOP TABLE VIEW */}
+          <div className="desktop-app-table table-container" style={{ overflowX: 'auto', background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '10px' }}>
+            <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0.75rem 0.7rem', whiteSpace: 'nowrap' }}>Student</th>
+                  <th style={{ padding: '0.75rem 0.65rem', whiteSpace: 'nowrap' }}>Parent</th>
+                  <th style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>Grade</th>
+                  <th style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>Status</th>
+                  <th style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>Exam Score</th>
+                  <th style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>Course</th>
+                  <th style={{ padding: '0.75rem 0.75rem', textAlign: 'right', whiteSpace: 'nowrap' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((app) => {
+                  const appId = app._id || app.id;
+                  return (
+                    <tr key={appId}>
+                      <td style={{ padding: '0.75rem 0.7rem', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem' }}>
+                          <div style={{
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: '6px',
+                            backgroundColor: '#E8F8F5',
+                            color: '#0F9D8A',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            fontSize: '0.78rem',
+                            flexShrink: 0
+                          }}>
+                            {app.name.charAt(0)}
                           </div>
-                          <div style={{ fontSize: '0.725rem', color: '#667085' }}>
-                            #{app.applicationNumber || 'APP-2026-001'}
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#172033', fontSize: '0.84rem' }}>
+                              {app.name}
+                            </div>
+                            <div style={{ fontSize: '0.7rem', color: '#667085' }}>
+                              #{app.applicationNumber || 'APP-2026-001'}
+                            </div>
                           </div>
                         </div>
+                      </td>
+                      <td style={{ padding: '0.75rem 0.65rem', maxWidth: '160px' }}>
+                        <div style={{ fontSize: '0.8rem', fontWeight: 500, color: '#172033', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {app.parentName || 'Parent'}
+                        </div>
+                        <div style={{ fontSize: '0.7rem', color: '#667085', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '150px' }}>
+                          {app.parentEmail || app.parentPhone || '—'}
+                        </div>
+                      </td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontWeight: 500, color: '#172033', fontSize: '0.8rem' }}>
+                          {app.applyingGrade}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>
+                        <StatusBadge status={app.status} size="small" />
+                      </td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: (app.examScore != null || app.marksObtained != null) ? '#172033' : '#94A3B8' }}>
+                          {app.examScore != null ? `${app.examScore} / 100` : app.marksObtained != null ? `${app.marksObtained} / 100` : '—'}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.75rem 0.5rem', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: app.assignedCourse ? '#0F9D8A' : '#667085' }}>
+                          {app.assignedCourse || 'Unassigned'}
+                        </span>
+                      </td>
+                      <td style={{ padding: '0.75rem 0.75rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        <div style={{ display: 'inline-flex', gap: '0.35rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+                          {app.status === 'SLOT_BOOKED' && (
+                            <Link
+                              href="/admission/update-score"
+                              className="btn btn-primary btn-sm"
+                              style={{ textDecoration: 'none', padding: '0.3rem 0.65rem', fontSize: '0.775rem', whiteSpace: 'nowrap' }}
+                            >
+                              Update Score
+                            </Link>
+                          )}
+
+                          {app.status === 'EXAM_COMPLETED' && (
+                            <Link
+                              href="/admission/assign-course"
+                              className="btn btn-primary btn-sm"
+                              style={{ textDecoration: 'none', padding: '0.3rem 0.65rem', fontSize: '0.775rem', whiteSpace: 'nowrap' }}
+                            >
+                              Assign Course
+                            </Link>
+                          )}
+
+                          <Link
+                            href={`/admission/applications/${appId}`}
+                            className="btn btn-secondary btn-sm"
+                            style={{ textDecoration: 'none', padding: '0.3rem 0.55rem', fontSize: '0.775rem' }}
+                          >
+                            View
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE CARDS VIEW */}
+          <div className="mobile-app-cards">
+            {filtered.map((app) => {
+              const appId = app._id || app.id;
+              return (
+                <div key={appId} className="mobile-candidate-card">
+                  <div className="mobile-candidate-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: '#E8F8F5',
+                        color: '#0F9D8A',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        flexShrink: 0
+                      }}>
+                        {app.name.charAt(0)}
                       </div>
-                    </td>
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <div style={{ fontSize: '0.8125rem', fontWeight: 500, color: '#172033' }}>
-                        {app.parentName || 'Parent'}
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.925rem' }}>
+                          {app.name}
+                        </div>
+                        <div style={{ fontSize: '0.725rem', color: '#667085', marginTop: '0.1rem' }}>
+                          #{app.applicationNumber || 'APP-2026-001'} &bull; <strong style={{ color: '#334155' }}>{app.applyingGrade}</strong>
+                        </div>
                       </div>
-                      <div style={{ fontSize: '0.725rem', color: '#667085' }}>
-                        {app.parentEmail || app.parentPhone || '—'}
+                    </div>
+
+                    <StatusBadge status={app.status} />
+                  </div>
+
+                  <div className="mobile-candidate-body">
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Parent</div>
+                      <div style={{ fontWeight: 600, color: '#172033' }}>{app.parentName || 'Parent'}</div>
+                      <div style={{ fontSize: '0.7rem', color: '#667085', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.parentEmail || app.parentPhone || '—'}</div>
+                    </div>
+
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Score & Course</div>
+                      <div style={{ fontWeight: 700, color: (app.examScore != null || app.marksObtained != null) ? '#172033' : '#94A3B8' }}>
+                        {app.examScore != null ? `${app.examScore}/100` : app.marksObtained != null ? `${app.marksObtained}/100` : 'No score'}
                       </div>
-                    </td>
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontWeight: 500, color: '#172033', fontSize: '0.8125rem' }}>
-                        {app.applyingGrade}
-                      </span>
-                    </td>
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <StatusBadge status={app.status} />
-                    </td>
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontSize: '0.85rem', fontWeight: 700, color: (app.examScore != null || app.marksObtained != null) ? '#172033' : '#94A3B8' }}>
-                        {app.examScore != null ? `${app.examScore} / 100` : app.marksObtained != null ? `${app.marksObtained} / 100` : '—'}
-                      </span>
-                    </td>
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: app.assignedCourse ? '#0F9D8A' : '#667085' }}>
+                      <div style={{ fontSize: '0.7rem', fontWeight: 600, color: app.assignedCourse ? '#0F9D8A' : '#667085' }}>
                         {app.assignedCourse || 'Unassigned'}
-                      </span>
-                    </td>
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      <div style={{ display: 'inline-flex', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                        {app.status === 'SLOT_BOOKED' && (
-                          <Link
-                            href="/admission/update-score"
-                            className="btn btn-primary btn-sm"
-                            style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
-                          >
-                            Update Score
-                          </Link>
-                        )}
-
-                        {app.status === 'EXAM_COMPLETED' && (
-                          <Link
-                            href="/admission/assign-course"
-                            className="btn btn-primary btn-sm"
-                            style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
-                          >
-                            Assign Course
-                          </Link>
-                        )}
-
-                        <Link
-                          href={`/admission/applications/${appId}`}
-                          className="btn btn-secondary btn-sm"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          View
-                        </Link>
                       </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </div>
+                  </div>
+
+                  <div className="mobile-candidate-actions">
+                    {app.status === 'SLOT_BOOKED' && (
+                      <Link
+                        href="/admission/update-score"
+                        className="btn btn-primary btn-sm"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        Update Score
+                      </Link>
+                    )}
+
+                    {app.status === 'EXAM_COMPLETED' && (
+                      <Link
+                        href="/admission/assign-course"
+                        className="btn btn-primary btn-sm"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        Assign Course
+                      </Link>
+                    )}
+
+                    <Link
+                      href={`/admission/applications/${appId}`}
+                      className="btn btn-secondary btn-sm"
+                      style={{ textDecoration: 'none' }}
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );

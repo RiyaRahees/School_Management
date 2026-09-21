@@ -109,8 +109,101 @@ export default function AssignCoursePage() {
 
   return (
     <div style={{ maxWidth: '1240px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        .desktop-course-table {
+          display: block;
+        }
+        .mobile-course-cards {
+          display: none;
+        }
+
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .course-header h1 {
+            font-size: 1.45rem !important;
+          }
+          .course-header p {
+            font-size: 0.825rem !important;
+          }
+          .filter-toolbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.65rem !important;
+            padding: 0.85rem !important;
+            overflow: hidden !important;
+          }
+          .filter-search-box {
+            width: 100% !important;
+            min-width: 0 !important;
+            flex: 1 1 auto !important;
+          }
+          .course-filter-buttons {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 0.45rem !important;
+            width: 100% !important;
+          }
+          .course-filter-buttons .btn {
+            flex: 1 1 auto !important;
+            justify-content: center !important;
+            white-space: nowrap !important;
+            font-size: 0.775rem !important;
+            padding: 0.5rem 0.65rem !important;
+            text-align: center !important;
+          }
+
+          /* Hide desktop table on mobile */
+          .desktop-course-table {
+            display: none !important;
+          }
+          /* Show mobile touch cards */
+          .mobile-course-cards {
+            display: flex !important;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-course-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+          }
+          .mobile-course-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+          }
+          .mobile-course-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            padding: 0.6rem 0.75rem;
+            background: #F8FAFC;
+            border-radius: 8px;
+            border: 1px solid #F1F5F9;
+            font-size: 0.775rem;
+          }
+          .mobile-course-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+          }
+          .mobile-course-actions .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.55rem;
+            font-size: 0.825rem;
+          }
+        }
+      `}</style>
+
       {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
+      <div className="course-header" style={{ marginBottom: '2rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.4rem' }}>
           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0F9D8A', textTransform: 'uppercase', letterSpacing: '0.06em', backgroundColor: '#E8F8F5', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
             ADMISSION TEAM
@@ -138,7 +231,7 @@ export default function AssignCoursePage() {
         </div>
 
         {/* Status Filter Tabs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <div className="course-filter-buttons" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
             type="button"
             className={`btn btn-sm ${filter === 'ALL' ? 'btn-primary' : 'btn-secondary'}`}
@@ -176,126 +269,241 @@ export default function AssignCoursePage() {
           onAction={filter !== 'ALL' ? () => setFilter('ALL') : null}
         />
       ) : (
-        <div className="table-container" style={{ overflowX: 'hidden' }}>
-          <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
-            <thead>
-              <tr>
-                <th style={{ padding: '0.85rem 1rem' }}>Candidate</th>
-                <th style={{ padding: '0.85rem 0.85rem' }}>Exam Score</th>
-                <th style={{ padding: '0.85rem 0.85rem' }}>Status</th>
-                <th style={{ padding: '0.85rem 0.85rem' }}>Assigned Course</th>
-                <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCandidates.map((cand) => {
-                const hasScore = cand.examScore !== null && cand.examScore !== undefined;
-                const isReady = cand.status === 'EXAM_COMPLETED';
-                const isAssigned = cand.status === 'ADMISSION_COMPLETED';
+        <>
+          {/* DESKTOP TABLE VIEW */}
+          <div className="desktop-course-table table-container" style={{ overflowX: 'hidden' }}>
+            <table className="data-table" style={{ width: '100%', tableLayout: 'auto' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '0.85rem 1rem' }}>Candidate</th>
+                  <th style={{ padding: '0.85rem 0.85rem' }}>Exam Score</th>
+                  <th style={{ padding: '0.85rem 0.85rem' }}>Status</th>
+                  <th style={{ padding: '0.85rem 0.85rem' }}>Assigned Course</th>
+                  <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredCandidates.map((cand) => {
+                  const hasScore = cand.examScore !== null && cand.examScore !== undefined;
+                  const isReady = cand.status === 'EXAM_COMPLETED';
+                  const isAssigned = cand.status === 'ADMISSION_COMPLETED';
 
-                return (
-                  <tr key={cand._id || cand.id}>
-                    <td style={{ padding: '0.85rem 1rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <div style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '8px',
-                          backgroundColor: '#E8F8F5',
-                          color: '#0F9D8A',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: 700,
-                          fontSize: '0.85rem',
-                          flexShrink: 0
-                        }}>
-                          {(cand.name || 'S').charAt(0).toUpperCase()}
+                  return (
+                    <tr key={cand._id || cand.id}>
+                      <td style={{ padding: '0.85rem 1rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '8px',
+                            backgroundColor: '#E8F8F5',
+                            color: '#0F9D8A',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 700,
+                            fontSize: '0.85rem',
+                            flexShrink: 0
+                          }}>
+                            {(cand.name || 'S').charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 700, color: '#0F172A', fontSize: '0.875rem' }}>
+                              {cand.name}
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
+                              <span style={{ fontSize: '0.75rem', color: '#0D9488', fontWeight: 600 }}>
+                                {cand.applyingGrade}
+                              </span>
+                              <span style={{ color: '#CBD5E1' }}>•</span>
+                              <span style={{ fontSize: '0.725rem', color: '#64748B' }}>
+                                #{cand.applicationNumber}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <div style={{ fontWeight: 700, color: '#0F172A', fontSize: '0.875rem' }}>
-                            {cand.name}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        {hasScore ? (
+                          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', backgroundColor: '#ECFDF3', color: '#027A48', padding: '0.2rem 0.55rem', borderRadius: '6px', fontWeight: 700, fontSize: '0.8125rem' }}>
+                            <CheckIcon size={12} />
+                            <span>{cand.examScore} / 100</span>
                           </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', marginTop: '0.15rem' }}>
-                            <span style={{ fontSize: '0.75rem', color: '#0D9488', fontWeight: 600 }}>
-                              {cand.applyingGrade}
-                            </span>
-                            <span style={{ color: '#CBD5E1' }}>•</span>
-                            <span style={{ fontSize: '0.725rem', color: '#64748B' }}>
-                              #{cand.applicationNumber}
-                            </span>
-                          </div>
+                        ) : (
+                          <span style={{ color: '#94A3B8', fontSize: '0.8rem' }}>
+                            Awaiting Exam
+                          </span>
+                        )}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        <StatusBadge status={cand.status} />
+                      </td>
+
+                      <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                        {cand.assignedCourse ? (
+                          <span style={{ fontWeight: 700, color: '#0F9D8A', backgroundColor: '#E8F8F5', padding: '0.2rem 0.55rem', borderRadius: '4px', fontSize: '0.8125rem' }}>
+                            ✓ {cand.assignedCourse}
+                          </span>
+                        ) : (
+                          <span style={{ color: '#94A3B8', fontSize: '0.8rem' }}>
+                            Not Assigned
+                          </span>
+                        )}
+                      </td>
+
+                      <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
+                        {isReady ? (
+                          <button
+                            type="button"
+                            onClick={() => openAssignModal(cand)}
+                            className="btn btn-primary btn-sm"
+                            style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+                          >
+                            <span>Assign Course</span>
+                            <ArrowRightIcon size={12} />
+                          </button>
+                        ) : isAssigned ? (
+                          <span style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.35rem',
+                            fontSize: '0.8rem',
+                            fontWeight: 600,
+                            color: '#0F766E',
+                            backgroundColor: '#CCFBF1',
+                            padding: '0.3rem 0.65rem',
+                            borderRadius: '6px'
+                          }}>
+                            <CheckIcon size={12} />
+                            <span>Enrolled</span>
+                          </span>
+                        ) : (
+                          <span style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 500 }}>
+                            Score Needed
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* MOBILE CARDS VIEW */}
+          <div className="mobile-course-cards">
+            {filteredCandidates.map((cand) => {
+              const hasScore = cand.examScore !== null && cand.examScore !== undefined;
+              const isReady = cand.status === 'EXAM_COMPLETED';
+              const isAssigned = cand.status === 'ADMISSION_COMPLETED';
+
+              return (
+                <div key={cand._id || cand.id} className="mobile-course-card">
+                  <div className="mobile-course-header">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                      <div style={{
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '8px',
+                        backgroundColor: '#E8F8F5',
+                        color: '#0F9D8A',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700,
+                        fontSize: '0.85rem',
+                        flexShrink: 0
+                      }}>
+                        {(cand.name || 'S').charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.925rem' }}>
+                          {cand.name}
+                        </div>
+                        <div style={{ fontSize: '0.725rem', color: '#64748B', marginTop: '0.1rem' }}>
+                          #{cand.applicationNumber} &bull; <strong style={{ color: '#0D9488' }}>{cand.applyingGrade}</strong>
                         </div>
                       </div>
-                    </td>
+                    </div>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                    <StatusBadge status={cand.status} />
+                  </div>
+
+                  <div className="mobile-course-body">
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Exam Score</div>
                       {hasScore ? (
-                        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', backgroundColor: '#ECFDF3', color: '#027A48', padding: '0.2rem 0.55rem', borderRadius: '6px', fontWeight: 700, fontSize: '0.8125rem' }}>
-                          <CheckIcon size={12} />
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                          backgroundColor: '#ECFDF3',
+                          color: '#027A48',
+                          padding: '0.2rem 0.5rem',
+                          borderRadius: '4px',
+                          fontWeight: 700,
+                          fontSize: '0.8rem'
+                        }}>
+                          <CheckIcon size={11} />
                           <span>{cand.examScore} / 100</span>
                         </div>
                       ) : (
-                        <span style={{ color: '#94A3B8', fontSize: '0.8rem' }}>
-                          Awaiting Exam
-                        </span>
+                        <div style={{ color: '#94A3B8', fontStyle: 'italic' }}>Pending</div>
                       )}
-                    </td>
+                    </div>
 
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
-                      <StatusBadge status={cand.status} />
-                    </td>
-
-                    <td style={{ padding: '0.85rem 0.85rem', whiteSpace: 'nowrap' }}>
+                    <div>
+                      <div style={{ fontSize: '0.6875rem', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '0.2rem' }}>Course</div>
                       {cand.assignedCourse ? (
-                        <span style={{ fontWeight: 700, color: '#0F9D8A', backgroundColor: '#E8F8F5', padding: '0.2rem 0.55rem', borderRadius: '4px', fontSize: '0.8125rem' }}>
+                        <span style={{ fontWeight: 700, color: '#0F9D8A', backgroundColor: '#E8F8F5', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.775rem' }}>
                           ✓ {cand.assignedCourse}
                         </span>
                       ) : (
-                        <span style={{ color: '#94A3B8', fontSize: '0.8rem' }}>
-                          Not Assigned
-                        </span>
+                        <span style={{ color: '#94A3B8', fontStyle: 'italic' }}>Unassigned</span>
                       )}
-                    </td>
+                    </div>
+                  </div>
 
-                    <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap' }}>
-                      {isReady ? (
-                        <button
-                          type="button"
-                          onClick={() => openAssignModal(cand)}
-                          className="btn btn-primary btn-sm"
-                          style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
-                        >
-                          <span>Assign Course</span>
-                          <ArrowRightIcon size={12} />
-                        </button>
-                      ) : isAssigned ? (
-                        <span style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.35rem',
-                          fontSize: '0.8rem',
-                          fontWeight: 600,
-                          color: '#0F766E',
-                          backgroundColor: '#CCFBF1',
-                          padding: '0.3rem 0.65rem',
-                          borderRadius: '6px'
-                        }}>
-                          <CheckIcon size={12} />
-                          <span>Enrolled</span>
-                        </span>
-                      ) : (
-                        <span style={{ fontSize: '0.75rem', color: '#94A3B8', fontWeight: 500 }}>
-                          Score Needed
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                  <div className="mobile-course-actions">
+                    {isReady ? (
+                      <button
+                        type="button"
+                        onClick={() => openAssignModal(cand)}
+                        className="btn btn-primary btn-sm"
+                      >
+                        <span>Assign Course</span>
+                        <ArrowRightIcon size={12} />
+                      </button>
+                    ) : isAssigned ? (
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.35rem',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#0F766E',
+                        backgroundColor: '#CCFBF1',
+                        padding: '0.45rem',
+                        borderRadius: '6px',
+                        width: '100%'
+                      }}>
+                        <CheckIcon size={13} />
+                        <span>Enrolled in {cand.assignedCourse}</span>
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: '0.775rem', color: '#94A3B8', textAlign: 'center', width: '100%' }}>
+                        Awaiting Exam Score Evaluation
+                      </span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
 
       {/* SECTION 17: Clean Course Assignment Modal (Prompt Section 17 UI) */}

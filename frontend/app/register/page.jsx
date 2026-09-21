@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import { EduFlowLogo } from '../../components/Icons';
+import '../auth.css';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -87,364 +88,43 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="register-root">
-      <style>{`
-        .register-root {
-          min-height: 100vh;
-          display: flex;
-          background-color: #FFFFFF;
-          color: #0F172A;
-          font-family: inherit;
-        }
-
-        /* Left Side: Brand Experience */
-        .register-brand-panel {
-          flex: 1.05;
-          background-color: #F8FAFC;
-          border-right: 1px solid #E2E8F0;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          padding: 3.5rem 4rem;
-          position: relative;
-        }
-
-        .brand-header {
-          display: flex;
-          align-items: center;
-        }
-
-        .brand-content {
-          max-width: 440px;
-          margin: 2.5rem 0;
-        }
-
-        .brand-heading {
-          font-size: 2.25rem;
-          font-weight: 700;
-          color: #0F172A;
-          letter-spacing: -0.025em;
-          line-height: 1.2;
-          margin: 0 0 1rem 0;
-        }
-
-        .brand-subtext {
-          font-size: 0.95rem;
-          color: #64748B;
-          line-height: 1.6;
-          margin: 0 0 2.25rem 0;
-        }
-
-        /* Admission Journey Visualization Card */
-        .journey-visual-card {
-          background: #FFFFFF;
-          border: 1px solid #E2E8F0;
-          border-radius: 12px;
-          padding: 1.35rem 1.5rem;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-
-        .journey-visual-title {
-          font-size: 0.6875rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #94A3B8;
-          margin-bottom: 1.25rem;
-        }
-
-        .journey-stepper-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          position: relative;
-          width: 100%;
-        }
-
-        .journey-stepper-track-line {
-          position: absolute;
-          top: 13px;
-          left: 12.5%;
-          right: 12.5%;
-          height: 2px;
-          background: #E2E8F0;
-          z-index: 1;
-        }
-
-        .journey-step-col {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-
-        .journey-node-dot {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          background: #FFFFFF;
-          border: 2px solid #CBD5E1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.75rem;
-          font-weight: 700;
-          color: #64748B;
-          margin-bottom: 0.45rem;
-          box-sizing: border-box;
-          line-height: 1;
-          user-select: none;
-        }
-
-        .journey-node-dot.active {
-          background: #0D9488;
-          border-color: #0D9488;
-          color: #FFFFFF;
-        }
-
-        .journey-node-label {
-          font-size: 0.75rem;
-          font-weight: 500;
-          color: #64748B;
-          white-space: nowrap;
-        }
-
-        .journey-node-label.active {
-          color: #0F172A;
-          font-weight: 600;
-        }
-
-        .brand-footer {
-          font-size: 0.8125rem;
-          color: #94A3B8;
-        }
-
-        /* Right Side: Registration Panel */
-        .register-form-panel {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justifyContent: center;
-          padding: 3rem 2rem;
-          background-color: #FFFFFF;
-        }
-
-        .register-form-container {
-          width: 100%;
-          max-width: 420px;
-        }
-
-        .register-header {
-          margin-bottom: 1.75rem;
-        }
-
-        .register-title {
-          font-size: 2rem;
-          font-weight: 700;
-          color: #0F172A;
-          letter-spacing: -0.025em;
-          margin: 0 0 0.35rem 0;
-          line-height: 1.2;
-        }
-
-        .register-subtitle {
-          font-size: 0.925rem;
-          color: #64748B;
-          margin: 0;
-        }
-
-        /* Form Controls */
-        .form-group {
-          margin-bottom: 1.15rem;
-        }
-
-        .form-label {
-          display: block;
-          font-size: 0.84rem;
-          font-weight: 600;
-          color: #334155;
-          margin-bottom: 0.4rem;
-        }
-
-        .input-wrapper {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .form-input {
-          width: 100%;
-          height: 48px;
-          padding: 0 0.95rem;
-          border-radius: 8px;
-          border: 1px solid #E2E8F0;
-          background: #FFFFFF;
-          font-size: 0.9rem;
-          color: #0F172A;
-          outline: none;
-          transition: border-color 0.15s ease, box-shadow 0.15s ease;
-        }
-
-        .form-input::placeholder {
-          color: #94A3B8;
-        }
-
-        .form-input:focus {
-          border-color: #0D9488;
-          box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
-        }
-
-        .form-input.has-error {
-          border-color: #EF4444;
-        }
-
-        .field-error {
-          color: #DC2626;
-          font-size: 0.775rem;
-          margin-top: 0.3rem;
-          font-weight: 500;
-        }
-
-        .password-toggle-btn {
-          position: absolute;
-          right: 12px;
-          background: none;
-          border: none;
-          color: #64748B;
-          cursor: pointer;
-          padding: 4px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 4px;
-          transition: color 0.15s ease;
-        }
-
-        .password-toggle-btn:hover {
-          color: #0F172A;
-        }
-
-        /* Server Error Alert */
-        .error-alert {
-          padding: 0.75rem 1rem;
-          border-radius: 8px;
-          background-color: #FEF2F2;
-          border: 1px solid #FECACA;
-          color: #DC2626;
-          font-size: 0.84rem;
-          font-weight: 500;
-          margin-bottom: 1.25rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        /* Primary Submit Button */
-        .submit-btn {
-          width: 100%;
-          height: 48px;
-          background-color: #0D9488;
-          color: #FFFFFF;
-          border: none;
-          border-radius: 8px;
-          font-size: 0.95rem;
-          font-weight: 600;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          transition: background-color 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
-          box-shadow: 0 1px 2px rgba(13, 148, 136, 0.2);
-          margin-top: 0.75rem;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-          background-color: #0F766E;
-        }
-
-        .submit-btn:active:not(:disabled) {
-          transform: scale(0.99);
-        }
-
-        .submit-btn:disabled {
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
-
-        .spinner {
-          width: 16px;
-          height: 16px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top-color: #FFFFFF;
-          border-radius: 50%;
-          animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-
-        /* Footer Link */
-        .login-footer {
-          text-align: center;
-          margin-top: 1.5rem;
-          font-size: 0.875rem;
-          color: #64748B;
-        }
-
-        .login-link {
-          color: #0D9488;
-          font-weight: 600;
-          text-decoration: none;
-          transition: color 0.15s ease;
-        }
-
-        .login-link:hover {
-          color: #0F766E;
-          text-decoration: underline;
-        }
-
-        /* Responsive */
-        @media (max-width: 960px) {
-          .register-brand-panel {
-            display: none;
-          }
-
-          .register-form-panel {
-            padding: 3rem 1.5rem;
-          }
-
-          .mobile-brand-header {
-            display: block !important;
-            margin-bottom: 2rem;
-          }
-        }
-
-        @media (min-width: 961px) {
-          .mobile-brand-header {
-            display: none !important;
-          }
-        }
-      `}</style>
-
-      {/* LEFT SIDE: Brand Experience */}
-      <div className="register-brand-panel">
-        <div className="brand-header">
+    <div className="auth-root">
+      {/* LEFT SIDE: Brand Experience (Desktop Only) */}
+      <div className="auth-brand-panel">
+        <div className="auth-brand-header">
           <EduFlowLogo size={36} />
         </div>
 
-        <div className="brand-content">
-          <h1 className="brand-heading">
-            Join the EduFlow<br />Parent Community
+        <div className="auth-brand-content">
+          <div className="auth-brand-pill">
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#0F9D8A', display: 'inline-block' }} />
+            <span>Parent Community</span>
+          </div>
+
+          <h1 className="auth-brand-heading">
+            Join the <span>EduFlow</span><br />Admission Portal
           </h1>
 
-          <p className="brand-subtext">
+          <p className="auth-brand-subtext">
             Create an account to submit your child&apos;s application, schedule an entrance exam, and monitor stage-by-stage admission progress.
           </p>
 
-          {/* Admission Journey Grid Visualization */}
+          <div className="auth-features-list">
+            <div className="auth-feature-item">
+              <div className="auth-feature-icon">✓</div>
+              <span>Fast 3-minute student enrollment registration</span>
+            </div>
+            <div className="auth-feature-item">
+              <div className="auth-feature-icon">✓</div>
+              <span>Instant slot selection for assessment tests</span>
+            </div>
+            <div className="auth-feature-item">
+              <div className="auth-feature-icon">✓</div>
+              <span>Live notification on evaluation results</span>
+            </div>
+          </div>
+
+          {/* Admission Journey Stepper */}
           <div className="journey-visual-card">
             <div className="journey-visual-title">
               ADMISSION JOURNEY
@@ -475,31 +155,50 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <div className="brand-footer">
+        <div className="auth-brand-footer">
           © 2026 EduFlow. School Admission Platform.
         </div>
       </div>
 
       {/* RIGHT SIDE: Registration Form */}
-      <div className="register-form-panel">
-        <div className="register-form-container">
-          {/* Mobile Only Logo */}
-          <div className="mobile-brand-header">
-            <EduFlowLogo size={34} />
+      <div className="auth-form-panel">
+        {/* Mobile Top Header & Title (Visible on Mobile) */}
+        <div className="mobile-top-section">
+          <EduFlowLogo size={42} showText={true} />
+          <div className="mobile-brand-pill">
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#0F9D8A', display: 'inline-block' }} />
+            <span>Admission Portal 2026-2027</span>
           </div>
+          <h1 className="mobile-hero-title">
+            Join <span>EduFlow</span>
+          </h1>
+          <p className="mobile-hero-subtitle">
+            Create a parent account to submit & track student applications.
+          </p>
+        </div>
 
-          <div className="register-header">
-            <h2 className="register-title">
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="auth-badge">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <line x1="19" y1="8" x2="19" y2="14" />
+                <line x1="22" y1="11" x2="16" y2="11" />
+              </svg>
+              <span>Get Started</span>
+            </div>
+            <h2 className="auth-title">
               Create Parent Account
             </h2>
-            <p className="register-subtitle">
-              Register to start your admission journey.
+            <p className="auth-subtitle">
+              Enter your details to begin your child&apos;s admission.
             </p>
           </div>
 
           {serverError && (
-            <div className="error-alert" role="alert">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div className="auth-error-alert" role="alert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                 <circle cx="12" cy="12" r="10" />
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
@@ -509,60 +208,82 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} noValidate>
-            <div className="form-group">
-              <label className="form-label" htmlFor="name">
+            <div className="auth-form-group">
+              <label className="auth-form-label" htmlFor="name">
                 Full Name
               </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                className={`form-input ${errors.name ? 'has-error' : ''}`}
-                placeholder="e.g. Riya Rahees"
-                value={formData.name}
-                onChange={handleChange}
-                disabled={loading}
-                autoComplete="name"
-                required
-              />
-              {errors.name && <div className="field-error">{errors.name}</div>}
+              <div className="auth-input-wrapper">
+                <div className="auth-input-icon-left">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  className={`auth-form-input ${errors.name ? 'has-error' : ''}`}
+                  placeholder="e.g. Riya Rahees"
+                  value={formData.name}
+                  onChange={handleChange}
+                  disabled={loading}
+                  autoComplete="name"
+                  required
+                />
+              </div>
+              {errors.name && <div className="auth-field-error">{errors.name}</div>}
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="email">
+            <div className="auth-form-group">
+              <label className="auth-form-label" htmlFor="email">
                 Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                className={`form-input ${errors.email ? 'has-error' : ''}`}
-                placeholder="parent@example.com"
-                value={formData.email}
-                onChange={handleChange}
-                disabled={loading}
-                autoComplete="email"
-                required
-              />
-              {errors.email && <div className="field-error">{errors.email}</div>}
+              <div className="auth-input-wrapper">
+                <div className="auth-input-icon-left">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  className={`auth-form-input ${errors.email ? 'has-error' : ''}`}
+                  placeholder="parent@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  disabled={loading}
+                  autoComplete="email"
+                  required
+                />
+              </div>
+              {errors.email && <div className="auth-field-error">{errors.email}</div>}
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
+            <div className="auth-form-group">
+              <label className="auth-form-label" htmlFor="password">
                 Password
               </label>
-              <div className="input-wrapper">
+              <div className="auth-input-wrapper">
+                <div className="auth-input-icon-left">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
                 <input
                   id="password"
                   name="password"
                   type={showPassword ? 'text' : 'password'}
-                  className={`form-input ${errors.password ? 'has-error' : ''}`}
+                  className={`auth-form-input ${errors.password ? 'has-error' : ''}`}
                   placeholder="Minimum 6 characters"
                   value={formData.password}
                   onChange={handleChange}
                   disabled={loading}
                   autoComplete="new-password"
-                  style={{ paddingRight: '44px' }}
+                  style={{ paddingRight: '40px' }}
                   required
                 />
                 <button
@@ -572,37 +293,43 @@ export default function RegisterPage() {
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                       <line x1="1" y1="1" x2="23" y2="23" />
                     </svg>
                   ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   )}
                 </button>
               </div>
-              {errors.password && <div className="field-error">{errors.password}</div>}
+              {errors.password && <div className="auth-field-error">{errors.password}</div>}
             </div>
 
-            <div className="form-group">
-              <label className="form-label" htmlFor="confirmPassword">
+            <div className="auth-form-group">
+              <label className="auth-form-label" htmlFor="confirmPassword">
                 Confirm Password
               </label>
-              <div className="input-wrapper">
+              <div className="auth-input-wrapper">
+                <div className="auth-input-icon-left">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                </div>
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
-                  className={`form-input ${errors.confirmPassword ? 'has-error' : ''}`}
+                  className={`auth-form-input ${errors.confirmPassword ? 'has-error' : ''}`}
                   placeholder="Confirm your password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   disabled={loading}
                   autoComplete="new-password"
-                  style={{ paddingRight: '44px' }}
+                  style={{ paddingRight: '40px' }}
                   required
                 />
                 <button
@@ -612,43 +339,61 @@ export default function RegisterPage() {
                   aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
                 >
                   {showConfirmPassword ? (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
                       <line x1="1" y1="1" x2="23" y2="23" />
                     </svg>
                   ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z" />
                       <circle cx="12" cy="12" r="3" />
                     </svg>
                   )}
                 </button>
               </div>
-              {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
+              {errors.confirmPassword && <div className="auth-field-error">{errors.confirmPassword}</div>}
             </div>
 
             <button
               type="submit"
-              className="submit-btn"
+              className="auth-submit-btn"
               disabled={loading}
             >
               {loading ? (
                 <>
-                  <div className="spinner" />
+                  <div className="auth-spinner" />
                   <span>Creating Account...</span>
                 </>
               ) : (
-                <span>Create Account</span>
+                <>
+                  <span>Create Parent Account</span>
+                  <svg className="auth-submit-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </>
               )}
             </button>
           </form>
 
-          <div className="login-footer">
+          <div className="auth-switch-footer">
             Already have an account?{' '}
-            <Link href="/login" className="login-link">
-              Sign In
+            <Link href="/login" className="auth-switch-link">
+              Sign In &rarr;
             </Link>
           </div>
+        </div>
+
+        {/* Mobile Page Footer */}
+        <div className="mobile-page-footer">
+          <div className="mobile-secure-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>256-Bit SSL Secure Admission Portal</span>
+          </div>
+          <div>© 2026 EduFlow Platform. All rights reserved.</div>
         </div>
       </div>
     </div>

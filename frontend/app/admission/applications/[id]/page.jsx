@@ -120,6 +120,25 @@ export default function ApplicationDetailPage() {
 
   return (
     <div style={{ maxWidth: '1040px', margin: '0 auto', paddingBottom: '3rem' }}>
+      <style>{`
+        /* MOBILE RESPONSIVE ONLY (< 768px) */
+        @media (max-width: 768px) {
+          .candidate-overview-card {
+            padding: 1.15rem !important;
+          }
+          .candidate-overview-card h1 {
+            font-size: 1.45rem !important;
+          }
+          .candidate-detail-grid {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .candidate-info-section {
+            padding: 1.15rem !important;
+          }
+        }
+      `}</style>
+
       {/* Back Link */}
       <div style={{ marginBottom: '1.25rem' }}>
         <Link
@@ -140,7 +159,7 @@ export default function ApplicationDetailPage() {
       </div>
 
       {/* Candidate Overview Header Card */}
-      <div style={{
+      <div className="candidate-overview-card" style={{
         marginBottom: '2rem',
         padding: '1.75rem',
         borderRadius: '12px',
@@ -174,9 +193,9 @@ export default function ApplicationDetailPage() {
       </div>
 
       {/* Two-Column: Personal Information & Application Information */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div className="candidate-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(420px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
         {/* PERSONAL INFORMATION Card */}
-        <div style={{ padding: '1.75rem', borderRadius: '12px', border: '1px solid #E5E7EB', backgroundColor: '#FFFFFF' }}>
+        <div className="candidate-info-section" style={{ padding: '1.75rem', borderRadius: '12px', border: '1px solid #E5E7EB', backgroundColor: '#FFFFFF' }}>
           <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#172033', margin: '0 0 1.25rem 0', paddingBottom: '0.75rem', borderBottom: '1px solid #F1F5F9', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
             PERSONAL INFORMATION
           </h3>

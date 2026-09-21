@@ -118,9 +118,15 @@ input, select, textarea {
   margin: 0 auto;
 }
 
+@media (max-width: 1280px) {
+  .content-container {
+    padding: 1.5rem 1.25rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .content-container {
-    padding: 1.5rem;
+    padding: 1.25rem 1rem;
   }
 }
 
@@ -129,7 +135,26 @@ input, select, textarea {
     flex-direction: column;
   }
   .content-container {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.85rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .page-title {
+    font-size: 1.45rem !important;
+  }
+  .page-subtitle {
+    font-size: 0.825rem !important;
+  }
+  .section-title {
+    font-size: 1.15rem !important;
+  }
+  .card {
+    padding: 1rem !important;
+  }
+  .table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
   }
 }
 
@@ -356,6 +381,21 @@ input, select, textarea {
   -webkit-overflow-scrolling: touch;
 }
 
+.table-container::-webkit-scrollbar {
+  height: 5px;
+}
+.table-container::-webkit-scrollbar-track {
+  background: #F8FAFC;
+  border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -364,7 +404,7 @@ input, select, textarea {
 
 .data-table th {
   background: #F9FAFB;
-  padding: 0.875rem 1.25rem;
+  padding: 0.8rem 0.85rem;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -375,7 +415,7 @@ input, select, textarea {
 }
 
 .data-table td {
-  padding: 1rem 1.25rem;
+  padding: 0.8rem 0.85rem;
   font-size: 0.875rem;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-light);
