@@ -434,92 +434,163 @@ export default function AdmissionCompletedAdminPage() {
 
       {/* Official Admission Letter Modal */}
       {selectedStudentForLetter && (
-        <div className="modal-overlay" style={{ zIndex: 99999 }}>
-          <div className="modal-card printable-doc" style={{ maxWidth: '640px', padding: '2rem 2.25rem', backgroundColor: '#FFFFFF', borderRadius: '16px' }}>
-            <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid #E2E8F0', paddingBottom: '1rem' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0F9D8A', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+        <div className="modal-overlay" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(15, 23, 42, 0.65)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem',
+          zIndex: 99999
+        }}>
+          <div className="modal-card printable-doc" style={{
+            maxWidth: '540px',
+            width: '100%',
+            maxHeight: '92dvh',
+            overflowY: 'auto',
+            padding: '1.25rem',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '16px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+            border: '1px solid #E2E8F0'
+          }}>
+            <div className="no-print" style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '0.85rem',
+              borderBottom: '1px solid #F1F5F9',
+              paddingBottom: '0.65rem'
+            }}>
+              <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#0F9D8A', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Official Admission Document
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedStudentForLetter(null)}
-                style={{ background: 'none', border: 'none', fontSize: '1.25rem', color: '#64748B', cursor: 'pointer', padding: '4px 8px' }}
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  borderRadius: '6px',
+                  background: '#F1F5F9',
+                  border: 'none',
+                  fontSize: '1rem',
+                  color: '#64748B',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 ✕
               </button>
             </div>
 
-            <div style={{ border: '2px double #0F9D8A', padding: '2rem 1.75rem', borderRadius: '12px', background: '#FAFCFF', textAlign: 'center' }}>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-                <EduFlowLogo size={42} />
+            <div style={{
+              border: '2px solid #0F9D8A',
+              padding: '1.35rem 1.15rem',
+              borderRadius: '12px',
+              background: '#FFFFFF',
+              textAlign: 'center'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.65rem' }}>
+                <EduFlowLogo size={36} />
               </div>
 
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em', marginBottom: '0.25rem' }}>
+              <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.01em', margin: '0 0 0.15rem 0' }}>
                 CERTIFICATE OF ADMISSION
               </div>
-              <div style={{ fontSize: '0.8rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '1.5rem' }}>
+              <div style={{ fontSize: '0.72rem', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.85rem' }}>
                 Academic Session 2026 – 2027
               </div>
 
-              <p style={{ fontSize: '0.9rem', color: '#334155', lineHeight: 1.6, textAlign: 'left', marginBottom: '1.25rem' }}>
-                This is to officially certify that candidate <strong>{selectedStudentForLetter.name}</strong> (Application #{selectedStudentForLetter.applicationNumber || selectedStudentForLetter._id?.slice(-6).toUpperCase()}) has been granted confirmed admission into:
+              <p style={{ fontSize: '0.84rem', color: '#334155', lineHeight: 1.5, textAlign: 'left', margin: '0 0 0.75rem 0' }}>
+                This is to officially certify that candidate <strong>{selectedStudentForLetter.name}</strong> (Application #{selectedStudentForLetter.applicationNumber || (selectedStudentForLetter._id ? selectedStudentForLetter._id.slice(-6).toUpperCase() : 'APP-2026')}) has been granted confirmed admission:
               </p>
 
               <div style={{
-                backgroundColor: '#ECFDF5',
-                border: '1.5px solid #A7F3D0',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
                 borderRadius: '10px',
-                padding: '1rem',
-                margin: '1.25rem 0',
+                padding: '0.75rem 0.95rem',
+                margin: '0.75rem 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.45rem',
                 textAlign: 'left'
               }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.65rem', fontSize: '0.85rem' }}>
-                  <div>
-                    <span style={{ color: '#64748B' }}>Enrolled Grade: </span>
-                    <strong style={{ color: '#0F172A' }}>{selectedStudentForLetter.applyingGrade}</strong>
-                  </div>
-                  <div>
-                    <span style={{ color: '#64748B' }}>Assigned Course: </span>
-                    <strong style={{ color: '#059669' }}>{selectedStudentForLetter.assignedCourse || `${selectedStudentForLetter.applyingGrade} General`}</strong>
-                  </div>
-                  <div>
-                    <span style={{ color: '#64748B' }}>Parent Name: </span>
-                    <strong style={{ color: '#0F172A' }}>{selectedStudentForLetter.parentName || 'Parent'}</strong>
-                  </div>
-                  <div>
-                    <span style={{ color: '#64748B' }}>Admission Status: </span>
-                    <strong style={{ color: '#059669' }}>Confirmed Active ✓</strong>
-                  </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.825rem' }}>
+                  <span style={{ color: '#64748B', fontWeight: 500 }}>Enrolled Grade:</span>
+                  <strong style={{ color: '#0F172A' }}>{selectedStudentForLetter.applyingGrade}</strong>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.825rem' }}>
+                  <span style={{ color: '#64748B', fontWeight: 500 }}>Assigned Course:</span>
+                  <strong style={{ color: '#0F766E' }}>{selectedStudentForLetter.assignedCourse || `${selectedStudentForLetter.applyingGrade} Regular`}</strong>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.825rem' }}>
+                  <span style={{ color: '#64748B', fontWeight: 500 }}>Parent Contact:</span>
+                  <span style={{ fontWeight: 600, color: '#334155' }}>{selectedStudentForLetter.parentName || 'Parent'}</span>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.825rem' }}>
+                  <span style={{ color: '#64748B', fontWeight: 500 }}>Admission Status:</span>
+                  <span style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#059669',
+                    backgroundColor: '#ECFDF5',
+                    border: '1px solid #A7F3D0',
+                    padding: '0.1rem 0.5rem',
+                    borderRadius: '6px'
+                  }}>
+                    Confirmed Active
+                  </span>
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '2.5rem', paddingTop: '1rem', borderTop: '1px solid #E2E8F0', textAlign: 'left' }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
+                paddingTop: '0.75rem',
+                borderTop: '1px solid #E2E8F0',
+                textAlign: 'left'
+              }}>
                 <div>
-                  <div style={{ fontSize: '0.75rem', color: '#94A3B8', textTransform: 'uppercase' }}>Issue Date</div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#334155' }}>{new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', textTransform: 'uppercase' }}>Issue Date</div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 700, color: '#334155' }}>
+                    {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  </div>
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontFamily: 'cursive', fontSize: '1.1rem', color: '#0F9D8A', fontWeight: 700 }}>Office of Admissions</div>
-                  <div style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 600 }}>EduFlow Academy Authority</div>
+                  <div style={{ fontFamily: 'cursive', fontSize: '0.95rem', color: '#0F9D8A', fontWeight: 700 }}>Office of Admissions</div>
+                  <div style={{ fontSize: '0.68rem', color: '#64748B', fontWeight: 600 }}>EduFlow Academy Authority</div>
                 </div>
               </div>
             </div>
 
-            <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
               <button
                 type="button"
                 onClick={() => setSelectedStudentForLetter(null)}
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-sm"
               >
                 Close Preview
               </button>
               <button
                 type="button"
                 onClick={handlePrint}
-                className="btn btn-primary"
+                className="btn btn-primary btn-sm"
               >
-                <PrinterIcon size={16} />
+                <PrinterIcon size={14} />
                 <span>Print Certificate</span>
               </button>
             </div>
