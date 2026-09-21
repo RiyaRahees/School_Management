@@ -835,17 +835,37 @@ export default function ExamSlotsPage() {
                 {/* Inline Card Status Action */}
                 <div style={{ marginTop: '0.65rem' }}>
                   {isSelected ? (
-                    <div style={{
-                      backgroundColor: '#0D9488',
-                      color: '#FFFFFF',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
-                      textAlign: 'center',
-                      padding: '0.35rem 0.5rem',
-                      borderRadius: '6px'
-                    }}>
-                      ✓ Slot Selected
-                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleConfirmSlot();
+                      }}
+                      disabled={
+                        bookingLoading ||
+                        !currentStudent ||
+                        currentStudent.status !== 'REGISTRATION_FEE_PAID'
+                      }
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#0D9488',
+                        color: '#FFFFFF',
+                        fontSize: '0.8rem',
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        padding: '0.45rem 0.65rem',
+                        borderRadius: '6px',
+                        border: 'none',
+                        cursor: currentStudent?.status !== 'REGISTRATION_FEE_PAID' ? 'not-allowed' : 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.35rem',
+                        boxShadow: '0 2px 6px rgba(13, 148, 136, 0.3)'
+                      }}
+                    >
+                      {bookingLoading ? 'Confirming...' : 'Confirm Slot'}
+                    </button>
                   ) : isFull ? (
                     <div style={{
                       backgroundColor: '#F1F5F9',

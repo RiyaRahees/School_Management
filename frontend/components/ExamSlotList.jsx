@@ -203,48 +203,43 @@ export default function ExamSlotList({
                   {isFull ? 'Full' : `${seatsLeft} seats left`}
                 </span>
               </div>
+
+              {/* When selected, show Confirm button directly right here inside the card */}
+              {isSelected && !isFull && (
+                <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '1px dashed #A7F3D0' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#047857', fontWeight: 500, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                    <MapPinIcon size={13} color="#047857" />
+                    <span>Venue: {slot.location || 'Main Campus, Examination Center'}</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    style={{
+                      width: '100%',
+                      padding: '0.6rem 1rem',
+                      fontSize: '0.875rem',
+                      fontWeight: 700,
+                      borderRadius: '6px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.4rem',
+                      boxShadow: '0 2px 8px rgba(15, 157, 138, 0.25)'
+                    }}
+                    disabled={isLoading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onBookSlot(slotId);
+                    }}
+                  >
+                    {isLoading ? 'Confirming...' : 'Confirm Slot'}
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}
       </div>
-
-      {/* Selected Slot Confirmation Bar */}
-      {selectedSlot && (
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          padding: '1rem 1.25rem',
-          background: '#FFFFFF',
-          border: '1.5px solid #0F9D8A',
-          borderRadius: '10px',
-          boxShadow: '0 2px 8px rgba(15, 157, 138, 0.08)'
-        }}>
-          <div>
-            <div style={{ fontSize: '0.725rem', color: '#667085', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
-              Selected Slot
-            </div>
-            <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#172033', marginTop: '0.15rem' }}>
-              {selectedSlot.date} · {selectedSlot.time}
-            </div>
-            <div style={{ fontSize: '0.8rem', color: '#0F9D8A', fontWeight: 500, marginTop: '0.1rem' }}>
-              Venue: {selectedSlot.location || 'Main Campus, Exam Hall A'}
-            </div>
-          </div>
-
-          <button
-            type="button"
-            className="btn btn-primary"
-            style={{ padding: '0.55rem 1.25rem' }}
-            disabled={isLoading}
-            onClick={() => onBookSlot(selectedSlot._id || selectedSlot.id)}
-          >
-            {isLoading ? 'Confirming...' : 'Confirm Slot'}
-          </button>
-        </div>
-      )}
     </div>
   );
 }
