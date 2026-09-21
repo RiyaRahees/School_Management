@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SearchIcon, EduFlowLogo, LogoutIcon } from './Icons';
+import { SearchIcon } from './Icons';
 
 export default function Header({ onToggleSidebar }) {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <header style={{
@@ -18,14 +18,10 @@ export default function Header({ onToggleSidebar }) {
       padding: '0 2rem',
       position: 'sticky',
       top: 0,
-      zIndex: 30,
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)'
+      zIndex: 30
     }}>
       <style>{`
         .header-mobile-toggle {
-          display: none;
-        }
-        .header-mobile-brand {
           display: none;
         }
         .header-search {
@@ -72,82 +68,40 @@ export default function Header({ onToggleSidebar }) {
         .header-user-btn:hover {
           background: #F9FAFB;
         }
-        .header-user-text {
-          max-width: 160px;
-        }
-        .header-user-text span {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: block;
-        }
         @media (max-width: 768px) {
           .header-mobile-toggle {
             display: inline-flex !important;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            padding: 0 !important;
-            flex-shrink: 0;
-          }
-          .header-mobile-brand {
-            display: inline-flex !important;
-            align-items: center;
-            gap: 0.5rem;
-            flex-shrink: 0;
           }
           .header-search {
-            display: none !important;
+            display: none;
           }
           header {
-            padding: 0 0.85rem !important;
-            height: 58px !important;
-          }
-          .header-user-btn {
-            padding: 0.2rem 0.35rem !important;
-            gap: 0.45rem !important;
+            padding: 0 1rem !important;
+            height: 56px !important;
           }
           .header-user-text {
-            max-width: 105px !important;
+            display: none !important;
           }
-          .header-user-text span:first-child {
-            font-size: 0.8rem !important;
-          }
-          .header-user-text span:last-child {
-            font-size: 0.65rem !important;
+          .header-chevron {
+            display: none !important;
           }
         }
       `}</style>
 
-      {/* Left Area: Mobile Toggle + Mobile Brand / Desktop Global Application Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flex: 1, maxWidth: '480px' }}>
+      {/* Left Area: Mobile Toggle & Global Application Search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, maxWidth: '480px' }}>
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle navigation menu"
           className="header-mobile-toggle btn btn-secondary btn-sm"
-          style={{ borderRadius: '8px', border: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}
+          style={{ padding: '0.35rem 0.55rem' }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
-
-        {/* Clean, single-line brand identity on mobile navbar */}
-        <div className="header-mobile-brand">
-          <EduFlowLogo size={30} showText={false} />
-          <span style={{
-            fontSize: '1.05rem',
-            fontWeight: 800,
-            color: '#0F172A',
-            letterSpacing: '-0.025em',
-            lineHeight: 1
-          }}>
-            EduFlow
-          </span>
-        </div>
 
         <div className="header-search">
           <SearchIcon size={16} color="#64748B" strokeWidth={2} />
@@ -159,13 +113,13 @@ export default function Header({ onToggleSidebar }) {
         </div>
       </div>
 
-      {/* Right Area: User Profile & Logout */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+      {/* Right Area: User Profile */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         {/* User Profile Info */}
         <div className="header-user-btn">
           <div style={{
-            width: '32px',
-            height: '32px',
+            width: '34px',
+            height: '34px',
             borderRadius: '50%',
             backgroundColor: '#E8F8F5',
             color: '#0F9D8A',
@@ -193,34 +147,11 @@ export default function Header({ onToggleSidebar }) {
               {user?.role === 'admission_team' ? 'Admission Team' : 'Parent'}
             </span>
           </div>
-        </div>
 
-        {/* Header Logout Button */}
-        <button
-          type="button"
-          onClick={logout}
-          title="Sign Out"
-          aria-label="Sign Out"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '0.35rem',
-            padding: '0.35rem 0.65rem',
-            borderRadius: '8px',
-            backgroundColor: '#FEF2F2',
-            border: '1px solid #FEE2E2',
-            color: '#EF4444',
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            cursor: 'pointer',
-            transition: 'all 0.15s ease',
-            flexShrink: 0
-          }}
-        >
-          <LogoutIcon size={14} color="#EF4444" />
-          <span>Logout</span>
-        </button>
+          <svg className="header-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.15rem' }}>
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
       </div>
     </header>
   );

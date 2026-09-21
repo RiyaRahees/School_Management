@@ -338,98 +338,13 @@ export default function ExamSlotsPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-                .student-dropdown-item:hover {
+        }
+        .student-dropdown-item:hover {
           background-color: #F8FAFC !important;
         }
 
         .student-dropdown-item.selected {
           background-color: #F0FDF9 !important;
-        }
-
-        .student-selector-box {
-          padding: 1.25rem 1.5rem;
-          border-radius: 12px;
-          border: 1px solid #E2E8F0;
-          background-color: #FFFFFF;
-          margin-bottom: 1.75rem;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 1.25rem;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-          width: 100%;
-          box-sizing: border-box;
-        }
-
-        .student-btn-content {
-          display: flex;
-          align-items: center;
-          gap: 0.75rem;
-          flex: 1;
-          min-width: 0;
-          overflow: hidden;
-        }
-
-        .student-btn-details {
-          flex: 1;
-          min-width: 0;
-          overflow: hidden;
-        }
-
-        .student-btn-name {
-          font-weight: 700;
-          color: #172033;
-          font-size: 0.95rem;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .student-btn-meta {
-          font-size: 0.775rem;
-          color: #64748B;
-          display: flex;
-          align-items: center;
-          gap: 0.4rem;
-          margin-top: 1px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .student-btn-status {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          flex-shrink: 0;
-        }
-
-        .status-badge-compact {
-          font-size: 0.725rem;
-          font-weight: 700;
-          padding: 0.2rem 0.65rem;
-          border-radius: 12px;
-          white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-          .student-selector-box {
-            padding: 1rem !important;
-            margin-bottom: 1.25rem !important;
-          }
-          .student-btn-name {
-            max-width: 110px !important;
-            font-size: 0.9rem !important;
-          }
-          .student-btn-meta {
-            font-size: 0.7rem !important;
-            gap: 0.25rem !important;
-          }
-          .status-badge-compact {
-            font-size: 0.65rem !important;
-            padding: 0.15rem 0.45rem !important;
-          }
         }
       `}</style>
 
@@ -438,14 +353,26 @@ export default function ExamSlotsPage() {
         <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#172033', letterSpacing: '-0.02em', margin: '0 0 0.35rem 0' }}>
           Entrance Exam Scheduling
         </h1>
-        <p style={{ fontSize: '0.875rem', color: '#64748B', margin: 0 }}>
+        <p style={{ fontSize: '0.875rem', color: '#667085', margin: 0 }}>
           Choose an on-campus entrance assessment date and time for candidate evaluation.
         </p>
       </div>
 
       {/* Student Selector Card */}
-      <div className="student-selector-box">
-        <div style={{ width: '100%', maxWidth: '540px' }}>
+      <div style={{
+        padding: '1.25rem 1.5rem',
+        borderRadius: '12px',
+        border: '1px solid #E2E8F0',
+        backgroundColor: '#FFFFFF',
+        marginBottom: '1.75rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: '1.25rem',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+      }}>
+        <div style={{ flex: '1 1 360px' }}>
           <label style={{
             display: 'block',
             fontSize: '0.75rem',
@@ -459,13 +386,13 @@ export default function ExamSlotsPage() {
           </label>
 
           {/* Custom Interactive Dropdown */}
-          <div className="student-dropdown-container" style={{ position: 'relative', width: '100%' }}>
+          <div className="student-dropdown-container" style={{ position: 'relative', width: '100%', maxWidth: '520px' }}>
             <button
               type="button"
               onClick={() => setDropdownOpen(prev => !prev)}
               style={{
                 width: '100%',
-                padding: '0.65rem 0.85rem',
+                padding: '0.65rem 0.95rem',
                 backgroundColor: '#FFFFFF',
                 border: dropdownOpen ? '1.5px solid #0F9D8A' : '1.5px solid #E2E8F0',
                 boxShadow: dropdownOpen ? '0 0 0 3px rgba(15, 157, 138, 0.12)' : '0 1px 2px rgba(0,0,0,0.04)',
@@ -475,21 +402,19 @@ export default function ExamSlotsPage() {
                 justifyContent: 'space-between',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.15s ease',
-                gap: '0.5rem',
-                boxBox: 'border-box'
+                transition: 'all 0.15s ease'
               }}
             >
               {currentStudent ? (
-                <div className="student-btn-content">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', overflow: 'hidden' }}>
                   <div style={{
-                    width: '36px',
-                    height: '36px',
+                    width: '38px',
+                    height: '38px',
                     borderRadius: '50%',
                     backgroundColor: '#E8F8F5',
                     color: '#0F9D8A',
                     fontWeight: 800,
-                    fontSize: '0.825rem',
+                    fontSize: '0.85rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -497,12 +422,12 @@ export default function ExamSlotsPage() {
                   }}>
                     {getInitials(currentStudent.name)}
                   </div>
-                  <div className="student-btn-details">
-                    <div className="student-btn-name">
+                  <div style={{ overflow: 'hidden' }}>
+                    <div style={{ fontWeight: 700, color: '#172033', fontSize: '0.95rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {currentStudent.name}
                     </div>
-                    <div className="student-btn-meta">
-                      <span style={{ fontWeight: 600, color: '#0F766E' }}>{currentStudent.applyingGrade}</span>
+                    <div style={{ fontSize: '0.775rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '1px' }}>
+                      <span style={{ fontWeight: 600, color: '#334155' }}>{currentStudent.applyingGrade}</span>
                       <span>•</span>
                       <span>App #{currentStudent.applicationNumber || (currentStudent._id ? currentStudent._id.slice(-6).toUpperCase() : '')}</span>
                     </div>
@@ -512,22 +437,23 @@ export default function ExamSlotsPage() {
                 <span style={{ color: '#94A3B8', fontSize: '0.9rem' }}>Select a candidate student</span>
               )}
 
-              <div className="student-btn-status">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexShrink: 0 }}>
                 {currentStudent && (
-                  <span
-                    className="status-badge-compact"
-                    style={{
-                      backgroundColor: getStatusConfig(currentStudent.status).bg,
-                      color: getStatusConfig(currentStudent.status).color,
-                      border: `1px solid ${getStatusConfig(currentStudent.status).border}`
-                    }}
-                  >
+                  <span style={{
+                    fontSize: '0.725rem',
+                    fontWeight: 700,
+                    padding: '0.2rem 0.65rem',
+                    borderRadius: '12px',
+                    backgroundColor: getStatusConfig(currentStudent.status).bg,
+                    color: getStatusConfig(currentStudent.status).color,
+                    border: `1px solid ${getStatusConfig(currentStudent.status).border}`
+                  }}>
                     {getStatusConfig(currentStudent.status).label}
                   </span>
                 )}
                 <svg
-                  width="16"
-                  height="16"
+                  width="18"
+                  height="18"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="#64748B"
@@ -536,8 +462,7 @@ export default function ExamSlotsPage() {
                   strokeLinejoin="round"
                   style={{
                     transform: dropdownOpen ? 'rotate(180deg)' : 'none',
-                    transition: 'transform 0.2s ease',
-                    flexShrink: 0
+                    transition: 'transform 0.2s ease'
                   }}
                 >
                   <polyline points="6 9 12 15 18 9" />
@@ -835,37 +760,17 @@ export default function ExamSlotsPage() {
                 {/* Inline Card Status Action */}
                 <div style={{ marginTop: '0.65rem' }}>
                   {isSelected ? (
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleConfirmSlot();
-                      }}
-                      disabled={
-                        bookingLoading ||
-                        !currentStudent ||
-                        currentStudent.status !== 'REGISTRATION_FEE_PAID'
-                      }
-                      style={{
-                        width: '100%',
-                        backgroundColor: '#0D9488',
-                        color: '#FFFFFF',
-                        fontSize: '0.8rem',
-                        fontWeight: 700,
-                        textAlign: 'center',
-                        padding: '0.45rem 0.65rem',
-                        borderRadius: '6px',
-                        border: 'none',
-                        cursor: currentStudent?.status !== 'REGISTRATION_FEE_PAID' ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '0.35rem',
-                        boxShadow: '0 2px 6px rgba(13, 148, 136, 0.3)'
-                      }}
-                    >
-                      {bookingLoading ? 'Confirming...' : 'Confirm Slot'}
-                    </button>
+                    <div style={{
+                      backgroundColor: '#0D9488',
+                      color: '#FFFFFF',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      textAlign: 'center',
+                      padding: '0.35rem 0.5rem',
+                      borderRadius: '6px'
+                    }}>
+                      ✓ Slot Selected
+                    </div>
                   ) : isFull ? (
                     <div style={{
                       backgroundColor: '#F1F5F9',

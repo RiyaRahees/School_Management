@@ -203,20 +203,17 @@ export default function ParentDashboardPage() {
         /* Stepper Styling */
         .stepper-container {
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           justify-content: space-between;
           position: relative;
           padding: 0.5rem 0;
-          width: 100%;
-          max-width: 100%;
-          box-sizing: border-box;
         }
 
         .stepper-line {
           position: absolute;
-          top: 13px;
-          left: 10%;
-          right: 10%;
+          top: 19px;
+          left: 15px;
+          right: 15px;
           height: 2px;
           background-color: #E2E8F0;
           z-index: 1;
@@ -228,10 +225,7 @@ export default function ParentDashboardPage() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          text-align: center;
-          flex: 1;
-          min-width: 0;
-          max-width: 20%;
+          gap: 0.35rem;
         }
 
         .stepper-circle {
@@ -244,7 +238,6 @@ export default function ParentDashboardPage() {
           font-size: 0.75rem;
           font-weight: 700;
           transition: all 0.2s ease;
-          background-color: #FFFFFF;
         }
 
         .stepper-circle.completed {
@@ -267,15 +260,10 @@ export default function ParentDashboardPage() {
         }
 
         .stepper-label {
-          font-size: 0.6875rem;
+          font-size: 0.7rem;
           font-weight: 600;
           text-align: center;
-          white-space: normal;
-          word-break: break-word;
-          line-height: 1.15;
-          margin-top: 0.35rem;
-          width: 100%;
-          padding: 0 2px;
+          white-space: nowrap;
         }
 
         .desktop-recent-table {
@@ -298,43 +286,19 @@ export default function ParentDashboardPage() {
         @media (max-width: 768px) {
           .summary-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 0.65rem !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
+            gap: 0.75rem !important;
           }
           .stat-card-refined {
-            padding: 0.85rem !important;
-            width: 100% !important;
-            min-width: 0 !important;
-            box-sizing: border-box !important;
+            padding: 0.95rem !important;
           }
           .stat-card-refined div:nth-child(2) {
-            font-size: 1.35rem !important;
+            font-size: 1.45rem !important;
           }
           .dashboard-page-title {
-            font-size: 1.35rem !important;
-            word-break: break-word;
-          }
-          .stepper-container {
-            width: 100% !important;
-            max-width: 100% !important;
-            padding: 0.4rem 0 !important;
-            overflow: visible !important;
-          }
-          .stepper-line {
-            top: 11px !important;
-          }
-          .stepper-circle {
-            width: 22px !important;
-            height: 22px !important;
-            font-size: 0.6875rem !important;
+            font-size: 1.45rem !important;
           }
           .stepper-label {
-            font-size: 0.575rem !important;
-            line-height: 1.1 !important;
-            margin-top: 0.2rem !important;
-            padding: 0 1px !important;
+            font-size: 0.65rem;
           }
 
           /* Hide desktop table on mobile */

@@ -194,10 +194,6 @@ export default function Sidebar({ isOpen, onClose }) {
             top: 0;
             bottom: 0;
             left: 0;
-            height: 100dvh !important;
-            max-height: 100dvh !important;
-            height: 100vh;
-            padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
             transform: translateX(-100%);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
           }
@@ -251,73 +247,33 @@ export default function Sidebar({ isOpen, onClose }) {
                 </Link>
               );
             })}
-
-            {/* Direct Logout / Sign Out in Main Menu list */}
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                logout();
-              }}
-              className="nav-link"
-              style={{
-                width: '100%',
-                color: '#EF4444',
-                marginTop: '0.75rem',
-                borderTop: '1px solid #F1F5F9',
-                paddingTop: '0.75rem'
-              }}
-            >
-              <span className="link-icon"><LogoutIcon size={18} color="#EF4444" /></span>
-              <span style={{ fontWeight: 600 }}>Sign Out</span>
-            </button>
           </nav>
         </div>
 
-        {/* Footer: User profile with inline Logout button */}
+        {/* Footer: User profile & Sign Out always anchored in single window */}
         <div className="sidebar-footer">
-          <div className="user-panel" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.45rem 0.6rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', minWidth: 0, flex: 1 }}>
-              <div className="user-avatar">
-                {(user?.name || 'User').charAt(0).toUpperCase()}
+          <div className="user-panel">
+            <div className="user-avatar">
+              {(user?.name || 'User').charAt(0).toUpperCase()}
+            </div>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#172033', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {user?.name || 'User'}
               </div>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#172033', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {user?.name || 'User'}
-                </div>
-                <div style={{ fontSize: '0.675rem', color: '#667085', textTransform: 'capitalize' }}>
-                  {user?.role === 'admission_team' ? 'Admission Team' : 'Parent'}
-                </div>
+              <div style={{ fontSize: '0.675rem', color: '#667085', textTransform: 'capitalize' }}>
+                {user?.role === 'admission_team' ? 'Admission Team' : 'Parent'}
               </div>
             </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                onClose();
-                logout();
-              }}
-              title="Sign Out"
-              aria-label="Sign Out"
-              style={{
-                padding: '0.3rem 0.5rem',
-                borderRadius: '6px',
-                backgroundColor: '#FEF2F2',
-                border: '1px solid #FEE2E2',
-                color: '#EF4444',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem',
-                fontSize: '0.725rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                flexShrink: 0
-              }}
-            >
-              <LogoutIcon size={12} color="#EF4444" />
-              <span>Logout</span>
-            </button>
           </div>
+
+          <button
+            type="button"
+            onClick={logout}
+            className="signout-btn"
+          >
+            <LogoutIcon size={14} />
+            <span>Sign Out</span>
+          </button>
         </div>
       </aside>
     </>
