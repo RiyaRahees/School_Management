@@ -297,8 +297,35 @@ export default function ParentDashboardPage() {
           .dashboard-page-title {
             font-size: 1.45rem !important;
           }
+          /* Mobile Stepper Adjustments */
           .stepper-label {
-            font-size: 0.65rem;
+            display: none !important;
+          }
+          .mobile-stepper-stage-info {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 0.65rem;
+            font-size: 0.775rem;
+            font-weight: 600;
+            color: #0F9D8A;
+            background: #E8F8F5;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            text-align: center;
+          }
+          .dashboard-next-action-box {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.85rem !important;
+            padding: 1rem !important;
+          }
+          .dashboard-next-action-box .btn {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.65rem 1rem !important;
+            font-size: 0.875rem !important;
           }
 
           /* Hide desktop table on mobile */
@@ -515,22 +542,31 @@ export default function ParentDashboardPage() {
                     );
                   })}
                 </div>
+
+                {/* Mobile Active Stage Indicator */}
+                <div className="mobile-stepper-stage-info" style={{ display: 'none' }}>
+                  <span>● Stage {stages.findIndex(s => s.key === primaryStudent.status) + 1} of 5:</span>
+                  <strong>{stages.find(s => s.key === primaryStudent.status)?.label || 'Application Created'}</strong>
+                </div>
               </div>
 
               {/* Next Action Box */}
               {nextAction && (
-                <div style={{
-                  marginTop: '1.5rem',
-                  padding: '1.15rem 1.25rem',
-                  borderRadius: '8px',
-                  backgroundColor: '#F7F9FA',
-                  border: '1px solid #E5E7EB',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  flexWrap: 'wrap',
-                  gap: '1rem'
-                }}>
+                <div
+                  className="dashboard-next-action-box"
+                  style={{
+                    marginTop: '1.5rem',
+                    padding: '1.15rem 1.25rem',
+                    borderRadius: '8px',
+                    backgroundColor: '#F7F9FA',
+                    border: '1px solid #E5E7EB',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: '1rem'
+                  }}
+                >
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                       <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#0F9D8A', textTransform: 'uppercase', letterSpacing: '0.05em' }}>

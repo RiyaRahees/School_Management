@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SearchIcon } from './Icons';
+import { SearchIcon, EduFlowLogo } from './Icons';
 
 export default function Header({ onToggleSidebar }) {
   const { user } = useAuth();
@@ -22,6 +22,9 @@ export default function Header({ onToggleSidebar }) {
     }}>
       <style>{`
         .header-mobile-toggle {
+          display: none;
+        }
+        .header-mobile-brand {
           display: none;
         }
         .header-search {
@@ -72,12 +75,17 @@ export default function Header({ onToggleSidebar }) {
           .header-mobile-toggle {
             display: inline-flex !important;
           }
+          .header-mobile-brand {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+          }
           .header-search {
-            display: none;
+            display: none !important;
           }
           header {
             padding: 0 1rem !important;
-            height: 56px !important;
+            height: 58px !important;
           }
           .header-user-text {
             display: none !important;
@@ -85,18 +93,21 @@ export default function Header({ onToggleSidebar }) {
           .header-chevron {
             display: none !important;
           }
+          .header-left-col {
+            flex: none !important;
+          }
         }
       `}</style>
 
-      {/* Left Area: Mobile Toggle & Global Application Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, maxWidth: '480px' }}>
+      {/* Left Area: Mobile Toggle & Global Search */}
+      <div className="header-left-col" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, maxWidth: '480px' }}>
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle navigation menu"
           className="header-mobile-toggle btn btn-secondary btn-sm"
-          style={{ padding: '0.35rem 0.55rem' }}
+          style={{ padding: '0.4rem 0.6rem', borderRadius: '8px' }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="18" x2="21" y2="18" />
@@ -113,22 +124,28 @@ export default function Header({ onToggleSidebar }) {
         </div>
       </div>
 
-      {/* Right Area: User Profile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        {/* User Profile Info */}
+      {/* Center Area (Mobile Only): Brand Title */}
+      <div className="header-mobile-brand">
+        <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
+          Edu<span style={{ color: '#0F9D8A' }}>Flow</span>
+        </span>
+      </div>
+
+      {/* Right Area: User Profile Icon */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <div className="header-user-btn">
           <div style={{
-            width: '34px',
-            height: '34px',
+            width: '36px',
+            height: '36px',
             borderRadius: '50%',
             backgroundColor: '#E8F8F5',
             color: '#0F9D8A',
-            border: '1px solid #CCFBF1',
+            border: '1.5px solid #CCFBF1',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontWeight: 700,
-            fontSize: '0.8125rem',
+            fontSize: '0.85rem',
             flexShrink: 0
           }}>
             {(user?.name || 'User').charAt(0).toUpperCase()}

@@ -65,7 +65,20 @@ export default function Sidebar({ isOpen, onClose }) {
           border-bottom: 1px solid #F1F5F9;
           display: flex;
           align-items: center;
+          justify-content: space-between;
           flex-shrink: 0;
+        }
+
+        .sidebar-close-btn {
+          display: none;
+          background: #F1F5F9;
+          border: none;
+          border-radius: 6px;
+          padding: 6px;
+          color: #64748B;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
         }
 
         .nav-group {
@@ -106,8 +119,8 @@ export default function Sidebar({ isOpen, onClose }) {
         }
 
         .nav-link.active {
-          background-color: #E8F8F5; /* Soft Mint / Teal */
-          color: #0F9D8A; /* Primary Teal */
+          background-color: #E8F8F5;
+          color: #0F9D8A;
           font-weight: 600;
         }
 
@@ -137,22 +150,22 @@ export default function Sidebar({ isOpen, onClose }) {
           flex-shrink: 0;
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.6rem;
         }
 
         .user-panel {
           display: flex;
           align-items: center;
           gap: 0.65rem;
-          padding: 0.45rem 0.6rem;
-          border-radius: 8px;
-          background: #F9FAFB;
-          border: 1px solid #E5E7EB;
+          padding: 0.55rem 0.65rem;
+          border-radius: 9px;
+          background: #F8FAFC;
+          border: 1px solid #E2E8F0;
         }
 
         .user-avatar {
-          width: 32px;
-          height: 32px;
+          width: 34px;
+          height: 34px;
           border-radius: 50%;
           background: #E8F8F5;
           color: #0F9D8A;
@@ -160,7 +173,7 @@ export default function Sidebar({ isOpen, onClose }) {
           align-items: center;
           justify-content: center;
           font-weight: 700;
-          font-size: 0.8rem;
+          font-size: 0.825rem;
           border: 1px solid #CCFBF1;
           flex-shrink: 0;
         }
@@ -171,42 +184,64 @@ export default function Sidebar({ isOpen, onClose }) {
           justify-content: center;
           gap: 0.45rem;
           width: 100%;
-          height: 32px;
+          height: 38px;
           border-radius: 8px;
-          background-color: #FFFFFF;
-          border: 1px solid #E5E7EB;
-          color: #667085;
-          font-size: 0.775rem;
+          background-color: #FEF2F2;
+          border: 1px solid #FECACA;
+          color: #DC2626;
+          font-size: 0.8125rem;
           font-weight: 600;
           cursor: pointer;
           transition: all 0.15s ease;
         }
 
         .signout-btn:hover {
-          background-color: #FEF3F2;
-          border-color: #FECDCA;
-          color: #F04438;
+          background-color: #FEE2E2;
+          color: #B91C1C;
         }
 
         @media (max-width: 768px) {
           .sidebar {
+            width: min(290px, 85vw);
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             transform: translateX(-100%);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 50;
           }
           .sidebar.open {
             transform: translateX(0);
           }
+          .sidebar-brand {
+            padding-top: max(0.85rem, env(safe-area-inset-top));
+            height: auto;
+            min-height: 64px;
+            padding-left: 1.15rem;
+            padding-right: 1.15rem;
+          }
+          .sidebar-close-btn {
+            display: inline-flex !important;
+          }
+          .sidebar-footer {
+            padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+          }
+          .signout-btn {
+            height: 42px;
+            font-size: 0.85rem;
+          }
+          .sidebar-backdrop {
+            display: none;
+          }
           .sidebar-backdrop.open {
-            display: block;
+            display: block !important;
             position: fixed;
             inset: 0;
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(2px);
-            z-index: 35;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 45;
           }
         }
       `}</style>
@@ -214,16 +249,26 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Mobile Backdrop */}
       <div
         className={`sidebar-backdrop ${isOpen ? 'open' : ''}`}
-        style={{ display: isOpen ? 'block' : 'none' }}
         onClick={onClose}
       />
 
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
-        {/* Brand Header */}
+        {/* Brand Header with optional Mobile Close Button */}
         <div className="sidebar-brand">
           <Link href={isAdmission ? '/admission/dashboard' : '/parent/dashboard'} style={{ textDecoration: 'none' }}>
             <EduFlowLogo size={32} />
           </Link>
+          <button
+            type="button"
+            className="sidebar-close-btn"
+            onClick={onClose}
+            aria-label="Close menu"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
         </div>
 
         {/* Navigation Group */}
@@ -250,17 +295,17 @@ export default function Sidebar({ isOpen, onClose }) {
           </nav>
         </div>
 
-        {/* Footer: User profile & Sign Out always anchored in single window */}
+        {/* Footer: User profile & Styled Sign Out Button */}
         <div className="sidebar-footer">
           <div className="user-panel">
             <div className="user-avatar">
               {(user?.name || 'User').charAt(0).toUpperCase()}
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
-              <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#172033', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '0.825rem', fontWeight: 600, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {user?.name || 'User'}
               </div>
-              <div style={{ fontSize: '0.675rem', color: '#667085', textTransform: 'capitalize' }}>
+              <div style={{ fontSize: '0.7rem', color: '#64748B', textTransform: 'capitalize' }}>
                 {user?.role === 'admission_team' ? 'Admission Team' : 'Parent'}
               </div>
             </div>
@@ -271,7 +316,7 @@ export default function Sidebar({ isOpen, onClose }) {
             onClick={logout}
             className="signout-btn"
           >
-            <LogoutIcon size={14} />
+            <LogoutIcon size={15} />
             <span>Sign Out</span>
           </button>
         </div>
