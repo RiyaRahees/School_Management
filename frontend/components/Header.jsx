@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SearchIcon, EduFlowLogo } from './Icons';
+import { SearchIcon, EduFlowLogo, LogoutIcon } from './Icons';
 
 export default function Header({ onToggleSidebar }) {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <header style={{
@@ -159,13 +159,13 @@ export default function Header({ onToggleSidebar }) {
         </div>
       </div>
 
-      {/* Right Area: User Profile */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+      {/* Right Area: User Profile & Logout */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
         {/* User Profile Info */}
         <div className="header-user-btn">
           <div style={{
-            width: '34px',
-            height: '34px',
+            width: '32px',
+            height: '32px',
             borderRadius: '50%',
             backgroundColor: '#E8F8F5',
             color: '#0F9D8A',
@@ -193,11 +193,34 @@ export default function Header({ onToggleSidebar }) {
               {user?.role === 'admission_team' ? 'Admission Team' : 'Parent'}
             </span>
           </div>
-
-          <svg className="header-chevron" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.15rem' }}>
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
         </div>
+
+        {/* Header Logout Button */}
+        <button
+          type="button"
+          onClick={logout}
+          title="Sign Out"
+          aria-label="Sign Out"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.35rem',
+            padding: '0.35rem 0.65rem',
+            borderRadius: '8px',
+            backgroundColor: '#FEF2F2',
+            border: '1px solid #FEE2E2',
+            color: '#EF4444',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            flexShrink: 0
+          }}
+        >
+          <LogoutIcon size={14} color="#EF4444" />
+          <span>Logout</span>
+        </button>
       </div>
     </header>
   );
