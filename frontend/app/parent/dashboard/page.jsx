@@ -287,18 +287,32 @@ export default function ParentDashboardPage() {
           .summary-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 0.75rem !important;
+            width: 100% !important;
           }
           .stat-card-refined {
-            padding: 0.95rem !important;
+            padding: 0.85rem !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
           .stat-card-refined div:nth-child(2) {
-            font-size: 1.45rem !important;
+            font-size: 1.35rem !important;
           }
           .dashboard-page-title {
-            font-size: 1.45rem !important;
+            font-size: 1.4rem !important;
+            word-break: break-word;
+          }
+          .stepper-container {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+            padding: 0.5rem 0.25rem !important;
+            width: 100% !important;
+            scrollbar-width: none;
+          }
+          .stepper-container::-webkit-scrollbar {
+            display: none;
           }
           .stepper-label {
-            font-size: 0.65rem;
+            font-size: 0.625rem !important;
           }
 
           /* Hide desktop table on mobile */

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { SearchIcon } from './Icons';
+import { SearchIcon, EduFlowLogo } from './Icons';
 
 export default function Header({ onToggleSidebar }) {
   const { user } = useAuth();
@@ -18,10 +18,14 @@ export default function Header({ onToggleSidebar }) {
       padding: '0 2rem',
       position: 'sticky',
       top: 0,
-      zIndex: 30
+      zIndex: 30,
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.02)'
     }}>
       <style>{`
         .header-mobile-toggle {
+          display: none;
+        }
+        .header-mobile-brand {
           display: none;
         }
         .header-search {
@@ -81,8 +85,12 @@ export default function Header({ onToggleSidebar }) {
           .header-mobile-toggle {
             display: inline-flex !important;
           }
+          .header-mobile-brand {
+            display: inline-flex !important;
+            align-items: center;
+          }
           .header-search {
-            display: none;
+            display: none !important;
           }
           header {
             padding: 0 0.85rem !important;
@@ -93,7 +101,7 @@ export default function Header({ onToggleSidebar }) {
             gap: 0.45rem !important;
           }
           .header-user-text {
-            max-width: 105px !important;
+            max-width: 100px !important;
           }
           .header-user-text span:first-child {
             font-size: 0.775rem !important;
@@ -104,20 +112,25 @@ export default function Header({ onToggleSidebar }) {
         }
       `}</style>
 
-      {/* Left Area: Mobile Toggle & Global Application Search */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flex: 1, maxWidth: '480px' }}>
+      {/* Left Area: Mobile Toggle + Mobile Brand / Desktop Global Application Search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, maxWidth: '480px' }}>
         <button
           onClick={onToggleSidebar}
           aria-label="Toggle navigation menu"
           className="header-mobile-toggle btn btn-secondary btn-sm"
-          style={{ padding: '0.35rem 0.55rem' }}
+          style={{ padding: '0.35rem 0.55rem', borderRadius: '8px', border: '1px solid #E2E8F0', backgroundColor: '#F8FAFC' }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="3" y1="12" x2="21" y2="12" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
+
+        {/* Brand identity visible on mobile header */}
+        <div className="header-mobile-brand">
+          <EduFlowLogo size={28} showText={true} />
+        </div>
 
         <div className="header-search">
           <SearchIcon size={16} color="#64748B" strokeWidth={2} />
