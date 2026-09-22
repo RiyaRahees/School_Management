@@ -7,7 +7,7 @@ import { getStudents, getExamSlots, bookExamSlot, payRegistrationFee, initiateRa
 import { useAuth } from '../../../context/AuthContext';
 import StatusBadge from '../../../components/StatusBadge';
 import Loading from '../../../components/Loading';
-import { CalendarIcon, ClockIcon, CheckIcon, ArrowRightIcon, CreditCardIcon } from '../../../components/Icons';
+import { CalendarIcon, ClockIcon, CheckIcon, ArrowRightIcon, CreditCardIcon, MapPinIcon } from '../../../components/Icons';
 
 export default function ExamSlotsPage() {
   const { user, showToast } = useAuth();
