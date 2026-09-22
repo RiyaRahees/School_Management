@@ -58,6 +58,11 @@ export default function ExamSlotsPage() {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
+  const formatGrade = (grade) => {
+    if (!grade) return 'Grade N/A';
+    return String(grade).trim().toLowerCase().startsWith('grade') ? String(grade).trim() : `Grade ${grade}`;
+  };
+
   useEffect(() => {
     async function loadData() {
       try {
@@ -288,13 +293,15 @@ export default function ExamSlotsPage() {
   const currentSlot = slots.find(s => (s._id || s.id) === selectedSlotId);
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', paddingBottom: '3rem' }}>
+    <div style={{ maxWidth: '1000px', width: '100%', margin: '0 auto', paddingBottom: '4rem', boxSizing: 'border-box' }}>
       <style>{`
         .slot-card-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
           gap: 1.25rem;
           margin-bottom: 2rem;
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .exam-slot-card {
@@ -307,6 +314,7 @@ export default function ExamSlotsPage() {
           position: relative;
           display: flex;
           flex-direction: column;
+          box-sizing: border-box;
         }
 
         .exam-slot-card:hover:not(.disabled) {
@@ -347,6 +355,8 @@ export default function ExamSlotsPage() {
           background: #FFFFFF;
           margin-bottom: 1.5rem;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+          width: 100%;
+          box-sizing: border-box;
         }
 
         .student-trigger-btn {
@@ -361,6 +371,7 @@ export default function ExamSlotsPage() {
           display: flex;
           align-items: center;
           gap: 0.85rem;
+          box-sizing: border-box;
         }
 
         .student-trigger-btn:hover {
@@ -387,6 +398,7 @@ export default function ExamSlotsPage() {
           padding: 0.5rem;
           max-height: 320px;
           overflow-y: auto;
+          box-sizing: border-box;
         }
 
         .student-dropdown-item {
@@ -398,6 +410,7 @@ export default function ExamSlotsPage() {
           display: flex;
           align-items: center;
           gap: 0.85rem;
+          box-sizing: border-box;
         }
 
         .student-dropdown-item:hover {
@@ -414,7 +427,7 @@ export default function ExamSlotsPage() {
           bottom: 1rem;
           z-index: 40;
           padding: 1.15rem 1.5rem;
-          border-radius: 12px;
+          border-radius: 14px;
           border: 1.5px solid #0D9488;
           background-color: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(12px);
@@ -422,37 +435,52 @@ export default function ExamSlotsPage() {
           align-items: center;
           justify-content: space-between;
           flex-wrap: wrap;
-          gap: 1.25rem;
+          gap: 1rem;
           box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+          width: 100%;
+          box-sizing: border-box;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
           .candidate-selector-card {
-            padding: 0.95rem;
+            padding: 0.85rem;
           }
           .slot-card-grid {
             grid-template-columns: 1fr;
             gap: 0.85rem;
           }
           .sticky-slot-bar {
+            position: fixed;
+            bottom: 0.75rem;
+            left: 0.75rem;
+            right: 0.75rem;
+            width: calc(100% - 1.5rem);
+            margin: 0 auto;
             flex-direction: column;
             align-items: stretch;
-            padding: 0.9rem 1rem;
-            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            gap: 0.65rem;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+          }
+          .sticky-slot-bar-info {
+            width: 100%;
           }
           .sticky-slot-bar .btn {
             width: 100%;
             justify-content: center;
+            padding: 0.65rem 1rem !important;
+            font-size: 0.875rem !important;
           }
         }
       `}</style>
 
       {/* Header */}
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h1 style={{ fontSize: '1.85rem', fontWeight: 700, color: '#172033', letterSpacing: '-0.02em', margin: '0 0 0.35rem 0' }}>
+      <div style={{ marginBottom: '1.5rem', width: '100%', boxSizing: 'border-box' }}>
+        <h1 style={{ fontSize: 'clamp(1.4rem, 4vw, 1.85rem)', fontWeight: 700, color: '#172033', letterSpacing: '-0.02em', margin: '0 0 0.35rem 0', wordBreak: 'break-word', lineHeight: 1.25 }}>
           Entrance Exam Scheduling
         </h1>
-        <p style={{ fontSize: '0.875rem', color: '#667085', margin: 0 }}>
+        <p style={{ fontSize: '0.875rem', color: '#667085', margin: 0, lineHeight: 1.45 }}>
           Choose an on-campus entrance assessment date and time for candidate evaluation.
         </p>
       </div>
@@ -463,6 +491,8 @@ export default function ExamSlotsPage() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '0.4rem',
           marginBottom: '0.65rem'
         }}>
           <div style={{
@@ -504,7 +534,7 @@ export default function ExamSlotsPage() {
             className={`student-trigger-btn ${dropdownOpen ? 'active' : ''}`}
           >
             {currentStudent ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', width: '100%', minWidth: 0 }}>
                 {/* Avatar */}
                 <div style={{
                   width: '42px',
@@ -529,7 +559,7 @@ export default function ExamSlotsPage() {
                     <div style={{
                       fontWeight: 700,
                       color: '#0F172A',
-                      fontSize: '1rem',
+                      fontSize: '0.95rem',
                       lineHeight: 1.3,
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
@@ -539,8 +569,8 @@ export default function ExamSlotsPage() {
                     </div>
 
                     <div style={{
-                      width: '26px',
-                      height: '26px',
+                      width: '24px',
+                      height: '24px',
                       borderRadius: '6px',
                       backgroundColor: dropdownOpen ? '#E0F2FE' : '#F1F5F9',
                       display: 'flex',
@@ -550,8 +580,8 @@ export default function ExamSlotsPage() {
                       transition: 'all 0.15s ease'
                     }}>
                       <svg
-                        width="15"
-                        height="15"
+                        width="14"
+                        height="14"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke={dropdownOpen ? '#0284C7' : '#64748B'}
@@ -583,9 +613,11 @@ export default function ExamSlotsPage() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '0.35rem',
-                      whiteSpace: 'nowrap'
+                      flexWrap: 'wrap'
                     }}>
-                      <span style={{ fontWeight: 600, color: '#334155' }}>Grade {currentStudent.applyingGrade}</span>
+                      <span style={{ fontWeight: 600, color: '#334155' }}>
+                        {formatGrade(currentStudent.applyingGrade)}
+                      </span>
                       <span style={{ color: '#CBD5E1' }}>•</span>
                       <span>App #{currentStudent.applicationNumber || (currentStudent._id ? currentStudent._id.slice(-6).toUpperCase() : '')}</span>
                     </div>
@@ -665,8 +697,8 @@ export default function ExamSlotsPage() {
                       </div>
 
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem', marginTop: '0.25rem', flexWrap: 'wrap' }}>
-                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.35rem', whiteSpace: 'nowrap' }}>
-                          <span style={{ fontWeight: 600, color: '#334155' }}>Grade {s.applyingGrade}</span>
+                        <div style={{ fontSize: '0.76rem', color: '#64748B', display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
+                          <span style={{ fontWeight: 600, color: '#334155' }}>{formatGrade(s.applyingGrade)}</span>
                           <span style={{ color: '#CBD5E1' }}>•</span>
                           <span>App #{s.applicationNumber || (s._id ? s._id.slice(-6).toUpperCase() : '')}</span>
                         </div>
@@ -919,14 +951,14 @@ export default function ExamSlotsPage() {
 
       {/* Sticky Bottom Floating Confirmation Bar */}
       <div className="sticky-slot-bar">
-        <div style={{ minWidth: '220px', flex: 1 }}>
+        <div className="sticky-slot-bar-info" style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontSize: '0.7rem', fontWeight: 700, color: '#0D9488', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {currentSlot ? 'Selected Examination Slot' : 'No Slot Selected'}
           </div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A', marginTop: '0.1rem' }}>
+          <div style={{ fontSize: 'clamp(0.95rem, 3.5vw, 1.15rem)', fontWeight: 800, color: '#0F172A', marginTop: '0.1rem', wordBreak: 'break-word' }}>
             {currentSlot ? `${currentSlot.date} · ${currentSlot.time}` : 'Click any slot card above'}
           </div>
-          <div style={{ fontSize: '0.8rem', color: '#64748B', marginTop: '0.1rem' }}>
+          <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: '0.1rem', wordBreak: 'break-word' }}>
             {currentSlot
               ? `Candidate: ${currentStudent?.name || 'Selected Student'} • Venue: Main Campus Examination Center`
               : 'Choose an available assessment date and time from the list above'}
@@ -1012,7 +1044,9 @@ export default function ExamSlotsPage() {
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: '0.7rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Grade</div>
-                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0D9488' }}>{bookedSlotData?.student?.applyingGrade || currentStudent?.applyingGrade}</div>
+                  <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0D9488' }}>
+                    {formatGrade(bookedSlotData?.student?.applyingGrade || currentStudent?.applyingGrade)}
+                  </div>
                 </div>
               </div>
 
