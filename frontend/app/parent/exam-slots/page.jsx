@@ -715,7 +715,7 @@ export default function ExamSlotsPage() {
               The registration fee (₹500) must be paid before an entrance exam slot can be confirmed.
             </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button
               type="button"
               onClick={() => handlePayFeeNow(currentStudent._id)}
